@@ -1,0 +1,38 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        Schema::create('branches', function (Blueprint $table) {
+            $table->id();
+            $table->string('name');
+            $table->string('address')->nullable();
+            $table->string('phone')->nullable()->unique();
+            $table->string('email')->nullable()->unique();
+            $table->string('longitude')->nullable();
+            $table->string('latitude')->nullable();
+            $table->string('receipt_header')->nullable();
+            $table->string('receipt_footer')->nullable();
+            $table->integer('status')->default(0);
+            $table->string('image')->nullable();
+            $table->softDeletes();
+            $table->timestamps();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('branches');
+    }
+};
