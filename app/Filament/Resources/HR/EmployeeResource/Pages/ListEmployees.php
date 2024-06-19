@@ -8,6 +8,7 @@ use Filament\Resources\Pages\ListRecords;
 
 class ListEmployees extends ListRecords
 {
+use \App\Traits\Core\TranslatableTable;
     protected static string $resource = EmployeeResource::class;
 
     protected function getHeaderActions(): array

@@ -18,6 +18,7 @@ return new class extends Migration
             $table->date('date');
             $table->morphs("ownerable");
             $table->foreignIdFor(\App\Models\User::class)->constrained()->restrictOnDelete();
+            $table->softDeletes();
             $table->timestamps();
         });
     }
