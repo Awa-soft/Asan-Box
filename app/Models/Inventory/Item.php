@@ -2,9 +2,7 @@
 
 namespace App\Models\Inventory;
 
-use App\Models\Logistic\Branch;
-use App\Models\Scopes\OwnerableScope;
-use App\Traits\Ownerable;
+use App\Traits\Core\Ownerable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;

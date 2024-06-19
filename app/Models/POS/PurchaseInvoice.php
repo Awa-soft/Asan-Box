@@ -4,14 +4,13 @@ namespace App\Models\POS;
 
 use App\Models\CRM\Contact;
 use App\Models\Logistic\Branch;
-use App\Models\Scopes\OwnerableScope;
 use App\Models\Settings\Currency;
+use App\Traits\Core\HasUser;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use App\Traits\HasUser;
 
 class PurchaseInvoice extends Model
 {
