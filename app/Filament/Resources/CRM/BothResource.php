@@ -39,7 +39,6 @@ class BothResource extends Resource
         return $form
             ->schema([
                 Forms\Components\TextInput::make('name')
-                    ->label(trans("lang.name"))
                     ->required()
                     ->maxLength(255),
                 Forms\Components\TextInput::make('phone')
@@ -66,7 +65,7 @@ class BothResource extends Resource
                     ->default(1)
                     ->label(trans("lang.status"))
                     ->required(),
-                    static::Field(),
+                static::Field(),
                 Forms\Components\FileUpload::make('image')
                     ->label(trans('lang.image'))
                     ->directory("customers/image")
@@ -131,9 +130,7 @@ class BothResource extends Resource
                 Tables\Filters\TrashedFilter::make(),
             ])
             ->actions([
-                Tables\Actions\EditAction::make()
-->modalWidth("lg"),
-                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\Action::make("test"),
 
             ])
             ->bulkActions([

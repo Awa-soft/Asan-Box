@@ -8,5 +8,6 @@ use Filament\Resources\Pages\CreateRecord;
 
 class CreateCategory extends CreateRecord
 {
+    use \App\Traits\Core\TranslatableForm;
     protected static string $resource = CategoryResource::class;
 }
