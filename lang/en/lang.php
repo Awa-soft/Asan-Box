@@ -74,4 +74,8 @@ return [
     "invoice_number" => "Invoice Number",
     "branch" => "Branch",
     "warehouse" => "Warehouse",
+    "employee" => "Employee",
+    "members" => "Members",
+    "leader" => "Leader",
+
 ];

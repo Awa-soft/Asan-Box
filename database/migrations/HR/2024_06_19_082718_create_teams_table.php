@@ -14,9 +14,8 @@ return new class extends Migration
         Schema::create('teams', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->foreignIdFor(\App\Models\HR\Employee::class)->constrained()->restrictOnDelete();
+            $table->foreignId("leader_id")->constrained("employees")->restrictOnDelete();
             $table->morphs("ownerable");
-            $table->foreignIdFor(\App\Models\User::class)->constrained()->restrictOnDelete();
             $table->softDeletes();
             $table->timestamps();
         });
