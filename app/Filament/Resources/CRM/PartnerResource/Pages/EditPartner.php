@@ -8,14 +8,13 @@ use Filament\Resources\Pages\EditRecord;
 
 class EditPartner extends EditRecord
 {
+    use \App\Traits\Core\TranslatableForm;
     protected static string $resource = PartnerResource::class;
 
     protected function getHeaderActions(): array
     {
         return [
             Actions\DeleteAction::make(),
-            Actions\ForceDeleteAction::make(),
-            Actions\RestoreAction::make(),
         ];
     }
 }

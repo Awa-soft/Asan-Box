@@ -8,6 +8,7 @@ use Filament\Resources\Pages\ListRecords;
 
 class ListUnits extends ListRecords
 {
+use \App\Traits\Core\TranslatableTable;
     protected static string $resource = UnitResource::class;
 
     protected function getHeaderActions(): array

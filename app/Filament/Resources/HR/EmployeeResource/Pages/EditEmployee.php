@@ -8,14 +8,14 @@ use Filament\Resources\Pages\EditRecord;
 
 class EditEmployee extends EditRecord
 {
+    use \App\Traits\Core\TranslatableForm;
+
     protected static string $resource = EmployeeResource::class;
 
     protected function getHeaderActions(): array
     {
         return [
             Actions\DeleteAction::make(),
-            Actions\ForceDeleteAction::make(),
-            Actions\RestoreAction::make(),
         ];
     }
 }
