@@ -7,6 +7,7 @@ use App\Traits\HasUser;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Position extends Model
 {
@@ -14,5 +15,9 @@ class Position extends Model
     use HasUser;
     public function branch(): BelongsTo{
         return $this->belongsTo(Branch::class)->withTrashed();
+    }
+
+    public function employees(): BelongsToMany{
+        return $this->belongsToMany(Employee::class,'employee_positions');
     }
 }
