@@ -2,11 +2,8 @@
 
 namespace App\Models\CRM;
 
-use App\Models\Logistic\Branch;
-use App\Models\Scopes\OwnerableScope;
-use App\Models\User;
-use App\Traits\HasUser;
-use App\Traits\Ownerable;
+use App\Traits\Core\HasUser;
+use App\Traits\Core\Ownerable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
