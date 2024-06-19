@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Inventory\Item;
+use App\Models\POS\PurchaseInvoice;
 use App\Models\Settings\Currency;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -15,6 +16,7 @@ return new class extends Migration
     {
         Schema::create('purchase_invoice_details', function (Blueprint $table) {
             $table->id();
+            $table->foreignIdFor(PurchaseInvoice::class)->constrained()->restrictOnDelete();
             $table->foreignIdFor(Item::class)->constrained()->restrictOnDelete();
             $table->foreignIdFor(Currency::class)->constrained()->restrictOnDelete();
             $table->float("single_quantity", 2)->default(1);

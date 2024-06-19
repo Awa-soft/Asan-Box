@@ -36,18 +36,24 @@ function convertToIqd($from_id, $amount, $rate=null){
 
 function convertToCurrency($from_id, $to_id, $amount, $from_rate = null, $to_rate = null){
 $usd = convertToUsd($from_id,$to_id, $amount, $from_rate);
-if($to_id == 1){
-    return convertToUsd($from_id,$to_id, $amount, $from_rate);
-}
-
 if(!$to_rate){
     $to_rate = getRatePerOne($to_id);
 }
-if($from_id == 1 && $to_id == 2){
-    return $usd / $to_rate;
+if($from_id ==1 && $to_id == 2){
+    return $amount * $to_rate;
+}
+if($to_id == 1){
+    return $usd;
 }
     return $usd * $to_rate;
 }
+
+
+
+
+
+
+
 
 
 
