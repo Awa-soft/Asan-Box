@@ -9,6 +9,7 @@ use App\Traits\HasUser;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Employee extends Model
@@ -41,5 +42,12 @@ class Employee extends Model
           'male'=>trans('lang.hr.male'),
           'female'=>trans('lang.hr.female'),
         ];
+    }
+    public function positions(): BelongsToMany{
+        return $this->belongsToMany(Position::class,'employee_positions');
+    }
+
+    public function teams(): BelongsToMany{
+        return $this->belongsToMany(Team::class,'team_employees');
     }
 }

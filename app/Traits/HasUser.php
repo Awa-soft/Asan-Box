@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 trait HasUser
 {
-    protected static function bootHasUser()
+    protected static function bootHasUser(): void
     {
         self::creating(function ($model) {
             $model->user_id = auth()->id();
