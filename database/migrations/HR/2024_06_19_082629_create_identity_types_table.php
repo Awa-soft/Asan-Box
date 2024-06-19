@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('identity_types', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->morphs("ownerable");
             $table->foreignIdFor(\App\Models\User::class)->constrained()->restrictOnDelete();
             $table->timestamps();
         });
