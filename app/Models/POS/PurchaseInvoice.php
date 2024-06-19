@@ -11,19 +11,11 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Traits\HasUser;
 
 class PurchaseInvoice extends Model
 {
-    use HasFactory, SoftDeletes;
-
-    protected static function boot()
-    {
-        parent::boot();
-        static::addGlobalScope(new OwnerableScope(auth()->user()));
-        static::creating(function ($model) {
-            $model->user_id = auth()->id();
-        });
-    }
+    use HasFactory, SoftDeletes, HasUser;
     public static function InvoiceNumber() {
         $lastInvoice = self::orderBy('id', 'desc')->first();
         if ($lastInvoice) {
