@@ -309,5 +309,10 @@ class PurchasePage extends Page implements HasForms
             return;
         }
     }
+
+    public function removeCode($key){
+        unset($this->tableData[$this->key]['codes'][$key]);
+        $this->refreshTable();
+    }
     protected static string $view = 'filament.pages.p-o-s.purchase-page';
 }
