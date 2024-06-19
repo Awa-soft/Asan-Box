@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Traits;
+namespace App\Traits\Core;
 
 use App\Models\Core\Attachment;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
