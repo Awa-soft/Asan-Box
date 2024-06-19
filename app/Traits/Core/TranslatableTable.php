@@ -8,6 +8,7 @@ use Filament\Tables;
 
 trait TranslatableTable
 {
+    
     public function table(Table $table): Table
     {
         $columns = [];
