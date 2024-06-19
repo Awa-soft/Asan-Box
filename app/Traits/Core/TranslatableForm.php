@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Traits;
+namespace App\Traits\Core;
 
 use Filament\Forms\Components\Builder;
 use Filament\Forms\Components\Fieldset;
