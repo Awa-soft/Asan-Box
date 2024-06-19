@@ -33,8 +33,8 @@ class AppServiceProvider extends ServiceProvider
         );
         Model::unguard();
         $migrationsPath = database_path('migrations');
-    $paths = $this->getAllSubdirectoriesOptimized($migrationsPath);
-    $this->loadMigrationsFrom($paths);
+        $paths = $this->getAllSubdirectoriesOptimized($migrationsPath);
+        $this->loadMigrationsFrom($paths);
     }
 
     function getAllSubdirectoriesOptimized($dir)

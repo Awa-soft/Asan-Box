@@ -8,6 +8,7 @@
       <sourceFolder url="file://$MODULE_DIR$/tests" isTestSource="true" packagePrefix="Tests\" />
       <sourceFolder url="file://$MODULE_DIR$/tests/Feature" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/tests/Unit" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/spec" isTestSource="true" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/anourvalar/eloquent-serialize" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/blade-ui-kit/blade-heroicons" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/blade-ui-kit/blade-icons" />
@@ -149,6 +150,18 @@
       <excludeFolder url="file://$MODULE_DIR$/vendor/vlucas/phpdotenv" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/voku/portable-ascii" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/webmozart/assert" />
+      <excludeFolder url="file://$MODULE_DIR$/storage/app" />
+      <excludeFolder url="file://$MODULE_DIR$/storage/framework" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/andreiio/blade-remix-icon" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/bezhansalleh/filament-shield" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/codeat3/blade-carbon-icons" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/codeat3/blade-fluentui-system-icons" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/codeat3/blade-iconpark" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/codeat3/blade-simple-line-icons" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/davidhsianturi/blade-bootstrap-icons" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/dutchcodingcompany/filament-developer-logins" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/khatabwedaa/blade-css-icons" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/spatie/laravel-permission" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

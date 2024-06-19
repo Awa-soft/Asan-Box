@@ -158,6 +158,16 @@
       <path value="$PROJECT_DIR$/vendor/doctrine/inflector" />
       <path value="$PROJECT_DIR$/vendor/doctrine/cache" />
       <path value="$PROJECT_DIR$/vendor/doctrine/event-manager" />
+      <path value="$PROJECT_DIR$/vendor/codeat3/blade-simple-line-icons" />
+      <path value="$PROJECT_DIR$/vendor/codeat3/blade-iconpark" />
+      <path value="$PROJECT_DIR$/vendor/andreiio/blade-remix-icon" />
+      <path value="$PROJECT_DIR$/vendor/khatabwedaa/blade-css-icons" />
+      <path value="$PROJECT_DIR$/vendor/bezhansalleh/filament-shield" />
+      <path value="$PROJECT_DIR$/vendor/davidhsianturi/blade-bootstrap-icons" />
+      <path value="$PROJECT_DIR$/vendor/dutchcodingcompany/filament-developer-logins" />
+      <path value="$PROJECT_DIR$/vendor/spatie/laravel-permission" />
+      <path value="$PROJECT_DIR$/vendor/codeat3/blade-fluentui-system-icons" />
+      <path value="$PROJECT_DIR$/vendor/codeat3/blade-carbon-icons" />
     </include_path>
   </component>
   <component name="PhpProjectSharedConfiguration" php_language_level="8.2" />
