@@ -197,7 +197,7 @@
         <div class="flex flex-col w-full gap-3">
             <form wire:submit='addToCode' class="flex items-center w-full gap-5 px-3">
 
-                <div class="flex items-center w-full gap-5">
+                <div class="flex items-center w-full gap-5 ">
                     <div class="w-full">
                         <label for="">{{ trans('lang.code') }}</label>
                         <x-filament::input.wrapper>
@@ -205,34 +205,34 @@
                                 placeholder="{{ trans('lang.code') }}" />
                         </x-filament::input.wrapper>
                     </div>
-                    <div class="w-max">
-                        <label for="">{{ trans('lang.gift') }}</label>
-                        <div class="flex items-center gap-2">
-                            <div class="flex items-center gap-1">
-                                <label for="">{{ trans('lang.yes') }}</label>
-                                <input type="radio" wire:model='codes.gift' value="yes" id=""
+                    <div class="flex items-center gap-3 mt-5 w-max" >
+                                <label for="">{{ trans('lang.gift') }}</label>
+                                <input type="checkbox" wire:model='codes.gift' value="yes" id=""
                                     name="gift">
-                            </div>
-                            <div class="flex items-center gap-1">
-                                <label for="">{{ trans('lang.no') }}</label>
-                                <input type="radio" wire:model='codes.gift' value="no" name="gift"
-                                    id="" checked="checked" />
-                            </div>
-                        </div>
                     </div>
                 </div>
 
                 <button type="submit"
-                    class="w-8 duration-300 cursor-pointer text-primary-600 hover:text-primary-500">
+                    class="w-8 mt-5 duration-300 cursor-pointer text-primary-600 hover:text-primary-500">
                     <x-heroicon-o-plus />
                 </button>
             </form>
 
             <div class="flex flex-col gap-3 px-2 overflow-y-scroll h-96">
-                @forelse ($this->tableData[$this->key]['codes']??[] as $code)
-                    <div class="flex justify-between w-full p-3 text-black bg-gray-200 rounded-md">
+                @forelse ($this->tableData[$this->key]['codes']??[] as $key=>$code)
+                    <div class="flex items-center justify-between w-full p-3 text-black bg-gray-200 rounded-md">
                         <p>{{ $code['code'] }}</p>
-                        <p>{{ $code['gift'] == 'yes' ? trans('lang.gift') : null }}</p>
+
+                        <div class="flex gap-3">
+                            @if ($code['gift'] == 'gift')
+                                <p class="p-2 text-xs text-white uppercase rounded-md bg-primary-600">{{ $code['gift']}}</p>
+                            @endif
+
+                            <div wire:click="removeCode('{{ $key }}')"
+                            class="w-8 duration-300 cursor-pointer text-danger-600 hover:text-danger-500">
+                            <x-heroicon-o-trash />
+                        </div>
+                        </div>
                     </div>
                 @empty
                 @endforelse
