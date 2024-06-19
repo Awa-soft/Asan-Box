@@ -11,12 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('teams', function (Blueprint $table) {
+        Schema::create('attachments', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->foreignIdFor(\App\Models\HR\Employee::class)->constrained()->restrictOnDelete();
-            $table->morphs("ownerable");
-            $table->foreignIdFor(\App\Models\User::class)->constrained()->restrictOnDelete();
+            $table->morphs('attachmentable');
+            $table->string('filename');
             $table->timestamps();
         });
     }
@@ -26,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('teams');
+        Schema::dropIfExists('attachments');
     }
 };

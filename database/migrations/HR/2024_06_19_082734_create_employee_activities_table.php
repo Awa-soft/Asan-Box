@@ -19,7 +19,7 @@ return new class extends Migration
             $table->date('date');
             $table->text('note')->nullable();
             $table->foreignIdFor(\App\Models\Settings\Currency::class)->constrained()->restrictOnDelete();
-            $table->foreignIdFor(\App\Models\Logistic\Branch::class)->constrained()->restrictOnDelete();
+            $table->morphs("ownerable");
             $table->foreignIdFor(\App\Models\User::class)->constrained()->restrictOnDelete();
             $table->timestamps();
         });
