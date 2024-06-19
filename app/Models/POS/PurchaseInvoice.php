@@ -16,6 +16,8 @@ use App\Traits\HasUser;
 class PurchaseInvoice extends Model
 {
     use HasFactory, SoftDeletes, HasUser;
+
+
     public static function InvoiceNumber() {
         $lastInvoice = self::orderBy('id', 'desc')->first();
         if ($lastInvoice) {

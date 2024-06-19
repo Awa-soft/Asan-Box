@@ -17,6 +17,7 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Forms\Form;
+use Filament\Notifications\Notification;
 use Filament\Pages\Page;
 use Illuminate\Support\Facades\DB;
 
@@ -231,7 +232,13 @@ class PurchasePage extends Page implements HasForms
 
     public function addToCode(){
         if(isset($this->codes['code'])){
-            $this->codes['gift'] = $this->codes['gift'] ?? 'no';
+            if (isset($this->codes['gift'])) {
+                $this->codes['gift'] ='gift' ;
+            }
+            else{
+                $this->codes['gift'] ='no' ;
+            }
+
             $this->tableData[$this->key]['codes'][] = $this->codes;
             $this->codes = [];
         }
@@ -266,15 +273,46 @@ class PurchasePage extends Page implements HasForms
             unset($this->invoiceData['total']);
 
             $invoice = PurchaseInvoice::create($this->invoiceData);
-            dump($this->tableData);
-            $invoice->details()->createMany($this->tableData);
+            collect($this->tableData)->each(function ($record) use ($invoice) {
+                $detail = $invoice->details()->create(
+                    [
+                        'item_id' => $record['id'],
+                        'quantity' => $record['quantity'],
+                        'gift' => $record['gift'],
+                        'price' => $record['type'] == "single" ? $record['single_price'] : $record['multiple_price'],
+                        'currency_id' => $record['currency_id'],
+                    ]
+                );
+                collect($record['codes'])->each(function ($code) use ( $detail, $record) {
+                    $code['item_id'] = $record['id'];
+                    $detail->codes()->delete();
+                    $detail->codes()->create($code);
+                });
+            });
+            Notification::make()
+            ->success()
+            ->title(trans("filament-actions::edit.single.notifications.saved.title"))
+            ->send();
+
+            // reset arrays
+            $this->selected = [];
+            $this->tableData = [];
+            $this->invoiceForm->fill();
             DB::commit();
         }
         catch(Exception $e){
-            dump($e->getMessage());
+            Notification::make()
+            ->danger()
+            ->title($e->getMessage())
+            ->send();
             DB::rollBack();
             return;
         }
+    }
+
+    public function removeCode($key){
+        unset($this->tableData[$this->key]['codes'][$key]);
+        $this->refreshTable();
     }
     protected static string $view = 'filament.pages.p-o-s.purchase-page';
 }
