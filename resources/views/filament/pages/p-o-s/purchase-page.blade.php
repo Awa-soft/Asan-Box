@@ -220,9 +220,19 @@
 
             <div class="flex flex-col gap-3 px-2 overflow-y-scroll h-96">
                 @forelse ($this->tableData[$this->key]['codes']??[] as $code)
-                    <div class="flex justify-between w-full p-3 text-black bg-gray-200 rounded-md">
+                    <div class="flex items-center justify-between w-full p-3 text-black bg-gray-200 rounded-md">
                         <p>{{ $code['code'] }}</p>
-                        <p>{{ $code['gift'] == 'yes' ? trans('lang.gift') : null }}</p>
+
+                        <div class="flex gap-3">
+                            @if ($code['gift'] == 'gift')
+                                <p class="p-2 text-xs text-white uppercase rounded-md bg-primary-600">{{ $code['gift']}}</p>
+                            @endif
+
+                            <div wire:click="removeFromTable('{{ $key }}')"
+                            class="w-8 duration-300 cursor-pointer text-danger-600 hover:text-danger-500">
+                            <x-heroicon-o-trash />
+                        </div>
+                        </div>
                     </div>
                 @empty
                 @endforelse

@@ -19,12 +19,9 @@ return new class extends Migration
             $table->foreignIdFor(PurchaseInvoice::class)->constrained()->restrictOnDelete();
             $table->foreignIdFor(Item::class)->constrained()->restrictOnDelete();
             $table->foreignIdFor(Currency::class)->constrained()->restrictOnDelete();
-            $table->float("single_quantity", 2)->default(1);
-            $table->float("multiple_quantity", 2)->default(1);
-            $table->float("single_gift", 2)->default(1);
-            $table->float("multiple_gift", 2)->default(1);
-            $table->decimal("single_price", 64, 2)->default(0);
-            $table->decimal("multiple_price", 64, 2)->default(0);
+            $table->float("quantity", 2)->default(1);
+            $table->float("gift", 2)->default(0);
+            $table->decimal("price", 64, 2)->default(0);
             $table->timestamps();
         });
     }

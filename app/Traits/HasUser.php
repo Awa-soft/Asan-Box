@@ -9,10 +9,10 @@ trait HasUser
 {
     protected static function bootHasUser()
     {
-        self::created(function ($model) {
+        self::creating(function ($model) {
             $model->user_id = auth()->id();
         });
-        self::updated(function ($model) {
+        self::updating(function ($model) {
             $model->user_id = auth()->id();
         });
     }

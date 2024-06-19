@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('purchase_detail_codes', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(PurchaseInvoiceDetail::class)->constrained()->cascadeOnDelete();
+            $table->foreignIdFor(Item::class)->constrained()->cascadeOnDelete();
             $table->string('code');
             $table->string('gift')->default("no");
             $table->timestamps();
