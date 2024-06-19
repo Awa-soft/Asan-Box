@@ -8,6 +8,7 @@ use Filament\Resources\Pages\ListRecords;
 
 class ListVendors extends ListRecords
 {
+use \App\Traits\Core\TranslatableTable;
     protected static string $resource = VendorResource::class;
 
     protected function getHeaderActions(): array

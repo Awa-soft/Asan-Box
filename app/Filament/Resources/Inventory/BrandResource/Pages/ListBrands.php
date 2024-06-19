@@ -8,6 +8,7 @@ use Filament\Resources\Pages\ListRecords;
 
 class ListBrands extends ListRecords
 {
+use \App\Traits\Core\TranslatableTable, \App\Traits\Core\TranslatableForm;
     protected static string $resource = BrandResource::class;
 
     protected function getHeaderActions(): array

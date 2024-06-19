@@ -72,4 +72,6 @@ return [
     "paid_amount" => "Paid Amount",
     "note" => "Note",
     "invoice_number" => "Invoice Number",
+    "branch" => "Branch",
+    "warehouse" => "Warehouse",
 ];

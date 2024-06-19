@@ -8,6 +8,7 @@ use Filament\Resources\Pages\EditRecord;
 
 class EditCategory extends EditRecord
 {
+    use \App\Traits\Core\TranslatableForm;
     protected static string $resource = CategoryResource::class;
 
     protected function getHeaderActions(): array

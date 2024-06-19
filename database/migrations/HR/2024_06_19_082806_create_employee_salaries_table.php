@@ -22,6 +22,7 @@ return new class extends Migration
             $table->foreignIdFor(\App\Models\Settings\Currency::class)->constrained()->restrictOnDelete();
             $table->foreignIdFor(\App\Models\User::class)->constrained()->restrictOnDelete();
             $table->morphs("ownerable");
+            $table->softDeletes();
             $table->timestamps();
         });
     }

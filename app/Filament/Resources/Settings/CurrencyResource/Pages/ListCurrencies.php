@@ -8,6 +8,7 @@ use Filament\Resources\Pages\ListRecords;
 
 class ListCurrencies extends ListRecords
 {
+    use \App\Traits\Core\TranslatableTable, \App\Traits\Core\TranslatableForm;
     protected static string $resource = CurrencyResource::class;
 
     protected function getHeaderActions(): array

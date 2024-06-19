@@ -8,6 +8,7 @@ use Filament\Resources\Pages\EditRecord;
 
 class EditCurrency extends EditRecord
 {
+    use \App\Traits\Core\TranslatableForm;
     protected static string $resource = CurrencyResource::class;
 
     protected function getHeaderActions(): array

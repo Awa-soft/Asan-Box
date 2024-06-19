@@ -8,6 +8,7 @@ use Filament\Resources\Pages\ListRecords;
 
 class ListBranches extends ListRecords
 {
+use \App\Traits\Core\TranslatableTable;
     protected static string $resource = BranchResource::class;
 
     protected function getHeaderActions(): array

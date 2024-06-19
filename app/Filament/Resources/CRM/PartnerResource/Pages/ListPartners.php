@@ -8,6 +8,7 @@ use Filament\Resources\Pages\ListRecords;
 
 class ListPartners extends ListRecords
 {
+use \App\Traits\Core\TranslatableTable;
     protected static string $resource = PartnerResource::class;
 
     protected function getHeaderActions(): array
