@@ -9,6 +9,7 @@ use App\Models\Settings\Currency;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class PurchaseInvoice extends Model
@@ -19,6 +20,9 @@ class PurchaseInvoice extends Model
     {
         parent::boot();
         static::addGlobalScope(new OwnerableScope(auth()->user()));
+        static::creating(function ($model) {
+            $model->user_id = auth()->id();
+        });
     }
     public static function InvoiceNumber() {
         $lastInvoice = self::orderBy('id', 'desc')->first();
@@ -42,6 +46,12 @@ class PurchaseInvoice extends Model
     }
     public function currency() :BelongsTo{
         return $this->belongsTo(Currency::class);
+    }
+    public function details() :HasMany{
+        return $this->hasMany(PurchaseInvoiceDetail::class);
+    }
+    public function user() :BelongsTo{
+        return $this->belongsTo(User::class);
     }
 
 
