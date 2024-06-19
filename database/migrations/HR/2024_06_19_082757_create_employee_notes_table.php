@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignIdFor(\App\Models\HR\Employee::class)->constrained()->restrictOnDelete();
             $table->text('note');
             $table->date('date');
-            $table->foreignIdFor(\App\Models\Logistic\Branch::class)->constrained()->restrictOnDelete();
+            $table->morphs("ownerable");
             $table->foreignIdFor(\App\Models\User::class)->constrained()->restrictOnDelete();
             $table->timestamps();
         });

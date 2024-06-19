@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('note')->nullable();
             $table->foreignIdFor(\App\Models\Settings\Currency::class)->constrained()->restrictOnDelete();
             $table->foreignIdFor(\App\Models\User::class)->constrained()->restrictOnDelete();
-            $table->foreignIdFor(\App\Models\Logistic\Branch::class)->constrained()->restrictOnDelete();
+            $table->morphs("ownerable");
             $table->timestamps();
         });
     }

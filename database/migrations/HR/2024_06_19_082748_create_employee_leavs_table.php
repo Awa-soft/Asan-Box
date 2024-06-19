@@ -18,7 +18,7 @@ return new class extends Migration
             $table->dateTime('to');
             $table->string('note')->nullable();
             $table->enum('status', ['pending', 'approved', 'rejected']);
-            $table->foreignIdFor(\App\Models\Logistic\Branch::class)->constrained()->restrictOnDelete();
+            $table->morphs("ownerable");
             $table->foreignIdFor(\App\Models\User::class)->constrained()->restrictOnDelete();
             $table->timestamps();
         });
