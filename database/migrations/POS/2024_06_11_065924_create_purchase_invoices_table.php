@@ -18,7 +18,7 @@ return new class extends Migration
         Schema::create('purchase_invoices', function (Blueprint $table) {
             $table->id();
             $table->string("type")->default('purchase');
-            $table->string("invoice_number");
+            $table->string("invoice_number")->nullable();
             $table->string("vendor_invoice");
             $table->date("date");
             $table->decimal("paid_amount",64, 2)->default(0);

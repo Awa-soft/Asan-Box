@@ -197,7 +197,7 @@
         <div class="flex flex-col w-full gap-3">
             <form wire:submit='addToCode' class="flex items-center w-full gap-5 px-3">
 
-                <div class="flex items-center w-full gap-5">
+                <div class="flex items-center w-full gap-5 ">
                     <div class="w-full">
                         <label for="">{{ trans('lang.code') }}</label>
                         <x-filament::input.wrapper>
@@ -205,25 +205,15 @@
                                 placeholder="{{ trans('lang.code') }}" />
                         </x-filament::input.wrapper>
                     </div>
-                    <div class="w-max">
-                        <label for="">{{ trans('lang.gift') }}</label>
-                        <div class="flex items-center gap-2">
-                            <div class="flex items-center gap-1">
-                                <label for="">{{ trans('lang.yes') }}</label>
-                                <input type="radio" wire:model='codes.gift' value="yes" id=""
+                    <div class="flex items-center gap-3 mt-5 w-max" >
+                                <label for="">{{ trans('lang.gift') }}</label>
+                                <input type="checkbox" wire:model='codes.gift' value="yes" id=""
                                     name="gift">
-                            </div>
-                            <div class="flex items-center gap-1">
-                                <label for="">{{ trans('lang.no') }}</label>
-                                <input type="radio" wire:model='codes.gift' value="no" name="gift"
-                                    id="" checked="checked" />
-                            </div>
-                        </div>
                     </div>
                 </div>
 
                 <button type="submit"
-                    class="w-8 duration-300 cursor-pointer text-primary-600 hover:text-primary-500">
+                    class="w-8 mt-5 duration-300 cursor-pointer text-primary-600 hover:text-primary-500">
                     <x-heroicon-o-plus />
                 </button>
             </form>

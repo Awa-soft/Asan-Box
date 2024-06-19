@@ -8,14 +8,17 @@ use App\Models\POS\PurchaseInvoice;
 use App\Models\Settings\Currency;
 use App\Traits\Core\OwnerableTrait;
 use BezhanSalleh\FilamentShield\Traits\HasPageShield;
+use Exception;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Forms\Form;
 use Filament\Pages\Page;
+use Illuminate\Support\Facades\DB;
 
 class PurchasePage extends Page implements HasForms
 {
@@ -46,26 +49,40 @@ class PurchasePage extends Page implements HasForms
     {
         return $form
             ->schema([
-                Hidden::make("type")
+                Select::make("type")
+                    ->options(
+                        [
+                            "purchase" => trans("POS/lang.purchase.singular_label"),
+                            "return" => trans("POS/lang.purchase_return.singular_label"),
+                        ]
+                    )
+                    ->native(false)
+                    ->required()
                     ->default('purchase'),
                 TextInput::make('invoice_number')
+                ->label(trans("lang.invoice_number"))
                     ->readOnly()
                     ->default(PurchaseInvoice::InvoiceNumber()),
-                TextInput::make('vendor_invoice'),
+                TextInput::make('vendor_invoice')
+                ->label(trans("lang.vendor_invoice")),
                 DateTimePicker::make('date')
                     ->default(now())
+                    ->label(trans("lang.date"))
                     ->required(),
                 Select::make('branch_id')
+                ->label(trans("Logistic/lang.branch.singular_label"))
                 ->label(trans("Logistic/lang.branch.singular_label"))
                 ->relationship("branch", "name")
                 ->preload()
                 ->searchable(),
                 Select::make('contact_id')
+                ->label(trans("CRM/lang.vendor.singular_label"))
                     ->relationship("contact", "name")
                     ->preload()
                     ->searchable()
                     ->required(),
                 Select::make('currency_id')
+                ->label(trans("Setting/lang.currency.singular_label"))
                 ->default(1)
                     ->relationship("currency", "name")
                     ->preload()
@@ -73,17 +90,25 @@ class PurchasePage extends Page implements HasForms
                     ->searchable()
                     ->required(),
                 TextInput::make('balance')
+                ->label(trans("lang.balance"))
                     ->disabled()
                     ->default(0),
                 TextInput::make('discount')
+                ->label(trans("lang.discount"))
                     ->required()
                     ->default(0),
                 TextInput::make('total')
+                ->label(trans("lang.total"))
                     ->disabled()
                     ->default(0),
                 TextInput::make('paid_amount')
+                ->label(trans("lang.paid_amount"))
                     ->required()
                     ->default(0),
+                Textarea::make('note')
+                ->label(trans("lang.note"))
+                ->columnSpan(2)
+                ,
 
             ])
             ->model(PurchaseInvoice::class)
@@ -101,23 +126,34 @@ class PurchasePage extends Page implements HasForms
 
     public function addToSelect($record)
     {
-        if (in_array($record['id'], $this->selected)) {
-            $key = array_search($record['id'], $this->selected);
-            unset($this->selected[$key]);
-            $this->invoiceData['total'] = collect($this->tableData)
-            ->map(function($record) {
-                return convertToCurrency(
-                    $record['currency_id'],
-                    $this->invoiceData['currency_id'],
-                    $record[$record['type'] . '_price']
-                );
-            })
-            ->sum();
+        if($this->multipleSelect){
+            if (in_array($record['id'], $this->selected)) {
+                $key = array_search($record['id'], $this->selected);
+                unset($this->selected[$key]);
+                $this->invoiceData['total'] = collect($this->tableData)
+                ->map(function($record) {
+                    return convertToCurrency(
+                        $record['currency_id'],
+                        $this->invoiceData['currency_id'],
+                        $record[$record['type'] . '_price']
+                    );
+                })
+                ->sum();
 
-            $this->refreshTable();
-            return;
+                $this->refreshTable();
+                return;
+            }
+            $this->selected[] = $record['id'];
         }
-        $this->selected[] = $record['id'];
+        else{
+            $record['currency_id'] = 1;
+            $record['type'] = 'single';
+            $record['quantity'] = 1;
+            $record['gift'] =0;
+            $record['codes'] =[];
+            $this->tableData[] = $record;
+        }
+
         $this->refreshTable();
     }
     public function removeFromTable($key)
@@ -194,8 +230,11 @@ class PurchasePage extends Page implements HasForms
     }
 
     public function addToCode(){
-        $this->tableData[$this->key]['codes'][] = $this->codes;
-        $this->codes = [];
+        if(isset($this->codes['code'])){
+            $this->codes['gift'] = $this->codes['gift'] ?? 'no';
+            $this->tableData[$this->key]['codes'][] = $this->codes;
+            $this->codes = [];
+        }
 
         $this->refreshTable();
     }
@@ -204,11 +243,6 @@ class PurchasePage extends Page implements HasForms
     private function refreshTable(){
         $this->invoiceData['total'] = collect($this->tableData)
         ->map(function($record) {
-            dump(convertToCurrency(
-                1,
-                2,
-                100
-            ));
             return convertToCurrency(
                 $record['currency_id'],
                 $this->invoiceData['currency_id'],
@@ -226,7 +260,21 @@ class PurchasePage extends Page implements HasForms
 
 
     public function submit(){
-        dd($this->invoiceData);
+
+        DB::beginTransaction();
+        try {
+            unset($this->invoiceData['total']);
+
+            $invoice = PurchaseInvoice::create($this->invoiceData);
+            dump($this->tableData);
+            $invoice->details()->createMany($this->tableData);
+            DB::commit();
+        }
+        catch(Exception $e){
+            dump($e->getMessage());
+            DB::rollBack();
+            return;
+        }
     }
     protected static string $view = 'filament.pages.p-o-s.purchase-page';
 }

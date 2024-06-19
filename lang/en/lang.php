@@ -64,4 +64,12 @@ return [
     "code" => "Code",
     "yes" => "Yes",
     "no" => "No",
+    "vendor_invoice" => "Vendor Invoice",
+    "date" => "Date",
+    "balance" => "Balance",
+    "total" => "Total",
+    "discount" => "Discount",
+    "paid_amount" => "Paid Amount",
+    "note" => "Note",
+    "invoice_number" => "Invoice Number",
 ];
