@@ -18,7 +18,6 @@ class PurchaseInvoice extends Model
     protected static function boot()
     {
         parent::boot();
-        static::addGlobalScope(new OwnerableScope(auth()->user()));
     }
     public static function InvoiceNumber() {
         $lastInvoice = self::orderBy('id', 'desc')->first();

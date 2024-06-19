@@ -19,6 +19,7 @@ class BourseResource extends Resource
     use OwnerableTrait;
     protected static ?string $model = Bourse::class;
 
+
     protected static ?string $navigationIcon = 'fluentui-building-retail-money-20';
     public static function getModelLabel(): string
     {
