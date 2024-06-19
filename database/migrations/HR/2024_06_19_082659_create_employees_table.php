@@ -27,13 +27,13 @@ return new class extends Migration
             $table->time('start_time')->nullable();
             $table->time('end_time')->nullable();
             $table->text('note')->nullable();
-            $table->decimal('annual_leave,64,2')->default(0);
-            $table->decimal('absence_amount,64,2')->default(0);
+            $table->decimal('annual_leave',64,2)->default(0);
+            $table->decimal('absence_amount',64,2)->default(0);
             $table->enum('salary_type',['monthly','weekly','daily'])->default('monthly');
-            $table->decimal('overtime_amount,64,2')->default(0);
+            $table->decimal('overtime_amount',64,2)->default(0);
             $table->foreignIdFor(\App\Models\HR\IdentityType::class)->nullable()->constrained()->nullOnDelete();
             $table->foreignIdFor(\App\Models\User::class)->constrained()->restrictOnDelete();
-            $table->foreignIdFor(\App\Models\Logistic\Branch::class)->constrained()->restrictOnDelete();
+            $table->morphs("ownerable");
             $table->foreignIdFor(\App\Models\Settings\Currency::class)->constrained()->restrictOnDelete();
             $table->timestamps();
         });
