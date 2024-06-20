@@ -23,7 +23,7 @@ use Illuminate\Support\Facades\DB;
 
 class PurchasePage extends Page implements HasForms
 {
-    use HasPageShield, InteractsWithForms, OwnerableTrait;
+    use HasPageShield, InteractsWithForms;
     protected static ?string $navigationIcon = 'iconpark-buy';
     public static function getNavigationLabel(): string
     {
