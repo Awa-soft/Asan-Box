@@ -38,4 +38,21 @@ class EmployeeActivity extends Model
         ];
     }
 
+    public function scopePunish($query){
+        return $query->where('type','punish');
+    }
+    public function scopeBonus($query){
+        return $query->where('type','bonus');
+    }
+    public function scopeAdvance($query){
+        return $query->where('type','advance');
+    }
+    public function scopeOvertime($query){
+        return $query->where('type','overtime');
+    }
+    public function scopeAbsence($query){
+        return $query->where('type','absence');
+    }
+
+    
 }
