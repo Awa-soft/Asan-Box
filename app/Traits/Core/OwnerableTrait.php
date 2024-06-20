@@ -8,7 +8,7 @@ use Filament\Forms\Components\MorphToSelect;
 
 trait OwnerableTrait
 {
- 
+
     public static function Field(){
         return   MorphToSelect::make('ownerable')
         ->label(trans("lang.ownerable"))
