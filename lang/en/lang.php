@@ -102,4 +102,6 @@ return [
     'daily'=>"Daily",
     "company_information"=>"Company Information",
     "identityType"=>"Identity",
+    'team'=>"Team",
+    'positions'=>"Positions",
 ];
