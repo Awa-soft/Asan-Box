@@ -8,12 +8,13 @@ use App\Traits\Core\Ownerable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class EmployeeNote extends Model
 {
     use HasFactory;
     use HasUser;
-    use Ownerable;
+    use Ownerable, SoftDeletes;
 
     public function employee():BelongsTo{
         return $this->belongsTo(Employee::class)->withTrashed();

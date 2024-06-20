@@ -4,24 +4,22 @@ namespace App\Models\HR;
 
 use App\Models\Logistic\Branch;
 use App\Traits\Core\HasUser;
+use App\Traits\Core\Ownerable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Team extends Model
 {
-    use HasFactory;
-    use HasUser;
+    use HasFactory, HasUser, Ownerable, SoftDeletes;
 
-    public function employee():BelongsTo{
-        return $this->belongsTo(Employee::class)->withTrashed();
-    }
-    public function branch(): BelongsTo{
-        return $this->belongsTo(Branch::class)->withTrashed();
+    public function leader():BelongsTo{
+        return $this->belongsTo(Employee::class, "employee_id")->withTrashed();
     }
 
-    public function employees(): BelongsToMany{
+    public function members(): BelongsToMany{
         return $this->belongsToMany(Employee::class,'team_employees');
     }
 }
