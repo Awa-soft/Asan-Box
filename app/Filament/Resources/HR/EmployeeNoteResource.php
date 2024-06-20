@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Filament\Resources\Inventory;
+namespace App\Filament\Resources\HR;
 
-use App\Filament\Resources\Inventory\UnitResource\Pages;
-use App\Filament\Resources\Inventory\UnitResource\RelationManagers;
-use App\Models\Inventory\Unit;
+use App\Filament\Resources\HR\EmployeeNoteResource\Pages;
+use App\Filament\Resources\HR\EmployeeNoteResource\RelationManagers;
+use App\Models\HR\EmployeeNote;
 use App\Traits\Core\OwnerableTrait;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -14,68 +14,66 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class UnitResource extends Resource
+class EmployeeNoteResource extends Resource
 {
     use OwnerableTrait;
-    protected static ?string $model = Unit::class;
+    protected static ?string $model = EmployeeNote::class;
 
-    protected static ?string $navigationIcon = 'tabler-ruler-measure';
+    protected static ?string $navigationIcon = 'tabler-notes';
     public static function getModelLabel(): string
     {
-        return trans('Inventory/lang.unit.plural_label');
+        return trans('HR/lang.employee_note.singular_label');
     }
     public static function getPluralModelLabel(): string
     {
-        return trans('Inventory/lang.unit.singular_label');
+        return trans('HR/lang.employee_note.plural_label');
     }
     public static function getNavigationGroup(): ?string
     {
-        return trans('Inventory/lang.group_label');
+        return trans('HR/lang.group_label');
     }
-    protected static ?int $navigationSort = 4;
-
-
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('name')
-                    ->label(trans('lang.name'))
+                static::Field(),
+                Forms\Components\Select::make('employee_id')
+                    ->relationship('employee', 'name')
+                    ->searchable()
+                    ->preload()
+                    ->required(),
+                Forms\Components\DatePicker::make('date')
                     ->required()
-                    ->maxLength(255),
-                Forms\Components\Toggle::make('status')
-                    ->visible(fn ($operation) => $operation == "edit")
-                    ->default(1)
-                    ->label(trans('lang.status'))
+                    ->default(now()),
+                    Forms\Components\Textarea::make('note')
                     ->required()
-                    ->visible(fn ($operation) => $operation == "edit"),
-                    static::Field(),
-            ])
-            ->columns(1);
+                    ->columnSpanFull(),
+            ]);
     }
 
     public static function table(Table $table): Table
     {
         return $table
-            ->columns([
-                static::Column(),
-                Tables\Columns\TextColumn::make('name')
-                    ->label(trans('lang.name'))
-                    ->searchable(),
-                Tables\Columns\ToggleColumn::make('status')
-                    ->label(trans('lang.status')),
+            ->columns([static::Column(),
+                Tables\Columns\TextColumn::make('employee.name')
+                    ->numeric()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('date')
+                    ->date()
+                    ->sortable(),
+
+                Tables\Columns\TextColumn::make('user.name')
+                    ->numeric()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('deleted_at')
-                    ->label(trans('lang.deleted_at'))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('created_at')
-                    ->label(trans('lang.created_at'))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('updated_at')
-                    ->label(trans('lang.updated_at'))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
@@ -84,15 +82,11 @@ class UnitResource extends Resource
                 Tables\Filters\TrashedFilter::make(),
             ])
             ->actions([
-                Tables\Actions\EditAction::make()
-->modalWidth("lg"),
-                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
-                    // Tables\Actions\ForceDeleteBulkAction::make(),
-                    // Tables\Actions\RestoreBulkAction::make(),
                 ]),
             ]);
     }
@@ -107,9 +101,9 @@ class UnitResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListUnits::route('/'),
-            // 'create' => Pages\CreateUnit::route('/create'),
-            // 'edit' => Pages\EditUnit::route('/{record}/edit'),
+            'index' => Pages\ListEmployeeNotes::route('/'),
+            // 'create' => Pages\CreateEmployeeNote::route('/create'),
+            'edit' => Pages\EditEmployeeNote::route('/{record}/edit'),
         ];
     }
 

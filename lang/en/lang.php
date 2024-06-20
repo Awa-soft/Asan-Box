@@ -57,7 +57,7 @@ return [
     "type" => "Type",
     "multiple" => "Multiple",
     "single" => "Single",
-    "ownerable" => "Ownerable",
+    "ownerable" => "Owner",
     "amount" => "Amount",
     "add_to" => "Add To :name",
     "table" => "Table",
@@ -72,4 +72,14 @@ return [
     "paid_amount" => "Paid Amount",
     "note" => "Note",
     "invoice_number" => "Invoice Number",
+    "branch" => "Branch",
+    "warehouse" => "Warehouse",
+    "employee" => "Employee",
+    "members" => "Members",
+    "leader" => "Leader",
+    "punishment" => "Punishment",
+    "bonus" => "Bonus",
+    "advance" => "Advance",
+    "absence" => "Absence",
+    "overtime" => "Overtime"
 ];

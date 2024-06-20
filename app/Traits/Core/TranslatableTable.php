@@ -13,7 +13,16 @@ trait TranslatableTable
     {
         $columns = [];
         foreach (parent::table($table)->getColumns() as $key =>$column){
-            $columns[] = $column->label(trans('lang.'.$key));
+            // split $key by .
+            $keys = explode('.', $key);
+            $column = $column->label(trans('lang.'.$keys[0]));
+            if (count($keys) > 1){
+                $column = $column->label(trans('lang.'.$keys[0]));
+            }
+            else{
+                $column = $column->label(trans('lang.'.$key));
+            }
+            $columns[] = $column;
         }
         $actions =[
             Tables\Actions\EditAction::make()

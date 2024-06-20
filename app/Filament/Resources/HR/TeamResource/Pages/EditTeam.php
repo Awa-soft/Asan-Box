@@ -1,21 +1,21 @@
 <?php
 
-namespace App\Filament\Resources\HR\EmployeeResource\Pages;
+namespace App\Filament\Resources\HR\TeamResource\Pages;
 
-use App\Filament\Resources\HR\EmployeeResource;
+use App\Filament\Resources\HR\TeamResource;
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
 
-class EditEmployee extends EditRecord
+class EditTeam extends EditRecord
 {
     use \App\Traits\Core\TranslatableForm;
-
-    protected static string $resource = EmployeeResource::class;
+    protected static string $resource = TeamResource::class;
 
     protected function getHeaderActions(): array
     {
         return [
             Actions\DeleteAction::make(),
+
         ];
     }
 }

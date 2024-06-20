@@ -9,12 +9,13 @@ use App\Traits\Core\Ownerable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class EmployeeActivity extends Model
 {
     use HasFactory;
     use HasUser;
-    use Ownerable;
+    use Ownerable, SoftDeletes;
 
 
     public function employee():BelongsTo{
@@ -29,11 +30,11 @@ class EmployeeActivity extends Model
 
     public static function getTypes():array{
         return [
-          'punish'=>trans('lang.hr.punishment'),
-          'bonus'=>trans('lang.hr.bonus'),
-          'absence'=>trans('lang.hr.absence'),
-          'advance'=>trans('lang.hr.advance'),
-          'overtime'=>trans('lang.hr.overtime'),
+          'punish'=>trans('lang.punishment'),
+          'bonus'=>trans('lang.bonus'),
+          'absence'=>trans('lang.absence'),
+          'advance'=>trans('lang.advance'),
+          'overtime'=>trans('lang.overtime'),
         ];
     }
 

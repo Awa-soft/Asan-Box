@@ -65,6 +65,7 @@ class BrandResource extends Resource
     {
         return $table
             ->columns([
+                static::Column(),
                 Tables\Columns\ImageColumn::make('logo')
                     ->circular()
                     ->size(80)

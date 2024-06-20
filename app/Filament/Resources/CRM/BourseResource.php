@@ -65,6 +65,7 @@ class BourseResource extends Resource
     {
         return $table
             ->columns([
+                static::Column(),
                 Tables\Columns\ImageColumn::make('image')
                     ->circular()
                     ->size(80)

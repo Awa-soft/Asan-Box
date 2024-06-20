@@ -5,6 +5,7 @@ namespace App\Traits\Core;
 use App\Models\Logistic\Branch;
 use App\Models\Logistic\Warehouse;
 use Filament\Forms\Components\MorphToSelect;
+use Filament\Tables\Columns\TextColumn;
 
 trait OwnerableTrait
 {
@@ -24,5 +25,12 @@ trait OwnerableTrait
         ->visible(fn()=>auth()->user()->hasRole('super_admin'))
         ->searchable()
         ->preload();
+    }
+
+    public static function Column(){
+        return TextColumn::make('ownerable.name')
+        ->label(trans("lang.ownerable"))
+        ->searchable()
+        ->visible(fn()=>auth()->user()->hasRole('super_admin'));
     }
 }
