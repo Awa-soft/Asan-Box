@@ -5,31 +5,27 @@ namespace App\Filament\Resources\HR;
 use App\Filament\Resources\HR\IdentityTypeResource\Pages;
 use App\Filament\Resources\HR\IdentityTypeResource\RelationManagers;
 use App\Models\HR\IdentityType;
+use App\Traits\Core\HasTranslatableResource;
+use App\Traits\Core\OwnerableTrait;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class IdentityTypeResource extends Resource
 {
     protected static ?string $model = IdentityType::class;
+    use OwnerableTrait;
+    use HasTranslatableResource;
 
     protected static ?string $navigationIcon = 'polaris-identity-card-icon';
-    public static function getModelLabel(): string
-    {
-        return trans('HR/lang.identity.singular_label');
-    }
-    public static function getPluralModelLabel(): string
-    {
-        return trans('HR/lang.identity.plural_label');
-    }
-    public static function getNavigationGroup(): ?string
-    {
-        return trans('HR/lang.group_label');
-    }
+
+
+
     public static function form(Form $form): Form
     {
         return $form
@@ -37,15 +33,7 @@ class IdentityTypeResource extends Resource
                 Forms\Components\TextInput::make('name')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('ownerable_type')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('ownerable_id')
-                    ->required()
-                    ->numeric(),
-                Forms\Components\Select::make('user_id')
-                    ->relationship('user', 'name')
-                    ->required(),
+                static::Field()->columnSpanFull(),
             ]);
     }
 
@@ -55,11 +43,7 @@ class IdentityTypeResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('name')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('ownerable_type')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('ownerable_id')
-                    ->numeric()
-                    ->sortable(),
+
                 Tables\Columns\TextColumn::make('user.name')
                     ->numeric()
                     ->sortable(),
@@ -80,13 +64,10 @@ class IdentityTypeResource extends Resource
                 Tables\Filters\TrashedFilter::make(),
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
-                    Tables\Actions\ForceDeleteBulkAction::make(),
-                    Tables\Actions\RestoreBulkAction::make(),
                 ]),
             ]);
     }

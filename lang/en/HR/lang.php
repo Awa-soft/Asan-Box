@@ -13,9 +13,13 @@ return [
         'plural_label'=>'Employee Notes',
         'singular_label'=>'Employee Note'
     ],
-    "identity" =>[
+    "identity_type" =>[
         'plural_label'=>'Identity types',
         'singular_label'=>'Identity type'
     ],
+    'employee'=>[
+        'plural_label'=>'Employees',
+        'singular_label'=>'Employee'
+    ]
 
 ];

@@ -8,7 +8,7 @@ use Filament\Resources\Pages\EditRecord;
 
 class EditTeam extends EditRecord
 {
-    use \App\Traits\Core\TranslatableForm;
+
     protected static string $resource = TeamResource::class;
 
     protected function getHeaderActions(): array

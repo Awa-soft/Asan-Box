@@ -5,6 +5,7 @@ namespace App\Filament\Resources\Logistic;
 use App\Filament\Resources\Logistic\WarehouseResource\Pages;
 use App\Filament\Resources\Logistic\WarehouseResource\RelationManagers;
 use App\Models\Logistic\Warehouse;
+use App\Traits\Core\HasTranslatableResource;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -16,21 +17,12 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 class WarehouseResource extends Resource
 {
     protected static ?string $model = Warehouse::class;
+    use HasTranslatableResource;
+
 
     protected static ?string $navigationIcon = 'fas-warehouse';
 
-    public static function getModelLabel(): string
-    {
-        return trans('Logistic/lang.warehouse.singular_label');
-    }
-    public static function getPluralModelLabel(): string
-    {
-        return trans('Logistic/lang.warehouse.plural_label');
-    }
-    public static function getNavigationGroup (): ?string
-    {
-        return trans('Logistic/lang.group_label');
-    }
+
 
     public static function form(Form $form): Form
     {
@@ -139,10 +131,6 @@ class WarehouseResource extends Resource
                 Tables\Filters\TrashedFilter::make(),
             ])
             ->actions([
-                Tables\Actions\EditAction::make()
-->modalWidth("lg"),
-                Tables\Actions\DeleteAction::make()
-                ->action(fn($record) => dd($record->getRelations())),
 
             ])
             ->bulkActions([

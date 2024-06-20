@@ -5,6 +5,7 @@ namespace App\Filament\Resources\Settings;
 use App\Filament\Resources\Settings\CurrencyResource\Pages;
 use App\Filament\Resources\Settings\CurrencyResource\RelationManagers;
 use App\Models\Settings\Currency;
+use App\Traits\Core\HasTranslatableResource;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -16,21 +17,12 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class CurrencyResource extends Resource
 {
+    use HasTranslatableResource;
+
     protected static ?string $model = Currency::class;
 
     protected static ?string $navigationIcon = 'far-money-bill-alt';
-    public static function getModelLabel(): string
-    {
-        return trans('Setting/lang.currency.plural_label');
-    }
-    public static function getPluralModelLabel(): string
-    {
-        return trans('Setting/lang.currency.singular_label');
-    }
-    public static function getNavigationGroup(): ?string
-    {
-        return trans('Setting/lang.group_label');
-    }
+
     public static function form(Form $form): Form
     {
         return $form
@@ -51,7 +43,7 @@ class CurrencyResource extends Resource
                     ->label(trans("lang.rate"))
                     ->required()
                     ->numeric()
-                    ->helperText(trans("Setting/lang.currency.rate_hint")),
+                    ->helperText(trans("Settings/lang.currency.rate_hint")),
 
 
             ])
@@ -105,11 +97,6 @@ class CurrencyResource extends Resource
                 // Tables\Filters\TrashedFilter::make(),
             ])
             ->actions([
-
-                Tables\Actions\EditAction::make()
-                    ->modalWidth("lg"),
-                DeleteAction::make()
-                    ->hidden(fn ($record) => $record->id == 1 || $record->id == 2),
             ])
             ->bulkActions([
                 // Tables\Actions\BulkActionGroup::make([

@@ -12,8 +12,9 @@ class PurchaseInvoiceDetail extends Model
 {
     use HasFactory;
 
+
     public function invoice() :BelongsTo{
-        return $this->belongsTo(PurchaseInvoice::class);
+        return $this->belongsTo(PurchaseInvoice::class, 'purchase_invoice_id');
     }
     public function item(): BelongsTo
     {

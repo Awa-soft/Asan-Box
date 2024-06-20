@@ -25,20 +25,21 @@ class UserResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-user';
     public static function getModelLabel(): string
     {
-        return trans('Setting/lang.user.plural_label');
+        return trans('Settings/lang.user.plural_label');
     }
     public static function getPluralModelLabel(): string
     {
-        return trans('Setting/lang.user.singular_label');
+        return trans('Settings/lang.user.singular_label');
     }
     public static function getNavigationGroup(): ?string
     {
-        return trans('Setting/lang.group_label');
+        return trans('Settings/lang.group_label');
     }
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
+                static::Field(),
                 Forms\Components\TextInput::make('name')
                     ->required()
                     ->maxLength(255),
@@ -62,7 +63,7 @@ class UserResource extends Resource
                     ->multiple()
                     ->preload()
                     ->searchable(),
-                    static::Field(),
+
 
             ])
             ->columns(2);
@@ -98,9 +99,7 @@ class UserResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make()
-->modalWidth("lg"),
-                Tables\Actions\DeleteAction::make(),
+
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

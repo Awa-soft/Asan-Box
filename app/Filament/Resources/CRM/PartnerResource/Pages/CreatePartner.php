@@ -9,5 +9,6 @@ use Filament\Resources\Pages\CreateRecord;
 class CreatePartner extends CreateRecord
 {
     use \App\Traits\Core\TranslatableForm;
+
     protected static string $resource = PartnerResource::class;
 }

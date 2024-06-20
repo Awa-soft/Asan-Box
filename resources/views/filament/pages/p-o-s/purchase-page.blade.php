@@ -57,7 +57,7 @@
                             <td class="py-3 border-b border-e dark:border-gray-600">
                                 {{ trans('Inventory/lang.item.singular_label') }}</td>
                             <td class="py-3 border-b border-e dark:border-gray-600">
-                                {{ trans('Setting/lang.currency.singular_label') }}</td>
+                                {{ trans('Settings/lang.currency.singular_label') }}</td>
                             <td class="py-3 border-b border-e dark:border-gray-600">{{ trans('lang.quantity') }}</td>
                             <td class="py-3 border-b border-e dark:border-gray-600">{{ trans('lang.gift') }}</td>
                             <td class="py-3 border-b border-e dark:border-gray-600">{{ trans('lang.price') }}</td>

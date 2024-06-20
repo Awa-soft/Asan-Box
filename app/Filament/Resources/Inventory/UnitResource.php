@@ -5,6 +5,7 @@ namespace App\Filament\Resources\Inventory;
 use App\Filament\Resources\Inventory\UnitResource\Pages;
 use App\Filament\Resources\Inventory\UnitResource\RelationManagers;
 use App\Models\Inventory\Unit;
+use App\Traits\Core\HasTranslatableResource;
 use App\Traits\Core\OwnerableTrait;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -17,21 +18,12 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 class UnitResource extends Resource
 {
     use OwnerableTrait;
+    use HasTranslatableResource;
+
     protected static ?string $model = Unit::class;
 
     protected static ?string $navigationIcon = 'tabler-ruler-measure';
-    public static function getModelLabel(): string
-    {
-        return trans('Inventory/lang.unit.plural_label');
-    }
-    public static function getPluralModelLabel(): string
-    {
-        return trans('Inventory/lang.unit.singular_label');
-    }
-    public static function getNavigationGroup(): ?string
-    {
-        return trans('Inventory/lang.group_label');
-    }
+
     protected static ?int $navigationSort = 4;
 
 
@@ -84,9 +76,7 @@ class UnitResource extends Resource
                 Tables\Filters\TrashedFilter::make(),
             ])
             ->actions([
-                Tables\Actions\EditAction::make()
-->modalWidth("lg"),
-                Tables\Actions\DeleteAction::make(),
+
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

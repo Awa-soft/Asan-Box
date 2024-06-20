@@ -5,6 +5,7 @@ namespace App\Filament\Resources\Inventory;
 use App\Filament\Resources\Inventory\ItemResource\Pages;
 use App\Filament\Resources\Inventory\ItemResource\RelationManagers;
 use App\Models\Inventory\Item;
+use App\Traits\Core\HasTranslatableResource;
 use App\Traits\Core\OwnerableTrait;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -18,21 +19,12 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 class ItemResource extends Resource
 {
     use OwnerableTrait;
+    use HasTranslatableResource;
+
     protected static ?string $model = Item::class;
 
     protected static ?string $navigationIcon = 'heroicon-s-cube';
-    public static function getModelLabel(): string
-    {
-        return trans('Inventory/lang.item.plural_label');
-    }
-    public static function getPluralModelLabel(): string
-    {
-        return trans('Inventory/lang.item.singular_label');
-    }
-    public static function getNavigationGroup(): ?string
-    {
-        return trans('Inventory/lang.group_label');
-    }
+
     protected static ?int $navigationSort = 1;
 
 
@@ -126,6 +118,13 @@ class ItemResource extends Resource
                 Tables\Columns\TextColumn::make('description')
                     ->label(trans("lang.description"))
                     ->searchable(),
+                Tables\Columns\TextColumn::make('cost')
+                    ->label(trans("lang.cost"))
+                    ->searchable()
+                    ->numeric(getBaseCurrency()->decimal)
+                    ->suffix(
+                        " ".getBaseCurrency()->symbol
+                    ),
                 Tables\Columns\TextColumn::make('barcode')
                     ->label(trans("lang.barcode"))
                     ->searchable()
@@ -138,7 +137,6 @@ class ItemResource extends Resource
                     ->numeric()
                     ->label(trans("lang.brand"))
                     ->sortable(),
-
                 ViewColumn::make('price')->view('tables.columns.price-column')
                     ->state(function ($record) {
                         return $record;
@@ -150,6 +148,7 @@ class ItemResource extends Resource
                     ->suffix(fn ($record) => " " . $record->singleUnit->name)
                     ->description(fn ($record) => $record->multiUnit->name)
                     ->numeric()
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->sortable(),
                 Tables\Columns\TextColumn::make('benifit_ratio')
                     ->numeric()
@@ -182,10 +181,7 @@ class ItemResource extends Resource
                 Tables\Filters\TrashedFilter::make(),
             ])
             ->actions([
-                Tables\Actions\ReplicateAction::make(),
-                Tables\Actions\EditAction::make()
-                    ->modalWidth("lg"),
-                Tables\Actions\DeleteAction::make(),
+
 
             ])
             ->bulkActions([

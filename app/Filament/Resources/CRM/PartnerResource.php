@@ -5,6 +5,7 @@ namespace App\Filament\Resources\CRM;
 use App\Filament\Resources\CRM\PartnerResource\Pages;
 use App\Filament\Resources\CRM\PartnerResource\RelationManagers;
 use App\Models\CRM\Partner;
+use App\Traits\Core\HasTranslatableResource;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -15,21 +16,11 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class PartnerResource extends Resource
 {
+    use HasTranslatableResource;
+
     protected static ?string $model = Partner::class;
 
     protected static ?string $navigationIcon = 'carbon-partnership';
-    public static function getModelLabel(): string
-    {
-        return trans('CRM/lang.partner.plural_label');
-    }
-    public static function getPluralModelLabel(): string
-    {
-        return trans('CRM/lang.partner.singular_label');
-    }
-    public static function getNavigationGroup(): ?string
-    {
-        return trans('CRM/lang.group_label');
-    }
     protected static ?int $navigationSort = 6;
 
     public static function form(Form $form): Form
@@ -90,9 +81,7 @@ class PartnerResource extends Resource
                 Tables\Filters\TrashedFilter::make(),
             ])
             ->actions([
-                Tables\Actions\EditAction::make()
-->modalWidth("lg"),
-                Tables\Actions\DeleteAction::make(),
+
 
             ])
             ->bulkActions([

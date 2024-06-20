@@ -5,6 +5,7 @@ namespace App\Providers;
 use App\Models\CRM\Bourse;
 use App\Models\CRM\Contact;
 use App\Models\CRM\Partner;
+use App\Models\HR\IdentityType;
 use App\Models\Inventory\Brand;
 use App\Models\Inventory\Category;
 use App\Models\Inventory\Item;
@@ -17,6 +18,7 @@ use App\Models\User;
 use App\Policies\CRM\BoursePolicy;
 use App\Policies\CRM\ContactPolicy;
 use App\Policies\CRM\PartnerPolicy;
+use App\Policies\HR\IdentityTypePolicy;
 use App\Policies\Inventory\BrandPolicy;
 use App\Policies\Inventory\CategoryPolicy;
 use App\Policies\Inventory\ItemPolicy;
@@ -45,6 +47,7 @@ class AuthServiceProvider extends ProvidersAuthServiceProvider
         Branch::class => BranchPolicy::class,
         Brand::class => BrandPolicy::class,
         Category::class => CategoryPolicy::class,
-        
+         IdentityType::class=>IdentityTypePolicy::class
+
      ];
 }

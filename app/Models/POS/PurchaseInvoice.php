@@ -5,6 +5,7 @@ namespace App\Models\POS;
 use App\Models\CRM\Contact;
 use App\Models\Logistic\Branch;
 use App\Models\Settings\Currency;
+use App\Traits\Core\HasCurrency;
 use App\Traits\Core\HasUser;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -14,7 +15,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class PurchaseInvoice extends Model
 {
-    use HasFactory, SoftDeletes, HasUser;
+    use HasFactory, SoftDeletes, HasUser, HasCurrency;
 
 
     public static function InvoiceNumber() {
@@ -37,9 +38,7 @@ class PurchaseInvoice extends Model
     public function contact() :BelongsTo{
         return $this->belongsTo(Contact::class);
     }
-    public function currency() :BelongsTo{
-        return $this->belongsTo(Currency::class);
-    }
+
     public function details() :HasMany{
         return $this->hasMany(PurchaseInvoiceDetail::class);
     }
