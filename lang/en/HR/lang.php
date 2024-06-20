@@ -21,6 +21,7 @@ return [
         'plural_label'=>'Employees',
         'singular_label'=>'Employee'
     ],
+
     "position"=>[
         "plural_label"=>"Positions",
         "singular_label"=>"Position"

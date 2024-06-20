@@ -4,6 +4,7 @@ namespace App\Filament\Resources\HR;
 
 use App\Filament\Resources\HR\PositionResource\Pages;
 use App\Filament\Resources\HR\PositionResource\RelationManagers;
+use App\Filament\Resources\HR\PositionResource\RelationManagers\EmployeesRelationManager;
 use App\Models\HR\Position;
 use App\Traits\Core\OwnerableTrait;
 use Filament\Forms;
@@ -103,7 +104,7 @@ class PositionResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            EmployeesRelationManager::class
         ];
     }
 

@@ -4,6 +4,8 @@ namespace App\Filament\Resources\HR;
 
 use App\Filament\Resources\HR\EmployeeResource\Pages;
 use App\Filament\Resources\HR\EmployeeResource\RelationManagers;
+use App\Filament\Resources\HR\EmployeeResource\RelationManagers\ActivitiesRelationManager;
+use App\Filament\Resources\HR\EmployeeResource\RelationManagers\NotesRelationManager;
 use App\Models\HR\Employee;
 use App\Models\Settings\Currency;
 use App\Traits\Core\HasCreateAnother;
@@ -21,11 +23,11 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 class EmployeeResource extends Resource
 {
     use OwnerableTrait;
-    use HasCountries,HasCreateAnother;
+    use HasCountries, HasCreateAnother;
     use HasTranslatableResource;
     protected static ?string $model = Employee::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'clarity-employee-group-line';
 
     public static function form(Form $form): Form
     {
@@ -33,42 +35,42 @@ class EmployeeResource extends Resource
             ->schema([
                 Forms\Components\Section::make(trans('lang.personal_information'))
                     ->columnSpan(1)
-                ->schema([
-                    Forms\Components\TextInput::make('name')
-                        ->required()
-                        ->maxLength(255),
-                    Forms\Components\TextInput::make('email')
-                        ->email()
-                        ->unique(ignoreRecord: true)
-                        ->maxLength(255)
-                        ->default(null),
-                    Forms\Components\TextInput::make('phone')
-                        ->tel()
-                        ->unique(ignoreRecord: true)
-                        ->required()
-                        ->maxLength(255),
-                    Forms\Components\Select::make('nationality')
-                        ->options(static::getCountries())
-                        ->searchable()
-                        ->preload()
-                        ->optionsLimit(100)
-                        ->default(null),
-                    Forms\Components\TextInput::make('address')
-                        ->maxLength(255)
-                        ->default(null),
-                    Forms\Components\Select::make('gender')
-                        ->required()
-                        ->options(static::$model::getGenders())
-                        ->searchable()
-                        ->preload()
-                        ->default('male'),
-                    static::selectField('identity_type_id',IdentityTypeResource::class)
-                        ->relationship('identityType', 'name'),
-                    Forms\Components\TextInput::make('identity_number')
-                        ->maxLength(255)
-                        ->default(null),
+                    ->schema([
+                        Forms\Components\TextInput::make('name')
+                            ->required()
+                            ->maxLength(255),
+                        Forms\Components\TextInput::make('email')
+                            ->email()
+                            ->unique(ignoreRecord: true)
+                            ->maxLength(255)
+                            ->default(null),
+                        Forms\Components\TextInput::make('phone')
+                            ->tel()
+                            ->unique(ignoreRecord: true)
+                            ->required()
+                            ->maxLength(255),
+                        Forms\Components\Select::make('nationality')
+                            ->options(static::getCountries())
+                            ->searchable()
+                            ->preload()
+                            ->optionsLimit(100)
+                            ->default(null),
+                        Forms\Components\TextInput::make('address')
+                            ->maxLength(255)
+                            ->default(null),
+                        Forms\Components\Select::make('gender')
+                            ->required()
+                            ->options(static::$model::getGenders())
+                            ->searchable()
+                            ->preload()
+                            ->default('male'),
+                        static::selectField('identity_type_id', IdentityTypeResource::class)
+                            ->relationship('identityType', 'name'),
+                        Forms\Components\TextInput::make('identity_number')
+                            ->maxLength(255)
+                            ->default(null),
 
-                ])->columns(1),
+                    ])->columns(1),
                 Forms\Components\Section::make(trans('lang.company_information'))
                     ->columnSpan(1)
                     ->columns(2)
@@ -92,16 +94,16 @@ class EmployeeResource extends Resource
                             ->options(static::$model::getSalaryTypes())->searchable()
                             ->default('monthly'),
                         Forms\Components\TextInput::make('salary')
-                            ->suffix(fn(Forms\Get $get)=>getCurrencySymbol($get('currency_id')))
+                            ->suffix(fn (Forms\Get $get) => getCurrencySymbol($get('currency_id')))
                             ->required()
                             ->numeric(),
                         Forms\Components\TextInput::make('absence_amount')
-                            ->suffix(fn(Forms\Get $get)=>getCurrencySymbol($get('currency_id')))
+                            ->suffix(fn (Forms\Get $get) => getCurrencySymbol($get('currency_id')))
                             ->required()
                             ->numeric()
                             ->default(0.00),
                         Forms\Components\TextInput::make('overtime_amount')
-                            ->suffix(fn(Forms\Get $get)=>getCurrencySymbol($get('currency_id')))
+                            ->suffix(fn (Forms\Get $get) => getCurrencySymbol($get('currency_id')))
                             ->required()
                             ->numeric()
                             ->default(0.00),
@@ -152,7 +154,7 @@ class EmployeeResource extends Resource
                         ->sortable(),
 
                 Tables\Columns\TextColumn::make('salary')
-                    ->suffix(fn($record)=>getCurrencySymbol($record->currency_id))
+                    ->suffix(fn ($record) => getCurrencySymbol($record->currency_id))
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('hire_date')
@@ -172,15 +174,15 @@ class EmployeeResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true)
                     ->sortable(),
                 Tables\Columns\TextColumn::make('absence_amount')
-                    ->suffix(fn($record)=>getCurrencySymbol($record->currency_id))
+                    ->suffix(fn ($record) => getCurrencySymbol($record->currency_id))
                     ->numeric()
                     ->toggleable(isToggledHiddenByDefault: true)
                     ->sortable(),
                 Tables\Columns\TextColumn::make('salary_type')
-                    ->formatStateUsing(fn($state)=>static::$model::getSalaryTypes()[$state])
+                    ->formatStateUsing(fn ($state) => static::$model::getSalaryTypes()[$state])
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('overtime_amount')
-                    ->suffix(fn($record)=>getCurrencySymbol($record->currency_id))
+                    ->suffix(fn ($record) => getCurrencySymbol($record->currency_id))
                     ->numeric()
                     ->toggleable(isToggledHiddenByDefault: true)
                     ->sortable(),
@@ -188,6 +190,10 @@ class EmployeeResource extends Resource
                     ->numeric()
                     ->toggleable(isToggledHiddenByDefault: true)
                     ->sortable(),
+                Tables\Columns\TextColumn::make('deleted_at')
+                    ->dateTime()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -215,7 +221,8 @@ class EmployeeResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            ActivitiesRelationManager::class,
+            NotesRelationManager::class
         ];
     }
 
