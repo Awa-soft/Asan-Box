@@ -121,27 +121,32 @@ class EmployeeResource extends Resource
     {
         return $table
             ->columns([
-                static::Column(),
-                Tables\Columns\TextColumn::make('name')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('email')
-                    ->copyable()
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('phone')
-                    ->copyable()
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('nationality')
-                    ->formatStateUsing(fn ($state) => static::getCountries()[$state])
-                    ->description(fn ($record) => $record->address)
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('gender')
-                    ->formatStateUsing(fn ($state) => static::$model::getGenders()[$state])
+                Tables\Columns\TextColumn::make('deleted_at')
+                    ->dateTime()
+                    ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('identityType.name')
-                    ->description(fn ($record) => $record->identity_number)
-                    ->numeric()
-                    ->toggleable(isToggledHiddenByDefault: true)
-                    ->sortable(),
+
+                    Tables\Columns\TextColumn::make('name')
+                        ->searchable(),
+                    Tables\Columns\TextColumn::make('email')
+                        ->copyable()
+                        ->searchable(),
+                    Tables\Columns\TextColumn::make('phone')
+                        ->copyable()
+                        ->searchable(),
+                    Tables\Columns\TextColumn::make('nationality')
+                        ->formatStateUsing(fn($state)=>static::getCountries()[$state])
+                        ->description(fn($record)=>$record->address)
+                        ->searchable(),
+                    Tables\Columns\TextColumn::make('gender')
+                        ->formatStateUsing(fn($state)=>static::$model::getGenders()[$state])
+                        ->toggleable(isToggledHiddenByDefault: true),
+                    Tables\Columns\TextColumn::make('identityType.name')
+                        ->description(fn($record)=>$record->identity_number)
+                        ->numeric()
+                        ->toggleable(isToggledHiddenByDefault: true)
+                        ->sortable(),
+
                 Tables\Columns\TextColumn::make('salary')
                     ->suffix(fn ($record) => getCurrencySymbol($record->currency_id))
                     ->numeric()
