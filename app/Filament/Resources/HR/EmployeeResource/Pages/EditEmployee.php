@@ -3,21 +3,18 @@
 namespace App\Filament\Resources\HR\EmployeeResource\Pages;
 
 use App\Filament\Resources\HR\EmployeeResource;
-use App\Traits\Core\TranslatableForm;
+use App\Traits\Core\TranslatableTable;
 use Filament\Actions;
-use Filament\Resources\Pages\EditRecord;
+use Filament\Resources\Pages\ListRecords;
 
-class EditEmployee extends EditRecord
+class ListEmployees extends ListRecords
 {
     protected static string $resource = EmployeeResource::class;
-    use TranslatableForm;
-
+    use TranslatableTable;
     protected function getHeaderActions(): array
     {
         return [
-            Actions\DeleteAction::make(),
-//            Actions\ForceDeleteAction::make(),
-//            Actions\RestoreAction::make(),
+            Actions\CreateAction::make(),
         ];
     }
 }

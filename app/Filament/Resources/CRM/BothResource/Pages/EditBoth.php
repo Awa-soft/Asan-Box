@@ -8,8 +8,7 @@ use Filament\Resources\Pages\EditRecord;
 
 class EditBoth extends EditRecord
 {
-    use \App\Traits\Core\TranslatableForm;
-    protected static string $resource = BothResource::class;
+   protected static string $resource = BothResource::class;
 
     protected function getHeaderActions(): array
     {

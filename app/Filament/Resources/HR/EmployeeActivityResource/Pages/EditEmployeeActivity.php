@@ -8,7 +8,7 @@ use Filament\Resources\Pages\EditRecord;
 
 class EditEmployeeActivity extends EditRecord
 {
-    protected static string $resource = EmployeeActivityResource::class;
+   protected static string $resource = EmployeeActivityResource::class;
 
     protected function getHeaderActions(): array
     {

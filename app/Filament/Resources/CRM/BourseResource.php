@@ -45,7 +45,7 @@ class BourseResource extends Resource
                 Forms\Components\FileUpload::make('image')
                     ->label(trans("lang.image"))
                     ->directory("bourses/image"),
-                    static::Field(),
+                static::Field(),
 
             ]);
     }
@@ -103,9 +103,6 @@ class BourseResource extends Resource
                 Tables\Filters\TrashedFilter::make(),
             ])
             ->actions([
-                Tables\Actions\EditAction::make()
-->modalWidth("lg"),
-                Tables\Actions\DeleteAction::make(),
 
             ])
             ->bulkActions([
