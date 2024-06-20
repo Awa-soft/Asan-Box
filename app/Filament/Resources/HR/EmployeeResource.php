@@ -123,28 +123,19 @@ class EmployeeResource extends Resource
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('name')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('email')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('phone')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('address')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('identity_number')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('nationality')
 
-                    Tables\Columns\TextColumn::make('name')
-                        ->searchable(),
-                    Tables\Columns\TextColumn::make('email')
-                        ->copyable()
-                        ->searchable(),
-                    Tables\Columns\TextColumn::make('phone')
-                        ->copyable()
-                        ->searchable(),
-                    Tables\Columns\TextColumn::make('nationality')
-                        ->formatStateUsing(fn($state)=>static::getCountries()[$state])
-                        ->description(fn($record)=>$record->address)
-                        ->searchable(),
-                    Tables\Columns\TextColumn::make('gender')
-                        ->formatStateUsing(fn($state)=>static::$model::getGenders()[$state])
-                        ->toggleable(isToggledHiddenByDefault: true),
-                    Tables\Columns\TextColumn::make('identityType.name')
-                        ->description(fn($record)=>$record->identity_number)
-                        ->numeric()
-                        ->toggleable(isToggledHiddenByDefault: true)
-                        ->sortable(),
-
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('salary')
                     ->suffix(fn($record)=>getCurrencySymbol($record->currency_id))
                     ->numeric()
@@ -181,7 +172,14 @@ class EmployeeResource extends Resource
 
                 Tables\Columns\TextColumn::make('user.name')
                     ->numeric()
-                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('ownerable_type')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('ownerable_id')
+                    ->numeric()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('currency.name')
+                    ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()

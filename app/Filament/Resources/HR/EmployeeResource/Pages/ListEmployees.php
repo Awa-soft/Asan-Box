@@ -9,8 +9,9 @@ use Filament\Resources\Pages\ListRecords;
 
 class ListEmployees extends ListRecords
 {
-    protected static string $resource = EmployeeResource::class;
-    use TranslatableTable;
+        use \App\Traits\Core\TranslatableForm, \App\Traits\Core\TranslatableTable;
+protected static string $resource = EmployeeResource::class;
+
     protected function getHeaderActions(): array
     {
         return [

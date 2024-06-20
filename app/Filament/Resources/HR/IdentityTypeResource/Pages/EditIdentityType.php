@@ -8,7 +8,7 @@ use Filament\Resources\Pages\EditRecord;
 
 class EditIdentityType extends EditRecord
 {
-    protected static string $resource = IdentityTypeResource::class;
+   protected static string $resource = IdentityTypeResource::class;
 
     protected function getHeaderActions(): array
     {
