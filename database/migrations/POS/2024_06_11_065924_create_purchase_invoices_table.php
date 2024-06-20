@@ -24,6 +24,7 @@ return new class extends Migration
             $table->decimal("paid_amount",64, 2)->default(0);
             $table->foreignIdFor(Contact::class)->constrained()->restrictOnDelete();
             $table->foreignIdFor(Currency::class)->constrained()->restrictOnDelete();
+            $table->decimal("rate", 64, 2);
             $table->decimal("balance", 64, 2)->default(0);
             $table->decimal("discount", 64, 2)->default(0);
             $table->foreignIdFor(User::class)->constrained()->restrictOnDelete();

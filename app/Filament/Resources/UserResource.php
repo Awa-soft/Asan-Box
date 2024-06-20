@@ -39,6 +39,7 @@ class UserResource extends Resource
     {
         return $form
             ->schema([
+                static::Field(),
                 Forms\Components\TextInput::make('name')
                     ->required()
                     ->maxLength(255),
@@ -62,7 +63,7 @@ class UserResource extends Resource
                     ->multiple()
                     ->preload()
                     ->searchable(),
-                    static::Field(),
+
 
             ])
             ->columns(2);
@@ -98,9 +99,7 @@ class UserResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make()
-->modalWidth("lg"),
-                Tables\Actions\DeleteAction::make(),
+
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
