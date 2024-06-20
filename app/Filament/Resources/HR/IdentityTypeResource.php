@@ -5,6 +5,7 @@ namespace App\Filament\Resources\HR;
 use App\Filament\Resources\HR\IdentityTypeResource\Pages;
 use App\Filament\Resources\HR\IdentityTypeResource\RelationManagers;
 use App\Models\HR\IdentityType;
+use App\Traits\Core\HasTranslatableResource;
 use App\Traits\Core\OwnerableTrait;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -19,23 +20,12 @@ class IdentityTypeResource extends Resource
 {
     protected static ?string $model = IdentityType::class;
     use OwnerableTrait;
+    use HasTranslatableResource;
 
     protected static ?string $navigationIcon = 'polaris-identity-card-icon';
 
 
 
-    public static function getModelLabel(): string
-    {
-        return trans('HR/lang.identity.singular_label');
-    }
-    public static function getPluralModelLabel(): string
-    {
-        return trans('HR/lang.identity.plural_label');
-    }
-    public static function getNavigationGroup(): ?string
-    {
-        return trans('HR/lang.group_label');
-    }
     public static function form(Form $form): Form
     {
         return $form

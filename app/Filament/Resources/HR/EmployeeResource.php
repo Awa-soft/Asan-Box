@@ -7,6 +7,7 @@ use App\Filament\Resources\HR\EmployeeResource\RelationManagers;
 use App\Models\HR\Employee;
 use App\Models\Settings\Currency;
 use App\Traits\Core\HasCreateAnother;
+use App\Traits\Core\HasTranslatableResource;
 use App\Traits\Core\OwnerableTrait;
 use App\Traits\HR\HasCountries;
 use Filament\Forms;
@@ -21,6 +22,7 @@ class EmployeeResource extends Resource
 {
     use OwnerableTrait;
     use HasCountries,HasCreateAnother;
+    use HasTranslatableResource;
     protected static ?string $model = Employee::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
@@ -121,54 +123,65 @@ class EmployeeResource extends Resource
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('name')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('email')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('phone')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('address')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('identity_number')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('nationality')
-                    
-                    ->searchable(),
+
+                    Tables\Columns\TextColumn::make('name')
+                        ->searchable(),
+                    Tables\Columns\TextColumn::make('email')
+                        ->copyable()
+                        ->searchable(),
+                    Tables\Columns\TextColumn::make('phone')
+                        ->copyable()
+                        ->searchable(),
+                    Tables\Columns\TextColumn::make('nationality')
+                        ->formatStateUsing(fn($state)=>static::getCountries()[$state])
+                        ->description(fn($record)=>$record->address)
+                        ->searchable(),
+                    Tables\Columns\TextColumn::make('gender')
+                        ->formatStateUsing(fn($state)=>static::$model::getGenders()[$state])
+                        ->toggleable(isToggledHiddenByDefault: true),
+                    Tables\Columns\TextColumn::make('identityType.name')
+                        ->description(fn($record)=>$record->identity_number)
+                        ->numeric()
+                        ->toggleable(isToggledHiddenByDefault: true)
+                        ->sortable(),
+
                 Tables\Columns\TextColumn::make('salary')
+                    ->suffix(fn($record)=>getCurrencySymbol($record->currency_id))
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('hire_date')
                     ->date()
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->sortable(),
                 Tables\Columns\TextColumn::make('termination_date')
                     ->date()
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->sortable(),
-                Tables\Columns\TextColumn::make('gender'),
-                Tables\Columns\TextColumn::make('start_time'),
-                Tables\Columns\TextColumn::make('end_time'),
+                Tables\Columns\TextColumn::make('start_time')
+                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('end_time')
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('annual_leave')
                     ->numeric()
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->sortable(),
                 Tables\Columns\TextColumn::make('absence_amount')
+                    ->suffix(fn($record)=>getCurrencySymbol($record->currency_id))
                     ->numeric()
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->sortable(),
-                Tables\Columns\TextColumn::make('salary_type'),
+                Tables\Columns\TextColumn::make('salary_type')
+                    ->formatStateUsing(fn($state)=>static::$model::getSalaryTypes()[$state])
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('overtime_amount')
+                    ->suffix(fn($record)=>getCurrencySymbol($record->currency_id))
                     ->numeric()
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->sortable(),
-                Tables\Columns\TextColumn::make('identityType.name')
-                    ->numeric()
-                    ->sortable(),
+
                 Tables\Columns\TextColumn::make('user.name')
                     ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('ownerable_type')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('ownerable_id')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('currency.name')
-                    ->numeric()
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()

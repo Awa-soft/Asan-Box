@@ -101,4 +101,5 @@ return [
     'weekly'=>"Weekly",
     'daily'=>"Daily",
     "company_information"=>"Company Information",
+    "identityType"=>"Identity",
 ];
