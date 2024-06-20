@@ -76,6 +76,7 @@ class CustomerResource extends Resource
     {
         return $table
             ->columns([
+                static::Column(),
                 Tables\Columns\ImageColumn::make('image')
                     ->circular()
                     ->label(trans("lang.image"))

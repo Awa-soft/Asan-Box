@@ -76,6 +76,7 @@ class BothResource extends Resource
     {
         return $table
             ->columns([
+                static::Column(),
                 Tables\Columns\TextColumn::make('name')
                     ->label(trans("lang.name"))
                     ->searchable(),

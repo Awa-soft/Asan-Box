@@ -6,12 +6,13 @@ use App\Traits\Core\HasUser;
 use App\Traits\Core\Ownerable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class IdentityType extends Model
 {
     use HasFactory;
     use HasUser;
-    use Ownerable;
+    use Ownerable, SoftDeletes;
 
 
 }

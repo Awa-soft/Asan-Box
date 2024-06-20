@@ -2,12 +2,11 @@
 
 namespace App\Filament\Resources\HR;
 
-use App\Filament\Resources\HR\TeamResource\Pages;
-use App\Filament\Resources\HR\TeamResource\RelationManagers;
-use App\Models\HR\Team;
+use App\Filament\Resources\HR\EmployeeActivityResource\Pages;
+use App\Filament\Resources\HR\EmployeeActivityResource\RelationManagers;
+use App\Models\HR\EmployeeActivity;
 use App\Traits\Core\OwnerableTrait;
 use Filament\Forms;
-use Filament\Forms\Components\Select;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -15,24 +14,23 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class TeamResource extends Resource
+class EmployeeActivityResource extends Resource
 {
     use OwnerableTrait;
-    protected static ?string $model = Team::class;
-
-    protected static ?string $navigationIcon = 'lineawesome-teamspeak';
+    protected static ?string $model = EmployeeActivity::class;
     public static function getModelLabel(): string
     {
-        return trans('HR/lang.team.singular_label');
+        return trans('HR/lang.employee_activity.singular_label');
     }
     public static function getPluralModelLabel(): string
     {
-        return trans('HR/lang.team.plural_label');
+        return trans('HR/lang.employee_activity.plural_label');
     }
     public static function getNavigationGroup(): ?string
     {
         return trans('HR/lang.group_label');
     }
+    protected static ?string $navigationIcon = 'carbon-user-activity';
 
     public static function form(Form $form): Form
     {
@@ -40,19 +38,29 @@ class TeamResource extends Resource
             ->schema([
                 static::Field()
                 ->columns(2),
-                Forms\Components\TextInput::make('name')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\Select::make('leader_id')
-                    ->required()
-                    ->relationship("leader", "name")
-                    ->preload()
-                    ->searchable(),
-                Select::make("members")
-                    ->relationship("members", "name")
-                    ->preload()
+                Forms\Components\Select::make('employee_id')
+                    ->relationship('employee', 'name')
                     ->searchable()
-                    ->multiple()
+                    ->preload()
+                    ->required(),
+                Forms\Components\Select::make('type')
+                    ->native(0)
+                    ->required()
+                    ->options(EmployeeActivity::getTypes())
+                    ->required(),
+                Forms\Components\Select::make('currency_id')
+                    ->relationship('currency', 'name')
+                    ->searchable()
+                    ->preload()
+                    ->required(),
+                Forms\Components\TextInput::make('amount')
+                    ->required()
+                    ->numeric(),
+                Forms\Components\DatePicker::make('date')
+                    ->required(),
+                Forms\Components\Textarea::make('note')
+                    ->columnSpanFull(),
+
             ]);
     }
 
@@ -61,12 +69,22 @@ class TeamResource extends Resource
         return $table
             ->columns([
                 static::Column(),
-                Tables\Columns\TextColumn::make('name')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('employee_id')
+                Tables\Columns\TextColumn::make('employee.name')
                     ->numeric()
                     ->sortable(),
-
+                Tables\Columns\TextColumn::make('type'),
+                Tables\Columns\TextColumn::make('amount')
+                    ->numeric()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('date')
+                    ->date()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('currency.name')
+                    ->numeric()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('user.name')
+                    ->numeric()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('deleted_at')
                     ->dateTime()
                     ->sortable()
@@ -83,7 +101,9 @@ class TeamResource extends Resource
             ->filters([
                 Tables\Filters\TrashedFilter::make(),
             ])
-            ->actions([])
+            ->actions([
+                Tables\Actions\EditAction::make(),
+            ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
@@ -101,9 +121,9 @@ class TeamResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListTeams::route('/'),
-            // 'create' => Pages\CreateTeam::route('/create'),
-            'edit' => Pages\EditTeam::route('/{record}/edit'),
+            'index' => Pages\ListEmployeeActivities::route('/'),
+            // 'create' => Pages\CreateEmployeeActivity::route('/create'),
+            'edit' => Pages\EditEmployeeActivity::route('/{record}/edit'),
         ];
     }
 

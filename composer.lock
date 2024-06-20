@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b0767cfc0724f75bacdc9df090d06d7e",
+    "content-hash": "2e615eb608e82d8f7517eba1e4022b51",
     "packages": [
         {
             "name": "andreiio/blade-remix-icon",
@@ -1734,6 +1734,68 @@
                 "source": "https://github.com/dutchcodingcompany/filament-developer-logins"
             },
             "time": "2024-06-19T08:58:06+00:00"
+        },
+        {
+            "name": "eduard9969/blade-polaris-icons",
+            "version": "2.6.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Eduard9969/blade-polaris-icons.git",
+                "reference": "e255fcf5f7cc4c8ed51c91c48b24b9fbf8251e9f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Eduard9969/blade-polaris-icons/zipball/e255fcf5f7cc4c8ed51c91c48b24b9fbf8251e9f",
+                "reference": "e255fcf5f7cc4c8ed51c91c48b24b9fbf8251e9f",
+                "shasum": ""
+            },
+            "require": {
+                "blade-ui-kit/blade-icons": "^1.1",
+                "illuminate/support": "^8.0|^9.0|^10.0|^11.0",
+                "php": "^7.4|^8.0|^8.1|^8.2|^8.3"
+            },
+            "require-dev": {
+                "codeat3/blade-icon-generation-helpers": "^0.8",
+                "codeat3/phpcs-styles": "^1.0",
+                "orchestra/testbench": "^6.0|^7.0|^8.0|^9.0",
+                "phpunit/phpunit": "^9.0|^10.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Eduard9969\\BladePolarisIcons\\BladePolarisIconsServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Eduard9969\\BladePolarisIcons\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Eduard Samoilenko",
+                    "homepage": "https://readytest.tk/"
+                }
+            ],
+            "description": "A package to easily make use of Polaris Icons in your Laravel Blade views.",
+            "homepage": "https://github.com/Eduard9969/blade-polaris-icons",
+            "keywords": [
+                "blade",
+                "laravel",
+                "polaris",
+                "shopify"
+            ],
+            "support": {
+                "issues": "https://github.com/Eduard9969/blade-polaris-icons/issues",
+                "source": "https://github.com/Eduard9969/blade-polaris-icons/tree/2.6.1"
+            },
+            "time": "2024-06-03T12:41:01+00:00"
         },
         {
             "name": "egulias/email-validator",
