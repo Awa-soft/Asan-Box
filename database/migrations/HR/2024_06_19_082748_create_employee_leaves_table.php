@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('employee_leavs', function (Blueprint $table) {
+        Schema::create('employee_leaves', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(\App\Models\HR\Employee::class)->constrained()->restrictOnDelete();
             $table->dateTime('from');
@@ -30,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('employee_leavs');
+        Schema::dropIfExists('employee_leaves');
     }
 };
