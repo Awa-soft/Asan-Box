@@ -131,7 +131,6 @@ class BothResource extends Resource
                 Tables\Filters\TrashedFilter::make(),
             ])
             ->actions([
-                Tables\Actions\Action::make("test"),
 
             ])
             ->bulkActions([

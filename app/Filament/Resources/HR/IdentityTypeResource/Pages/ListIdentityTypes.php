@@ -8,7 +8,8 @@ use Filament\Resources\Pages\ListRecords;
 
 class ListIdentityTypes extends ListRecords
 {
-    protected static string $resource = IdentityTypeResource::class;
+        use \App\Traits\Core\TranslatableForm, \App\Traits\Core\TranslatableTable;
+protected static string $resource = IdentityTypeResource::class;
 
     protected function getHeaderActions(): array
     {

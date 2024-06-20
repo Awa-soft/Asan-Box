@@ -8,5 +8,6 @@ use Filament\Resources\Pages\CreateRecord;
 
 class CreateEmployeeNote extends CreateRecord
 {
+    use \App\Traits\Core\TranslatableForm;
     protected static string $resource = EmployeeNoteResource::class;
 }

@@ -129,9 +129,7 @@ class VendorResource extends Resource
                 Tables\Filters\TrashedFilter::make(),
             ])
             ->actions([
-                Tables\Actions\EditAction::make()
-                    ->modalWidth("lg"),
-                Tables\Actions\DeleteAction::make(),
+
 
             ])
             ->bulkActions([

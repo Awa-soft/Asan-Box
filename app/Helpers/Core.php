@@ -5,6 +5,12 @@ use App\Models\Settings\Currency;
 function getCurrencyDecimal($id=1){
     return Currency::find($id)?->decimal ?? 0;
 }
+function getBaseCurrency(){
+    return Currency::where('base',1)->first();
+}
+function getBaseCurrencyRate(){
+    return Currency::where('base',1)->first()->rate;
+}
 function getCurrencySymbol($id=1){
     return Currency::find($id)?->symbol;
 }
@@ -14,7 +20,10 @@ function getCurrencyName($id=1){
 function getCurrencyRate($id=1){
     return Currency::find($id)?->rate??0;
 }
-function getRatePerOne($id = 1){
+function getRatePerOne($id = 1, $rate = null){
+    if($rate){
+        return $rate/100;
+    }
     return getCurrencyRate($id) / 100;
 }
 

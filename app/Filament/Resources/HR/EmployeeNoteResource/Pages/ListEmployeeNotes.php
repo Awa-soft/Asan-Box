@@ -8,7 +8,8 @@ use Filament\Resources\Pages\ListRecords;
 
 class ListEmployeeNotes extends ListRecords
 {
-    protected static string $resource = EmployeeNoteResource::class;
+        use \App\Traits\Core\TranslatableForm, \App\Traits\Core\TranslatableTable;
+protected static string $resource = EmployeeNoteResource::class;
 
     protected function getHeaderActions(): array
     {

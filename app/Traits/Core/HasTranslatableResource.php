@@ -24,5 +24,5 @@ trait HasTranslatableResource
    public static function snakeCase($value)
     {
         return strtolower(preg_replace('/(?<!^)[A-Z]/', '_$0',$value));
-}
+    }
 }

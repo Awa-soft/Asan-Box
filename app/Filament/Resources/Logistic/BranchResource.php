@@ -140,9 +140,6 @@ class BranchResource extends Resource
                 Tables\Filters\TrashedFilter::make(),
             ])
             ->actions([
-                ActionGroup::make([
-                    Tables\Actions\EditAction::make()
-->modalWidth("lg"),
                     Tables\Actions\Action::make('warehouses')
                         ->modalWidth("lg")
                         ->form(
@@ -167,10 +164,6 @@ class BranchResource extends Resource
                                 ->title(trans("filament-actions::edit.single.notifications.saved.title"))
                                 ->send();
                         }),
-                        Tables\Actions\DeleteAction::make(),
-
-                ])
-                    ->icon('css-more-o'),
 
             ])
             ->bulkActions([
