@@ -6,11 +6,11 @@ trait HasTranslatableResource
 {
     public static function getModelLabel(): string
     {
-        return trans(static::getTranslatableAttributes()[0].'/lang.'.strtolower(static::getTranslatableAttributes()[1]).'.plural_label');
+        return trans(static::getTranslatableAttributes()[0].'/lang.'.strtolower(static::getTranslatableAttributes()[1]).'.singular_label');
     }
     public static function getPluralModelLabel(): string
     {
-        return trans(static::getTranslatableAttributes()[0].'/lang.'.strtolower(static::getTranslatableAttributes()[1]).'.singular_label');
+        return trans(static::getTranslatableAttributes()[0].'/lang.'.strtolower(static::getTranslatableAttributes()[1]).'.plural_label');
     }
     public static function getNavigationGroup(): ?string
     {
