@@ -22,7 +22,8 @@ trait OwnerableTrait
                 ->titleAttribute('name')
                 ->label(trans('Logistic/lang.warehouse.singular_label')),
         ])
-        ->visible(fn()=>auth()->user()->hasRole('super_admin'))
+            ->visible(fn()=>auth()->user()->hasRole('super_admin'))
+
         ->searchable()
         ->preload();
     }

@@ -3,16 +3,16 @@
 use App\Models\Settings\Currency;
 
 function getCurrencyDecimal($id=1){
-    return Currency::find($id)->decimal;
+    return Currency::find($id)?->decimal ?? 0;
 }
 function getCurrencySymbol($id=1){
-    return Currency::find($id)->symbol;
+    return Currency::find($id)?->symbol;
 }
 function getCurrencyName($id=1){
-    return Currency::find($id)->symbol;
+    return Currency::find($id)?->symbol;
 }
 function getCurrencyRate($id=1){
-    return Currency::find($id)->rate;
+    return Currency::find($id)?->rate??0;
 }
 function getRatePerOne($id = 1){
     return getCurrencyRate($id) / 100;
@@ -47,6 +47,10 @@ if($to_id == 1){
 }
     return $usd * $to_rate;
 }
+
+
+
+
 
 
 
