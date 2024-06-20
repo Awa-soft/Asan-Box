@@ -47,7 +47,7 @@ class Employee extends Model
         return $this->belongsToMany(Position::class,'employee_positions');
     }
 
-    public function teams(): BelongsToMany{
+    public function team(): BelongsToMany{
         return $this->belongsToMany(Team::class,'team_employees');
     }
 

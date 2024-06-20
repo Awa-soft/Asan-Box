@@ -161,9 +161,9 @@
       <excludeFolder url="file://$MODULE_DIR$/vendor/dutchcodingcompany/filament-developer-logins" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/khatabwedaa/blade-css-icons" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/spatie/laravel-permission" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/codeat3/blade-eos-icons" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/codeat3/blade-line-awesome-icons" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/eduard9969/blade-polaris-icons" />
-      <excludeFolder url="file://$MODULE_DIR$/vendor/parfaitementweb/filament-country-field" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

@@ -45,8 +45,7 @@ class PositionResource extends Resource
                     ->columnSpanFull(),
                 ])
                 ->columnSpanFull()
-                ->visible(fn($operation)=>$operation=="create"),
-
+                ->visible(fn($operation)=>$operation!="edit"),
                 Group::make([
                     static::Field()
                     ->columns(2)

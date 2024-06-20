@@ -108,6 +108,13 @@ class EmployeeResource extends Resource
                         Forms\Components\TextInput::make('annual_leave')
                             ->required()
                             ->numeric(),
+                        static::selectField('team',TeamResource::class)
+                             ->relationship('team', 'name')
+                            ->maxItems(1)
+                            ->multiple(),
+                        static::selectField('positions',PositionResource::class)
+                            ->relationship('positions', 'name')
+                            ->multiple(),
                     ]),
                 Forms\Components\Textarea::make('note')
                     ->columnSpanFull(),
@@ -123,8 +130,6 @@ class EmployeeResource extends Resource
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
-
-                    
                     Tables\Columns\TextColumn::make('name')
                         ->searchable(),
                     Tables\Columns\TextColumn::make('email')
@@ -179,7 +184,6 @@ class EmployeeResource extends Resource
                     ->numeric()
                     ->toggleable(isToggledHiddenByDefault: true)
                     ->sortable(),
-
                 Tables\Columns\TextColumn::make('user.name')
                     ->numeric()
                     ->toggleable(isToggledHiddenByDefault: true)
