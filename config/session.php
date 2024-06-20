@@ -176,7 +176,7 @@ return [
     | HTTP Access Only
     |--------------------------------------------------------------------------
     |
-    | Setting this value to true will prevent JavaScript from accessing the
+    | Settings this value to true will prevent JavaScript from accessing the
     | value of the cookie and the cookie will only be accessible through
     | the HTTP protocol. It's unlikely you should disable this option.
     |
@@ -206,7 +206,7 @@ return [
     | Partitioned Cookies
     |--------------------------------------------------------------------------
     |
-    | Setting this value to true will tie the cookie to the top-level site for
+    | Settings this value to true will tie the cookie to the top-level site for
     | a cross-site context. Partitioned cookies are accepted by the browser
     | when flagged "secure" and the Same-Site attribute is set to "none".
     |

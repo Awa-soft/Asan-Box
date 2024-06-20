@@ -6,6 +6,7 @@ use App\Filament\Resources\Inventory\BrandResource\Pages;
 use App\Filament\Resources\Inventory\BrandResource\RelationManagers;
 use App\Filament\Resources\Inventory\BrandResource\RelationManagers\ItemsRelationManager;
 use App\Models\Inventory\Brand;
+use App\Traits\Core\HasTranslatableResource;
 use App\Traits\Core\OwnerableTrait;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -19,22 +20,10 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 class BrandResource extends Resource
 {
     use OwnerableTrait;
+    use HasTranslatableResource;
     protected static ?string $model = Brand::class;
 
     protected static ?string $navigationIcon = 'fas-b';
-
-    public static function getModelLabel(): string
-    {
-        return trans('Inventory/lang.brand.plural_label');
-    }
-    public static function getPluralModelLabel(): string
-    {
-        return trans('Inventory/lang.brand.singular_label');
-    }
-    public static function getNavigationGroup(): ?string
-    {
-        return trans('Inventory/lang.group_label');
-    }
     protected static ?int $navigationSort = 2;
 
 

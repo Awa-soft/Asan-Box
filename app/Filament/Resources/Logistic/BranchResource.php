@@ -6,6 +6,7 @@ use App\Filament\Resources\Logistic\BranchResource\Pages;
 use App\Filament\Resources\Logistic\BranchResource\RelationManagers;
 use App\Models\Logistic\Branch;
 use App\Models\Logistic\Warehouse;
+use App\Traits\Core\HasTranslatableResource;
 use Filament\Forms;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Form;
@@ -21,19 +22,10 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class BranchResource extends Resource
 {
+    use HasTranslatableResource;
+
     protected static ?string $model = Branch::class;
-    public static function getModelLabel(): string
-    {
-        return trans('Logistic/lang.branch.singular_label');
-    }
-    public static function getPluralModelLabel(): string
-    {
-        return trans('Logistic/lang.branch.plural_label');
-    }
-    public static function getNavigationGroup(): ?string
-    {
-        return trans('Logistic/lang.group_label');
-    }
+
     protected static ?string $navigationIcon = 'fas-code-branch';
 
     public static function form(Form $form): Form

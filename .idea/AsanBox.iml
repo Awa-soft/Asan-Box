@@ -8,7 +8,6 @@
       <sourceFolder url="file://$MODULE_DIR$/tests" isTestSource="true" packagePrefix="Tests\" />
       <sourceFolder url="file://$MODULE_DIR$/tests/Feature" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/tests/Unit" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/spec" isTestSource="true" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/anourvalar/eloquent-serialize" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/blade-ui-kit/blade-heroicons" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/blade-ui-kit/blade-icons" />
@@ -162,6 +161,9 @@
       <excludeFolder url="file://$MODULE_DIR$/vendor/dutchcodingcompany/filament-developer-logins" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/khatabwedaa/blade-css-icons" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/spatie/laravel-permission" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/codeat3/blade-line-awesome-icons" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/eduard9969/blade-polaris-icons" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/parfaitementweb/filament-country-field" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

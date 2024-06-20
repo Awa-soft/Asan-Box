@@ -83,7 +83,7 @@ class PurchasePage extends Page implements HasForms
                     ->searchable()
                     ->required(),
                 Select::make('currency_id')
-                ->label(trans("Setting/lang.currency.singular_label"))
+                ->label(trans("Settings/lang.currency.singular_label"))
                 ->default(1)
                     ->relationship("currency", "name")
                     ->preload()

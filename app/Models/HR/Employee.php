@@ -23,7 +23,7 @@ class Employee extends Model
 
 
     public function identityType(): BelongsTo{
-        return $this->belongsTo(IdentityType::class);
+        return $this->belongsTo(IdentityType::class)->withTrashed();
     }
 
     public function currency(): BelongsTo{
@@ -32,15 +32,15 @@ class Employee extends Model
 
     public static function getSalaryTypes():array{
         return [
-            'monthly'=>trans('lang.hr.monthly'),
-            'weekly'=>trans('lang.hr.weekly'),
-            'daily'=>trans('lang.hr.daily'),
+            'monthly'=>trans('lang.monthly'),
+            'weekly'=>trans('lang.weekly'),
+            'daily'=>trans('lang.daily'),
         ];
     }
     public static function getGenders():array{
         return [
-          'male'=>trans('lang.hr.male'),
-          'female'=>trans('lang.hr.female'),
+          'male'=>trans('lang.male'),
+          'female'=>trans('lang.female'),
         ];
     }
     public function positions(): BelongsToMany{

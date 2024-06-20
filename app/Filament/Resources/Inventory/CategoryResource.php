@@ -6,6 +6,7 @@ use App\Filament\Resources\Inventory\CategoryResource\Pages;
 use App\Filament\Resources\Inventory\CategoryResource\RelationManagers;
 use App\Filament\Resources\Inventory\CategoryResource\RelationManagers\ItemsRelationManager;
 use App\Models\Inventory\Category;
+use App\Traits\Core\HasTranslatableResource;
 use App\Traits\Core\OwnerableTrait;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -19,21 +20,12 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 class CategoryResource extends Resource
 {
     use OwnerableTrait;
+    use HasTranslatableResource;
+
     protected static ?string $model = Category::class;
 
     protected static ?string $navigationIcon = 'tabler-category-2';
-    public static function getModelLabel(): string
-    {
-        return trans('Inventory/lang.category.plural_label');
-    }
-    public static function getPluralModelLabel(): string
-    {
-        return trans('Inventory/lang.category.singular_label');
-    }
-    public static function getNavigationGroup(): ?string
-    {
-        return trans('Inventory/lang.group_label');
-    }
+
     protected static ?int $navigationSort = 3;
 
 

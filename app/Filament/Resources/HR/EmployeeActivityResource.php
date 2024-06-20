@@ -5,6 +5,7 @@ namespace App\Filament\Resources\HR;
 use App\Filament\Resources\HR\EmployeeActivityResource\Pages;
 use App\Filament\Resources\HR\EmployeeActivityResource\RelationManagers;
 use App\Models\HR\EmployeeActivity;
+use App\Traits\Core\HasTranslatableResource;
 use App\Traits\Core\OwnerableTrait;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -17,19 +18,10 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 class EmployeeActivityResource extends Resource
 {
     use OwnerableTrait;
+    use HasTranslatableResource;
+
     protected static ?string $model = EmployeeActivity::class;
-    public static function getModelLabel(): string
-    {
-        return trans('HR/lang.employee_activity.singular_label');
-    }
-    public static function getPluralModelLabel(): string
-    {
-        return trans('HR/lang.employee_activity.plural_label');
-    }
-    public static function getNavigationGroup(): ?string
-    {
-        return trans('HR/lang.group_label');
-    }
+
     protected static ?string $navigationIcon = 'carbon-user-activity';
 
     public static function form(Form $form): Form
