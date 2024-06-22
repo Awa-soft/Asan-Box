@@ -10,4 +10,8 @@ return [
         'plural_label'=>'Users',
         'singular_label'=>'User',
     ],
+    'package'=>[
+        'plural_label'=>'Packages',
+        'singular_label'=>'Package',
+    ],
 ];
