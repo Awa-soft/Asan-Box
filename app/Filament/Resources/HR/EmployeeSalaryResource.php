@@ -29,116 +29,160 @@ class EmployeeSalaryResource extends Resource
     {
         return $form
             ->schema([
-                static::Field(),
-                Forms\Components\Select::make('employee_id')
-                    ->relationship('employee', 'name')
-                    ->searchable()
-                    ->live()
-                    ->afterStateUpdated(function(Forms\Get $get,Forms\Set $set){
-                        $date = $get('salary_date')??now();
-                        $employee_id = $get('employee_id');
-                        $employee = Employee::find($employee_id);
-                        $lastSalaryDate = Employee::find($employee_id)?->last_salary_date??now();
-                        $set('lastSalaryDate',$lastSalaryDate);
-                        $set('salary', number_format($employee?->salary??0, $employee?->currency?->decimal??2));
-                        $absences = EmployeeActivity::where('employee_id', $employee_id)->where('date', '>=', $lastSalaryDate)
-                            ->where('date','<',$date)
-                            ->where('type', 'absence')
-                            ->sum('amount');
-                        $punish = EmployeeActivity::where('employee_id', $employee_id)->where('date', '>=', $lastSalaryDate)
-                            ->where('date','<',$date)
-                            ->where('type', 'punish')
-                            ->sum('amount');
-                        $bonus  = EmployeeActivity::where('employee_id', $employee_id)->where('date', '>=', $lastSalaryDate)
-                            ->where('date','<',$date)
-                            ->where('type', 'bonus')
-                            ->sum('amount');
-                        $advance  = EmployeeActivity::where('employee_id', $employee_id)->where('date', '>=', $lastSalaryDate)
-                            ->where('date','<',$date)
-                            ->where('type', 'advance')
-                            ->sum('amount');
-                        $overtime  = EmployeeActivity::where('employee_id', $employee_id)->where('date', '>=', $lastSalaryDate)
-                            ->where('date','<',$date)
-                            ->where('type', 'overtime')
-                            ->sum('amount');
-                        $set('absences', number_format($absences,$employee?->currency?->decimal??2));
-                        $set('punish', number_format($punish,$employee?->currency?->decimal??2));
-                        $set('bonus', number_format($bonus,$employee?->currency?->decimal??2));
-                        $set('advance', number_format($advance,$employee?->currency?->decimal??2));
-                        $set('overtime', number_format($overtime,$employee?->currency?->decimal??2));
-                        $amount = ($bonus+$overtime+$employee?->salary??0) - ($absences+$punish+$advance);
-                        $set('amount', number_format($amount,$employee?->currency?->decimal??2,'.',''));
-                    })
-                    ->preload()
-                    ->required(),
-                Forms\Components\DatePicker::make('lastSalaryDate')
-                ->required(),
-                Forms\Components\DatePicker::make('salary_date')
-                    ->live()
-                    ->afterStateUpdated(function(Forms\Get $get,Forms\Set $set){
-                        $date = $get('salary_date')??now();
-                        $employee_id = $get('employee_id');
-                        $employee = Employee::find($employee_id);
-                        $lastSalaryDate = Employee::find($employee_id)?->last_salary_date??now();
-                        $set('lastSalaryDate',$lastSalaryDate);
-                        $set('salary', number_format($employee?->salary??0, $employee?->currency?->decimal??2));
-                        $absences = EmployeeActivity::where('employee_id', $employee_id)->where('date', '>=', $lastSalaryDate)
-                            ->where('date','<',$date)
-                            ->where('type', 'absence')
-                            ->sum('amount');
-                        $punish = EmployeeActivity::where('employee_id', $employee_id)->where('date', '>=', $lastSalaryDate)
-                            ->where('date','<',$date)
-                            ->where('type', 'punish')
-                            ->sum('amount');
-                        $bonus  = EmployeeActivity::where('employee_id', $employee_id)->where('date', '>=', $lastSalaryDate)
-                            ->where('date','<',$date)
-                            ->where('type', 'bonus')
-                            ->sum('amount');
-                        $advance  = EmployeeActivity::where('employee_id', $employee_id)->where('date', '>=', $lastSalaryDate)
-                            ->where('date','<',$date)
-                            ->where('type', 'advance')
-                            ->sum('amount');
-                        $overtime  = EmployeeActivity::where('employee_id', $employee_id)->where('date', '>=', $lastSalaryDate)
-                            ->where('date','<',$date)
-                            ->where('type', 'overtime')
-                            ->sum('amount');
-                        $set('absences', number_format($absences,$employee?->currency?->decimal??2));
-                        $set('punish', number_format($punish,$employee?->currency?->decimal??2));
-                        $set('bonus', number_format($bonus,$employee?->currency?->decimal??2));
-                        $set('advance', number_format($advance,$employee?->currency?->decimal??2));
-                        $set('overtime', number_format($overtime,$employee?->currency?->decimal??2));
-                        $amount = ($bonus+$overtime+($employee?->salary??0)) - ($absences+$punish+$advance);
-                        $set('amount', number_format($amount,$employee?->currency?->decimal??2,'.',''));
-                    })
-                    ->default(now())
-                    ->required(),
-                Forms\Components\DatePicker::make('payment_date')
-                    ->default(now())
-                    ->required(),
-                Forms\Components\TextInput::make('salary')
-                    ->hidden(fn($operation)=>$operation == 'edit')
-                    ->suffix(fn(Forms\Get $get)=>(Employee::find($get('employee_id'))?->currency?->symbol)??'$')
-                    ->disabled(),
-                Forms\Components\TextInput::make('absences')
-                    ->hidden(fn($operation)=>$operation == 'edit')
-                    ->suffix(fn(Forms\Get $get)=>(Employee::find($get('employee_id'))?->currency?->symbol)??'$')
-                    ->disabled(),
-                Forms\Components\TextInput::make('punish')
-                    ->hidden(fn($operation)=>$operation == 'edit')
-                    ->suffix(fn(Forms\Get $get)=>(Employee::find($get('employee_id'))?->currency?->symbol)??'$')
-                     ->disabled(),
-                Forms\Components\TextInput::make('bonus')
-                    ->hidden(fn($operation)=>$operation == 'edit')
-                    ->suffix(fn(Forms\Get $get)=>(Employee::find($get('employee_id'))?->currency?->symbol)??'$')
-                     ->disabled(),
-                Forms\Components\TextInput::make('advance')
-                    ->hidden(fn($operation)=>$operation == 'edit')
-                    ->suffix(fn(Forms\Get $get)=>(Employee::find($get('employee_id'))?->currency?->symbol)??'$')
-                     ->disabled(),
-                Forms\Components\TextInput::make('overtime')
-                    ->hidden(fn($operation)=>$operation == 'edit')
-                    ->suffix(fn(Forms\Get $get)=>(Employee::find($get('employee_id'))?->currency?->symbol)??'$')
-                     ->disabled(),
+                Forms\Components\Section::make(trans('lang.details'))
+                ->schema([
+                    static::Field(),
+                    Forms\Components\Select::make('employee_id')
+                        ->relationship('employee', 'name')
+                        ->searchable()
+                        ->live()
+                        ->disabled(fn($operation)=>$operation == 'edit')
+                        ->afterStateUpdated(function(Forms\Get $get,Forms\Set $set){
+                            $date = $get('salary_date')??now();
+                            $employee_id = $get('employee_id');
+                            $employee = Employee::find($employee_id);
+                            $lastSalaryDate = Employee::find($employee_id)?->last_salary_date??now();
+                            $set('lastSalaryDate',$lastSalaryDate);
+                            $set('salary', number_format($employee?->salary??0, $employee?->currency?->decimal??2));
+                            $absences = EmployeeActivity::where('employee_id', $employee_id)->where('date', '>=', $lastSalaryDate)
+                                ->where('date','<',$date)
+                                ->where('type', 'absence')
+                                ->sum('amount');
+                            $punish = EmployeeActivity::where('employee_id', $employee_id)->where('date', '>=', $lastSalaryDate)
+                                ->where('date','<',$date)
+                                ->where('type', 'punish')
+                                ->sum('amount');
+                            $bonus  = EmployeeActivity::where('employee_id', $employee_id)->where('date', '>=', $lastSalaryDate)
+                                ->where('date','<',$date)
+                                ->where('type', 'bonus')
+                                ->sum('amount');
+                            $advance  = EmployeeActivity::where('employee_id', $employee_id)->where('date', '>=', $lastSalaryDate)
+                                ->where('date','<',$date)
+                                ->where('type', 'advance')
+                                ->sum('amount');
+                            $overtime  = EmployeeActivity::where('employee_id', $employee_id)->where('date', '>=', $lastSalaryDate)
+                                ->where('date','<',$date)
+                                ->where('type', 'overtime')
+                                ->sum('amount');
+                            $set('absences', number_format($absences,$employee?->currency?->decimal??2));
+                            $set('punish', number_format($punish,$employee?->currency?->decimal??2));
+                            $set('bonus', number_format($bonus,$employee?->currency?->decimal??2));
+                            $set('advance', number_format($advance,$employee?->currency?->decimal??2));
+                            $set('overtime', number_format($overtime,$employee?->currency?->decimal??2));
+                            $amount = ($bonus+$overtime+$employee?->salary??0) - ($absences+$punish+$advance);
+                            $set('amount', number_format($amount,$employee?->currency?->decimal??2,'.',''));
+                        })
+                        ->preload()
+                        ->required(),
+                    Forms\Components\DatePicker::make('lastSalaryDate')
+                        ->live()
+                        ->afterStateUpdated(function(Forms\Get $get,Forms\Set $set){
+                            $date = $get('salary_date')??now();
+                            $employee_id = $get('employee_id');
+                            $employee = Employee::find($employee_id);
+                            $lastSalaryDate = $get('lastSalaryDate');
+                            $set('salary', number_format($employee?->salary??0, $employee?->currency?->decimal??2));
+                            $absences = EmployeeActivity::where('employee_id', $employee_id)->where('date', '>=', $lastSalaryDate)
+                                ->where('date','<',$date)
+                                ->where('type', 'absence')
+                                ->sum('amount');
+                            $punish = EmployeeActivity::where('employee_id', $employee_id)->where('date', '>=', $lastSalaryDate)
+                                ->where('date','<',$date)
+                                ->where('type', 'punish')
+                                ->sum('amount');
+                            $bonus  = EmployeeActivity::where('employee_id', $employee_id)->where('date', '>=', $lastSalaryDate)
+                                ->where('date','<',$date)
+                                ->where('type', 'bonus')
+                                ->sum('amount');
+                            $advance  = EmployeeActivity::where('employee_id', $employee_id)->where('date', '>=', $lastSalaryDate)
+                                ->where('date','<',$date)
+                                ->where('type', 'advance')
+                                ->sum('amount');
+                            $overtime  = EmployeeActivity::where('employee_id', $employee_id)->where('date', '>=', $lastSalaryDate)
+                                ->where('date','<',$date)
+                                ->where('type', 'overtime')
+                                ->sum('amount');
+                            $set('absences', number_format($absences,$employee?->currency?->decimal??2));
+                            $set('punish', number_format($punish,$employee?->currency?->decimal??2));
+                            $set('bonus', number_format($bonus,$employee?->currency?->decimal??2));
+                            $set('advance', number_format($advance,$employee?->currency?->decimal??2));
+                            $set('overtime', number_format($overtime,$employee?->currency?->decimal??2));
+                            $amount = ($bonus+$overtime+($employee?->salary??0)) - ($absences+$punish+$advance);
+                            $set('amount', number_format($amount,$employee?->currency?->decimal??2,'.',''));
+                        })
+                        ->hidden(fn($operation)=>$operation == 'edit')
+                        ->required(),
+                    Forms\Components\DatePicker::make('salary_date')
+                        ->live()
+                        ->disabled(fn($operation)=>$operation == 'edit')
+                        ->afterStateUpdated(function(Forms\Get $get,Forms\Set $set){
+                            $date = $get('salary_date')??now();
+                            $employee_id = $get('employee_id');
+                            $employee = Employee::find($employee_id);
+                            $lastSalaryDate = $get('lastSalaryDate');
+                            $set('lastSalaryDate',$lastSalaryDate);
+                            $set('salary', number_format($employee?->salary??0, $employee?->currency?->decimal??2));
+                            $absences = EmployeeActivity::where('employee_id', $employee_id)->where('date', '>=', $lastSalaryDate)
+                                ->where('date','<',$date)
+                                ->where('type', 'absence')
+                                ->sum('amount');
+                            $punish = EmployeeActivity::where('employee_id', $employee_id)->where('date', '>=', $lastSalaryDate)
+                                ->where('date','<',$date)
+                                ->where('type', 'punish')
+                                ->sum('amount');
+                            $bonus  = EmployeeActivity::where('employee_id', $employee_id)->where('date', '>=', $lastSalaryDate)
+                                ->where('date','<',$date)
+                                ->where('type', 'bonus')
+                                ->sum('amount');
+                            $advance  = EmployeeActivity::where('employee_id', $employee_id)->where('date', '>=', $lastSalaryDate)
+                                ->where('date','<',$date)
+                                ->where('type', 'advance')
+                                ->sum('amount');
+                            $overtime  = EmployeeActivity::where('employee_id', $employee_id)->where('date', '>=', $lastSalaryDate)
+                                ->where('date','<',$date)
+                                ->where('type', 'overtime')
+                                ->sum('amount');
+                            $set('absences', number_format($absences,$employee?->currency?->decimal??2));
+                            $set('punish', number_format($punish,$employee?->currency?->decimal??2));
+                            $set('bonus', number_format($bonus,$employee?->currency?->decimal??2));
+                            $set('advance', number_format($advance,$employee?->currency?->decimal??2));
+                            $set('overtime', number_format($overtime,$employee?->currency?->decimal??2));
+                            $amount = ($bonus+$overtime+($employee?->salary??0)) - ($absences+$punish+$advance);
+                            $set('amount', number_format($amount,$employee?->currency?->decimal??2,'.',''));
+                        })
+                        ->default(now())
+                        ->required(),
+                    Forms\Components\DatePicker::make('payment_date')
+                        ->default(now())
+                        ->required(),
+                ])->columnSpan(fn($operation) => $operation == 'edit'? 2 : 1),
+                Forms\Components\Section::make(trans('lang.activities'))
+                    ->schema([
+                        Forms\Components\TextInput::make('salary')
+                            ->hidden(fn($operation)=>$operation == 'edit')
+                            ->suffix(fn(Forms\Get $get)=>(Employee::find($get('employee_id'))?->currency?->symbol)??'$')
+                            ->disabled(),
+                        Forms\Components\TextInput::make('absences')
+                            ->hidden(fn($operation)=>$operation == 'edit')
+                            ->suffix(fn(Forms\Get $get)=>(Employee::find($get('employee_id'))?->currency?->symbol)??'$')
+                            ->disabled(),
+                        Forms\Components\TextInput::make('punish')
+                            ->hidden(fn($operation)=>$operation == 'edit')
+                            ->suffix(fn(Forms\Get $get)=>(Employee::find($get('employee_id'))?->currency?->symbol)??'$')
+                            ->disabled(),
+                        Forms\Components\TextInput::make('bonus')
+                            ->hidden(fn($operation)=>$operation == 'edit')
+                            ->suffix(fn(Forms\Get $get)=>(Employee::find($get('employee_id'))?->currency?->symbol)??'$')
+                            ->disabled(),
+                        Forms\Components\TextInput::make('advance')
+                            ->hidden(fn($operation)=>$operation == 'edit')
+                            ->suffix(fn(Forms\Get $get)=>(Employee::find($get('employee_id'))?->currency?->symbol)??'$')
+                            ->disabled(),
+                        Forms\Components\TextInput::make('overtime')
+                            ->hidden(fn($operation)=>$operation == 'edit')
+                            ->suffix(fn(Forms\Get $get)=>(Employee::find($get('employee_id'))?->currency?->symbol)??'$')
+                            ->disabled(),
+                    ])->columnSpan(1),
                 Forms\Components\TextInput::make('amount')
                     ->required()
                     ->numeric(),
@@ -147,6 +191,7 @@ class EmployeeSalaryResource extends Resource
                     ->numeric(),
                 Forms\Components\TextInput::make('note')
                     ->maxLength(255)
+                    ->columnSpanFull()
                     ->default(null),
 
             ]);
@@ -179,11 +224,7 @@ class EmployeeSalaryResource extends Resource
                 Tables\Columns\TextColumn::make('user.name')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('ownerable_type')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('ownerable_id')
-                    ->numeric()
-                    ->sortable(),
+                static::Column(),
                 Tables\Columns\TextColumn::make('deleted_at')
                     ->dateTime()
                     ->sortable()

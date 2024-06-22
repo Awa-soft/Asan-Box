@@ -104,4 +104,12 @@ return [
     "identityType"=>"Identity",
     'team'=>"Team",
     'positions'=>"Positions",
+    "details"=>"Details",
+    "activities"=>"Activities",
+    "absences"=>"Absences",
+    "punish"=>"Punishments",
+    "lastSalaryDate"=>"Last Salary Date",
+    "salary_date"=>"Salary Date",
+    "payment_date"=>"Payment Date",
+    "payment_amount"=>"Payment Amount",
 ];

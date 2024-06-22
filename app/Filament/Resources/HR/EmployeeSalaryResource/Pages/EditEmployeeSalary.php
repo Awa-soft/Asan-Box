@@ -9,6 +9,7 @@ use Filament\Resources\Pages\EditRecord;
 class EditEmployeeSalary extends EditRecord
 {
     protected static string $resource = EmployeeSalaryResource::class;
+    use \App\Traits\Core\TranslatableForm;
 
     protected function getHeaderActions(): array
     {
