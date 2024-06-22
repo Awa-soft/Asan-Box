@@ -25,6 +25,10 @@ return [
     "position"=>[
         "plural_label"=>"Positions",
         "singular_label"=>"Position"
-    ]
+    ],
+    "employee_leave"=>[
+        "plural_label"=>"Employee Leaves",
+        "singular_label"=>"Employee Leave"
+    ],
 
 ];

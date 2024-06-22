@@ -57,6 +57,14 @@ class Employee extends Model
     public function notes() :HasMany{
         return $this->hasMany(EmployeeNote::class, 'employee_id');
     }
+    public function leaves() :HasMany{
+        return $this->hasMany(EmployeeLeave::class, 'employee_id');
+    }
+
+
+    public function getRemainingLeaveAttribute(){
+        return $this->annual_leave - $this->leaves()->where('status', 'approved')->whereYear('from', now())->count();
+    }
 
 
 

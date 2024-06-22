@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1ec20d6c70f0d65d4c75e71db07d562d",
+    "content-hash": "2864c269a1436329974aacfad5aa396b",
     "packages": [
         {
             "name": "andreiio/blade-remix-icon",
@@ -924,6 +924,78 @@
                 }
             ],
             "time": "2024-02-28T15:15:14+00:00"
+        },
+        {
+            "name": "codeat3/blade-pepicons",
+            "version": "1.5.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/codeat3/blade-pepicons.git",
+                "reference": "34411b02c2582452ea9d6073dc24e1bdb863c99a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/codeat3/blade-pepicons/zipball/34411b02c2582452ea9d6073dc24e1bdb863c99a",
+                "reference": "34411b02c2582452ea9d6073dc24e1bdb863c99a",
+                "shasum": ""
+            },
+            "require": {
+                "blade-ui-kit/blade-icons": "^1.1",
+                "illuminate/support": "^8.0|^9.0|^10.0|^11.0",
+                "php": "^7.4|^8.0"
+            },
+            "require-dev": {
+                "codeat3/blade-icon-generation-helpers": "^0.8",
+                "codeat3/phpcs-styles": "^1.0",
+                "orchestra/testbench": "^6.0|^7.0|^8.0|^9.0",
+                "phpunit/phpunit": "^9.0|^10.5|^11.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Codeat3\\BladePepicons\\BladePepiconsServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Codeat3\\BladePepicons\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Swapnil Sarwe",
+                    "homepage": "https://swapnilsarwe.com"
+                },
+                {
+                    "name": "Dries Vints",
+                    "homepage": "https://driesvints.com"
+                }
+            ],
+            "description": "A package to easily make use of Pepicons in your Laravel Blade views.",
+            "homepage": "https://github.com/codeat3/blade-pepicons",
+            "keywords": [
+                "blade",
+                "icons",
+                "laravel",
+                "pepicons"
+            ],
+            "support": {
+                "issues": "https://github.com/codeat3/blade-pepicons/issues",
+                "source": "https://github.com/codeat3/blade-pepicons/tree/1.5.0"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/swapnilsarwe",
+                    "type": "github"
+                }
+            ],
+            "time": "2024-02-28T15:21:53+00:00"
         },
         {
             "name": "codeat3/blade-simple-line-icons",

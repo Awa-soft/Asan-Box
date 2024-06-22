@@ -104,4 +104,10 @@ return [
     "identityType"=>"Identity",
     'team'=>"Team",
     'positions'=>"Positions",
+    "pending" =>"Pending",
+    "approved" =>"Approved",
+    "rejected" =>"Rejected",
+    "from" =>"From",
+    "to" =>"To",
+    "remaining_leave" =>"Remaining Leave",
 ];
