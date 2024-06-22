@@ -2,7 +2,10 @@
 
 namespace App\Filament\Pages\Core;
 
+<<<<<<< Updated upstream
 use App\Filament\Widgets\Core\PackageOverview;
+=======
+>>>>>>> Stashed changes
 use App\Models\Core\Package;
 use App\Traits\Core\TranslatableForm;
 use Filament\Forms\Components\FileUpload;
@@ -27,9 +30,12 @@ class PackagePage extends Page implements HasForms
         ];
     }
 
+<<<<<<< Updated upstream
    
 
 
+=======
+>>>>>>> Stashed changes
     public function packageForm(Form $form): Form
     {
         return $form
