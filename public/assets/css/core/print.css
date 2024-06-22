@@ -1,0 +1,29 @@
+@page  {
+    size: A4;
+    margin: 0;
+    height: 297mm;
+    width: 210mm;
+}
+@media print {
+    .fi-body, .fi-main{
+        padding: 0;
+        margin: 0;
+        gap: 0 !important;
+        background: white !important;
+    }
+
+    .fi-sidebar,.fi-sidebar * ,.fi-header, .fi-header *, .fi-topbar, .fi-topbar *, .fi-sidebar-close-overlay, .fi-sidebar-close-overlay *, .fi-breadcrumbs, .fi-breadcrumbs * {
+        display: none !important;
+        visibility: hidden;
+        padding: 0;
+        margin: 0;
+    }
+}
+.fi-header, .fi-header *, .fi-breadcrumbs, .fi-breadcrumbs * {
+    display: none !important;
+    visibility: hidden;
+    padding: 0;
+    margin: 0;
+}
+
+

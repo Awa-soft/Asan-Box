@@ -17,13 +17,14 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Malzariey\FilamentDaterangepickerFilter\Filters\DateRangeFilter;
 
 class EmployeeSalaryResource extends Resource
 {
     use HasTranslatableResource,OwnerableTrait;
     protected static ?string $model = EmployeeSalary::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'fas-hand-holding-dollar';
 
     public static function form(Form $form): Form
     {
@@ -155,7 +156,7 @@ class EmployeeSalaryResource extends Resource
                     Forms\Components\DatePicker::make('payment_date')
                         ->default(now())
                         ->required(),
-                ])->columnSpan(fn($operation) => $operation == 'edit'? 2 : 1),
+                ])->columnSpan(fn($operation) => $operation == 'edit'? 2 : 1)->columns(2),
                 Forms\Components\Section::make(trans('lang.activities'))
                     ->schema([
                         Forms\Components\TextInput::make('salary')
@@ -182,7 +183,7 @@ class EmployeeSalaryResource extends Resource
                             ->hidden(fn($operation)=>$operation == 'edit')
                             ->suffix(fn(Forms\Get $get)=>(Employee::find($get('employee_id'))?->currency?->symbol)??'$')
                             ->disabled(),
-                    ])->columnSpan(1),
+                    ])->columnSpan(fn($operation) => $operation == 'edit'? 2 : 1)->columns(2),
                 Forms\Components\TextInput::make('amount')
                     ->required()
                     ->numeric(),
@@ -206,8 +207,10 @@ class EmployeeSalaryResource extends Resource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('amount')
                     ->numeric()
+                    ->suffix(fn($record)=>$record->currency?->symbol??'$')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('payment_amount')
+                    ->suffix(fn($record)=>$record->currency?->symbol??'$')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('salary_date')
@@ -218,9 +221,6 @@ class EmployeeSalaryResource extends Resource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('note')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('currency.name')
-                    ->numeric()
-                    ->sortable(),
                 Tables\Columns\TextColumn::make('user.name')
                     ->numeric()
                     ->sortable(),
@@ -239,7 +239,17 @@ class EmployeeSalaryResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                //
+                DateRangeFilter::make('created_at')
+                ->label(trans('lang.created_at')),
+                DateRangeFilter::make('payment_date')
+                ->label(trans('lang.payment_date')),
+                DateRangeFilter::make('salary_date')
+                ->label(trans('lang.salary_date')),
+                Tables\Filters\SelectFilter::make('employee_id')
+                    ->label(trans('lang.employee'))
+                    ->relationship('employee', 'name')
+                    ->searchable()
+                ->preload()
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
