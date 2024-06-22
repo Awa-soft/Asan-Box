@@ -172,6 +172,8 @@
       <path value="$PROJECT_DIR$/vendor/doctrine/dbal" />
       <path value="$PROJECT_DIR$/vendor/codeat3/blade-eos-icons" />
       <path value="$PROJECT_DIR$/vendor/codeat3/blade-clarity-icons" />
+      <path value="$PROJECT_DIR$/vendor/codeat3/blade-pepicons" />
+      <path value="$PROJECT_DIR$/vendor/malzariey/filament-daterangepicker-filter" />
     </include_path>
   </component>
   <component name="PhpProjectSharedConfiguration" php_language_level="8.2" />
