@@ -12,7 +12,7 @@ use Filament\Resources\Pages\ListRecords;
 class EditEmployee extends EditRecord
 {
     protected static string $resource = EmployeeResource::class;
-    use TranslatableTable;
+    use \App\Traits\Core\TranslatableForm;
     protected function getHeaderActions(): array
     {
         return [

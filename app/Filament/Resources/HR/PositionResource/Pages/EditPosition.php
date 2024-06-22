@@ -9,6 +9,7 @@ use Filament\Resources\Pages\EditRecord;
 class EditPosition extends EditRecord
 {
    protected static string $resource = PositionResource::class;
+   use \App\Traits\Core\TranslatableForm;
 
     protected function getHeaderActions(): array
     {

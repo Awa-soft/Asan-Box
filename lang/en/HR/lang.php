@@ -26,9 +26,16 @@ return [
         "plural_label"=>"Positions",
         "singular_label"=>"Position"
     ],
+
+    "employee_leave"=>[
+        "plural_label"=>"Employee Leaves",
+        "singular_label"=>"Employee Leave"
+    ],
+
     "employee_salary"=>[
         "plural_label"=>"Employee Salaries",
         "singular_label"=>"Employee Salary"
     ]
+
 
 ];

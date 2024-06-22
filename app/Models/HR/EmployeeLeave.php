@@ -21,8 +21,14 @@ class EmployeeLeave extends Model
         return $this->belongsTo(Employee::class)->withTrashed();
     }
 
-    public function branch(): BelongsTo{
-        return $this->belongsTo(Branch::class)->withTrashed();
+    public static function getStatus(){
+        return [
+            'pending' => trans('lang.pending'),
+            'approved' => trans('lang.approved'),
+            'rejected' => trans('lang.rejected'),
+        ];
     }
+
+
 
 }
