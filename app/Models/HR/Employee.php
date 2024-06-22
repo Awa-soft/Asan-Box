@@ -57,6 +57,14 @@ class Employee extends Model
     public function notes() :HasMany{
         return $this->hasMany(EmployeeNote::class, 'employee_id');
     }
+    public function salaries() :HasMany{
+        return $this->hasMany(EmployeeSalary::class);
+    }
+
+    public function getLastSalaryDateAttribute():?string{
+        return $this->salaries()->latest()->first()?->salary_date ?? $this->hire_date;
+    }
+
 
 
 
