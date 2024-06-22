@@ -94,7 +94,7 @@ class PackagePage extends Page implements HasForms, HasTable
 
     public function uploadPackage()
     {
-        $data = $this->uploadPackage->getState();
+        $data = $this->uploadPackageForm->getState();
         $dir_name = explode('.', explode('/', $data['package'])[1])[0];
         // extract package zip into same place
         $zip = new ZipArchive;
@@ -142,7 +142,7 @@ class PackagePage extends Page implements HasForms, HasTable
         File::copyDirectory(storage_path("app/public/temp/$dir_name/migrations/$metadata[name]"), base_path("database/migrations/$metadata[name]"));
         File::copy(storage_path("app/public/temp/$dir_name/$metadata[name].png"), public_path("assets/img/packages/$metadata[name].png"));
         File::deleteDirectory(storage_path("app/public/temp"));
-        $this->uploadPackage->fill();
+        $this->uploadPackageForm->fill();
     }
     protected static string $view = 'filament.pages.core.package-page';
 }
