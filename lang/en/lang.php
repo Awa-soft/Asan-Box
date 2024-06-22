@@ -118,4 +118,9 @@ return [
     "salary_date"=>"Salary Date",
     "payment_date"=>"Payment Date",
     "payment_amount"=>"Payment Amount",
+    "leaves"=>"Leaves",
+    "statement"=>"<b>:name</b> Statement",
+    "statement_date"=>"<b>Date:</b> :from - :to",
+    "statement_phone"=>"<b>Phone:</b> :phone",
+    "statement_address"=>"<b>Address:</b> :address",
 ];
