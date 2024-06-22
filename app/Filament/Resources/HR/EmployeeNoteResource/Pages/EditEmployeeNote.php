@@ -8,7 +8,8 @@ use Filament\Resources\Pages\EditRecord;
 
 class EditEmployeeNote extends EditRecord
 {
-    protected static string $resource = EmployeeNoteResource::class;
+   protected static string $resource = EmployeeNoteResource::class;
+   use \App\Traits\Core\TranslatableForm;
 
     protected function getHeaderActions(): array
     {

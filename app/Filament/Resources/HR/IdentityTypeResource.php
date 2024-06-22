@@ -4,6 +4,7 @@ namespace App\Filament\Resources\HR;
 
 use App\Filament\Resources\HR\IdentityTypeResource\Pages;
 use App\Filament\Resources\HR\IdentityTypeResource\RelationManagers;
+use App\Filament\Resources\HR\IdentityTypeResource\RelationManagers\EmployeesRelationManager;
 use App\Models\HR\IdentityType;
 use App\Traits\Core\HasTranslatableResource;
 use App\Traits\Core\OwnerableTrait;
@@ -43,11 +44,7 @@ class IdentityTypeResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('name')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('ownerable_type')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('ownerable_id')
-                    ->numeric()
-                    ->sortable(),
+
                 Tables\Columns\TextColumn::make('user.name')
                     ->numeric()
                     ->sortable(),
@@ -65,16 +62,14 @@ class IdentityTypeResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                Tables\Filters\TrashedFilter::make(),
+                Tables\Filters\TrashedFilter::make()
+                ->native(0),
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
-                    Tables\Actions\ForceDeleteBulkAction::make(),
-                    Tables\Actions\RestoreBulkAction::make(),
                 ]),
             ]);
     }
@@ -82,7 +77,7 @@ class IdentityTypeResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            EmployeesRelationManager::class,
         ];
     }
 

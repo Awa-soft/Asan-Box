@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f89ae5ba19385dd19cc2daf3e4bc7dba",
+    "content-hash": "2864c269a1436329974aacfad5aa396b",
     "packages": [
         {
             "name": "andreiio/blade-remix-icon",
@@ -568,6 +568,149 @@
             "time": "2024-06-17T17:28:43+00:00"
         },
         {
+            "name": "codeat3/blade-clarity-icons",
+            "version": "1.9.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/codeat3/blade-clarity-icons.git",
+                "reference": "8e2086ac3988e1b500df29798d7bd54ff2c788d4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/codeat3/blade-clarity-icons/zipball/8e2086ac3988e1b500df29798d7bd54ff2c788d4",
+                "reference": "8e2086ac3988e1b500df29798d7bd54ff2c788d4",
+                "shasum": ""
+            },
+            "require": {
+                "blade-ui-kit/blade-icons": "^1.1",
+                "illuminate/support": "^8.0|^9.0|^10.0|^11.0",
+                "php": "^7.4|^8.0"
+            },
+            "require-dev": {
+                "codeat3/blade-icon-generation-helpers": "^0.8",
+                "codeat3/phpcs-styles": "^1.0",
+                "orchestra/testbench": "^6.0|^7.0|^8.0|^9.0",
+                "phpunit/phpunit": "^9.0|^10.5|^11.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Codeat3\\BladeClarityIcons\\BladeClarityIconsServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Codeat3\\BladeClarityIcons\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Swapnil Sarwe",
+                    "homepage": "https://swapnilsarwe.com"
+                },
+                {
+                    "name": "Dries Vints",
+                    "homepage": "https://driesvints.com"
+                }
+            ],
+            "description": "A package to easily make use of Clarity Icons in your Laravel Blade views.",
+            "homepage": "https://github.com/codeat3/blade-clarity-icons",
+            "keywords": [
+                "blade",
+                "clarity",
+                "icons",
+                "laravel"
+            ],
+            "support": {
+                "issues": "https://github.com/codeat3/blade-clarity-icons/issues",
+                "source": "https://github.com/codeat3/blade-clarity-icons/tree/1.9.0"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/swapnilsarwe",
+                    "type": "github"
+                }
+            ],
+            "time": "2024-02-28T13:48:51+00:00"
+        },
+        {
+            "name": "codeat3/blade-eos-icons",
+            "version": "1.14.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/codeat3/blade-eos-icons.git",
+                "reference": "b03837f7e9a746715e73f1445390822629fdd77f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/codeat3/blade-eos-icons/zipball/b03837f7e9a746715e73f1445390822629fdd77f",
+                "reference": "b03837f7e9a746715e73f1445390822629fdd77f",
+                "shasum": ""
+            },
+            "require": {
+                "blade-ui-kit/blade-icons": "^1.1",
+                "illuminate/support": "^8.0|^9.0|^10.0|^11.0",
+                "php": "^7.4|^8.0"
+            },
+            "require-dev": {
+                "codeat3/blade-icon-generation-helpers": "^0.8",
+                "codeat3/phpcs-styles": "^1.0",
+                "orchestra/testbench": "^6.0|^7.0|^8.0|^9.0",
+                "phpunit/phpunit": "^9.0|^10.5|^11.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Codeat3\\BladeEosIcons\\BladeEosIconsServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Codeat3\\BladeEosIcons\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Swapnil Sarwe",
+                    "homepage": "https://swapnilsarwe.com"
+                },
+                {
+                    "name": "Dries Vints",
+                    "homepage": "https://driesvints.com"
+                }
+            ],
+            "description": "A package to easily make use of \"EOS Icons\" in your Laravel Blade views.",
+            "homepage": "https://github.com/codeat3/blade-eos-icons",
+            "keywords": [
+                "blade",
+                "eos-icons",
+                "laravel"
+            ],
+            "support": {
+                "issues": "https://github.com/codeat3/blade-eos-icons/issues",
+                "source": "https://github.com/codeat3/blade-eos-icons/tree/1.14.0"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/swapnilsarwe",
+                    "type": "github"
+                }
+            ],
+            "time": "2024-02-28T14:46:57+00:00"
+        },
+        {
             "name": "codeat3/blade-fluentui-system-icons",
             "version": "1.33.0",
             "source": {
@@ -781,6 +924,78 @@
                 }
             ],
             "time": "2024-02-28T15:15:14+00:00"
+        },
+        {
+            "name": "codeat3/blade-pepicons",
+            "version": "1.5.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/codeat3/blade-pepicons.git",
+                "reference": "34411b02c2582452ea9d6073dc24e1bdb863c99a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/codeat3/blade-pepicons/zipball/34411b02c2582452ea9d6073dc24e1bdb863c99a",
+                "reference": "34411b02c2582452ea9d6073dc24e1bdb863c99a",
+                "shasum": ""
+            },
+            "require": {
+                "blade-ui-kit/blade-icons": "^1.1",
+                "illuminate/support": "^8.0|^9.0|^10.0|^11.0",
+                "php": "^7.4|^8.0"
+            },
+            "require-dev": {
+                "codeat3/blade-icon-generation-helpers": "^0.8",
+                "codeat3/phpcs-styles": "^1.0",
+                "orchestra/testbench": "^6.0|^7.0|^8.0|^9.0",
+                "phpunit/phpunit": "^9.0|^10.5|^11.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Codeat3\\BladePepicons\\BladePepiconsServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Codeat3\\BladePepicons\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Swapnil Sarwe",
+                    "homepage": "https://swapnilsarwe.com"
+                },
+                {
+                    "name": "Dries Vints",
+                    "homepage": "https://driesvints.com"
+                }
+            ],
+            "description": "A package to easily make use of Pepicons in your Laravel Blade views.",
+            "homepage": "https://github.com/codeat3/blade-pepicons",
+            "keywords": [
+                "blade",
+                "icons",
+                "laravel",
+                "pepicons"
+            ],
+            "support": {
+                "issues": "https://github.com/codeat3/blade-pepicons/issues",
+                "source": "https://github.com/codeat3/blade-pepicons/tree/1.5.0"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/swapnilsarwe",
+                    "type": "github"
+                }
+            ],
+            "time": "2024-02-28T15:21:53+00:00"
         },
         {
             "name": "codeat3/blade-simple-line-icons",
@@ -2965,16 +3180,16 @@
         },
         {
             "name": "laravel/framework",
-            "version": "v11.11.0",
+            "version": "v11.11.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/framework.git",
-                "reference": "194102876df42f9f5bb618efa55fa7e15ebf40aa"
+                "reference": "c9b52e84bd18f155e5ba59b948c7da3e7f37e87f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/framework/zipball/194102876df42f9f5bb618efa55fa7e15ebf40aa",
-                "reference": "194102876df42f9f5bb618efa55fa7e15ebf40aa",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/c9b52e84bd18f155e5ba59b948c7da3e7f37e87f",
+                "reference": "c9b52e84bd18f155e5ba59b948c7da3e7f37e87f",
                 "shasum": ""
             },
             "require": {
@@ -3166,7 +3381,7 @@
                 "issues": "https://github.com/laravel/framework/issues",
                 "source": "https://github.com/laravel/framework"
             },
-            "time": "2024-06-18T17:40:27+00:00"
+            "time": "2024-06-20T10:54:53+00:00"
         },
         {
             "name": "laravel/prompts",
@@ -4788,84 +5003,6 @@
                 }
             ],
             "time": "2024-02-27T16:15:55+00:00"
-        },
-        {
-            "name": "parfaitementweb/filament-country-field",
-            "version": "2.1.2",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/parfaitementweb/filament-country-field.git",
-                "reference": "303854c8a83bf8588ef7a4af10e0ab08286ffe89"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/parfaitementweb/filament-country-field/zipball/303854c8a83bf8588ef7a4af10e0ab08286ffe89",
-                "reference": "303854c8a83bf8588ef7a4af10e0ab08286ffe89",
-                "shasum": ""
-            },
-            "require": {
-                "filament/filament": "^3.0",
-                "illuminate/contracts": "^10.0|^11.0",
-                "php": "^8.1 || ^8.2 || ^8.3",
-                "spatie/laravel-package-tools": "^1.15.0"
-            },
-            "require-dev": {
-                "filament/spatie-laravel-settings-plugin": "^3.2",
-                "filament/spatie-laravel-translatable-plugin": "^3.2",
-                "larastan/larastan": "^2.8",
-                "laravel/pint": "^1.15",
-                "nunomaduro/collision": "^7.9|^8.1",
-                "orchestra/pest-plugin-testbench": "^2.0",
-                "orchestra/testbench": "^8.20|^9.0",
-                "pestphp/pest": "^2.1",
-                "pestphp/pest-plugin-arch": "^2.0",
-                "pestphp/pest-plugin-laravel": "^2.2",
-                "phpstan/extension-installer": "^1.1",
-                "phpstan/phpstan-deprecation-rules": "^1.0",
-                "phpstan/phpstan-phpunit": "^1.0",
-                "spatie/laravel-ray": "^1.33"
-            },
-            "type": "library",
-            "extra": {
-                "laravel": {
-                    "providers": [
-                        "Parfaitementweb\\FilamentCountryField\\FilamentCountryFieldServiceProvider"
-                    ]
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Parfaitementweb\\FilamentCountryField\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Alexis",
-                    "role": "Developer"
-                }
-            ],
-            "description": "Country dropdown with ISO 3166 options values",
-            "homepage": "https://github.com/parfaitementweb/filament-country-field",
-            "keywords": [
-                "Parfaitementweb",
-                "filament-country-field",
-                "laravel"
-            ],
-            "support": {
-                "issues": "https://github.com/parfaitementweb/filament-country-field/issues",
-                "source": "https://github.com/parfaitementweb/filament-country-field"
-            },
-            "funding": [
-                {
-                    "url": "https://github.com/parfaitementweb",
-                    "type": "github"
-                }
-            ],
-            "time": "2024-06-09T06:14:27+00:00"
         },
         {
             "name": "phpoption/phpoption",
@@ -9883,16 +10020,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "11.2.4",
+            "version": "11.2.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "0991687efe8a29945cce2e85c475e5f3cb0aab6d"
+                "reference": "be9e3ed32a1287a9bfda15936cc86fef4e4cf591"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/0991687efe8a29945cce2e85c475e5f3cb0aab6d",
-                "reference": "0991687efe8a29945cce2e85c475e5f3cb0aab6d",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/be9e3ed32a1287a9bfda15936cc86fef4e4cf591",
+                "reference": "be9e3ed32a1287a9bfda15936cc86fef4e4cf591",
                 "shasum": ""
             },
             "require": {
@@ -9963,7 +10100,7 @@
             "support": {
                 "issues": "https://github.com/sebastianbergmann/phpunit/issues",
                 "security": "https://github.com/sebastianbergmann/phpunit/security/policy",
-                "source": "https://github.com/sebastianbergmann/phpunit/tree/11.2.4"
+                "source": "https://github.com/sebastianbergmann/phpunit/tree/11.2.5"
             },
             "funding": [
                 {
@@ -9979,7 +10116,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-06-20T07:30:48+00:00"
+            "time": "2024-06-20T13:11:31+00:00"
         },
         {
             "name": "sebastian/cli-parser",

@@ -10,6 +10,7 @@ use Filament\Resources\Pages\CreateRecord;
 class CreateBourse extends CreateRecord
 {
     use \App\Traits\Core\TranslatableForm;
+
     protected static string $resource = BourseResource::class;
 
 }

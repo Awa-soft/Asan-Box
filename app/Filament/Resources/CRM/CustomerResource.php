@@ -134,12 +134,11 @@ class CustomerResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                Tables\Filters\TrashedFilter::make(),
+                Tables\Filters\TrashedFilter::make()
+                ->native(0),
             ])
             ->actions([
-                Tables\Actions\EditAction::make()
-->modalWidth("lg"),
-                Tables\Actions\DeleteAction::make(),
+
 
             ])
             ->bulkActions([

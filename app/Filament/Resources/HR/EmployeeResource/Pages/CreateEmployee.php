@@ -10,5 +10,5 @@ use Filament\Resources\Pages\CreateRecord;
 class CreateEmployee extends CreateRecord
 {
     protected static string $resource = EmployeeResource::class;
-    use TranslatableForm;
+    use \App\Traits\Core\TranslatableForm;
 }

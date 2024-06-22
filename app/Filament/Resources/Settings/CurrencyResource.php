@@ -94,14 +94,9 @@ class CurrencyResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                // Tables\Filters\TrashedFilter::make(),
+                // Tables\Filters\TrashedFilter::make()
             ])
             ->actions([
-
-                Tables\Actions\EditAction::make()
-                    ->modalWidth("lg"),
-                DeleteAction::make()
-                    ->hidden(fn ($record) => $record->id == 1 || $record->id == 2),
             ])
             ->bulkActions([
                 // Tables\Actions\BulkActionGroup::make([

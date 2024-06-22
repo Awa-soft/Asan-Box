@@ -46,7 +46,8 @@ class EmployeeNoteResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
-            ->columns([static::Column(),
+            ->columns([
+                static::Column(),
                 Tables\Columns\TextColumn::make('employee.name')
                     ->numeric()
                     ->sortable(),
@@ -71,10 +72,10 @@ class EmployeeNoteResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                Tables\Filters\TrashedFilter::make(),
+                Tables\Filters\TrashedFilter::make()
+                ->native(0),
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

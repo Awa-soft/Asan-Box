@@ -231,14 +231,13 @@ class PurchasePage extends Page implements HasForms
     }
 
     public function addToCode(){
-        if(isset($this->codes['code'])){
+        if (count($this->codes) > 0) {
             if (isset($this->codes['gift'])) {
                 $this->codes['gift'] ='gift' ;
             }
             else{
                 $this->codes['gift'] ='no' ;
             }
-
             $this->tableData[$this->key]['codes'][] = $this->codes;
             $this->codes = [];
         }
@@ -271,7 +270,6 @@ class PurchasePage extends Page implements HasForms
         DB::beginTransaction();
         try {
             unset($this->invoiceData['total']);
-
             $invoice = PurchaseInvoice::create($this->invoiceData);
             collect($this->tableData)->each(function ($record) use ($invoice) {
                 $detail = $invoice->details()->create(
@@ -283,6 +281,7 @@ class PurchasePage extends Page implements HasForms
                         'currency_id' => $record['currency_id'],
                     ]
                 );
+
                 collect($record['codes'])->each(function ($code) use ( $detail, $record) {
                     $code['item_id'] = $record['id'];
                     $detail->codes()->delete();

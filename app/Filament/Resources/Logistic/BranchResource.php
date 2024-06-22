@@ -137,12 +137,10 @@ class BranchResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                Tables\Filters\TrashedFilter::make(),
+                Tables\Filters\TrashedFilter::make()
+                ->native(0),
             ])
             ->actions([
-                ActionGroup::make([
-                    Tables\Actions\EditAction::make()
-->modalWidth("lg"),
                     Tables\Actions\Action::make('warehouses')
                         ->modalWidth("lg")
                         ->form(
@@ -167,10 +165,6 @@ class BranchResource extends Resource
                                 ->title(trans("filament-actions::edit.single.notifications.saved.title"))
                                 ->send();
                         }),
-                        Tables\Actions\DeleteAction::make(),
-
-                ])
-                    ->icon('css-more-o'),
 
             ])
             ->bulkActions([

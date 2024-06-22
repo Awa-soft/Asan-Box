@@ -67,16 +67,11 @@ class BrandResource extends Resource
 
             ])
             ->filters([
-                Tables\Filters\TrashedFilter::make(),
+                Tables\Filters\TrashedFilter::make()
+                ->native(0),
             ])
             ->actions([
-                ActionGroup::make([
-                    Tables\Actions\ViewAction::make(),
-                    Tables\Actions\EditAction::make()
-                        ->color('primary'),
-                    Tables\Actions\DeleteAction::make(),
-                ])
-                    ->icon('css-more-o')
+
 
             ])
             ->bulkActions([

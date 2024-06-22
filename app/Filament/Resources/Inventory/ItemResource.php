@@ -118,6 +118,13 @@ class ItemResource extends Resource
                 Tables\Columns\TextColumn::make('description')
                     ->label(trans("lang.description"))
                     ->searchable(),
+                Tables\Columns\TextColumn::make('cost')
+                    ->label(trans("lang.cost"))
+                    ->searchable()
+                    ->numeric(getBaseCurrency()->decimal)
+                    ->suffix(
+                        " ".getBaseCurrency()->symbol
+                    ),
                 Tables\Columns\TextColumn::make('barcode')
                     ->label(trans("lang.barcode"))
                     ->searchable()
@@ -130,7 +137,6 @@ class ItemResource extends Resource
                     ->numeric()
                     ->label(trans("lang.brand"))
                     ->sortable(),
-
                 ViewColumn::make('price')->view('tables.columns.price-column')
                     ->state(function ($record) {
                         return $record;
@@ -142,6 +148,7 @@ class ItemResource extends Resource
                     ->suffix(fn ($record) => " " . $record->singleUnit->name)
                     ->description(fn ($record) => $record->multiUnit->name)
                     ->numeric()
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->sortable(),
                 Tables\Columns\TextColumn::make('benifit_ratio')
                     ->numeric()
@@ -171,13 +178,11 @@ class ItemResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                Tables\Filters\TrashedFilter::make(),
+                Tables\Filters\TrashedFilter::make()
+                ->native(0),
             ])
             ->actions([
-                Tables\Actions\ReplicateAction::make(),
-                Tables\Actions\EditAction::make()
-                    ->modalWidth("lg"),
-                Tables\Actions\DeleteAction::make(),
+
 
             ])
             ->bulkActions([

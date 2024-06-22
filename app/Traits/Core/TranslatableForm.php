@@ -4,6 +4,7 @@ namespace App\Traits\Core;
 
 use Filament\Forms\Components\Builder;
 use Filament\Forms\Components\Fieldset;
+use Filament\Forms\Components\Group;
 use Filament\Forms\Components\Placeholder;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Section;
@@ -44,6 +45,13 @@ trait TranslatableForm
                 $subComponents[]=$this->checkComponent($subComponent);
             }
             return $component->label(trans('lang.'.$this->removeIdSuffix($component->getLabel())))
+                ->schema($subComponents);
+        }elseif($component instanceof  Group){
+            $subComponents = [];
+            foreach ($component->getChildComponents() as $subComponent){
+                $subComponents[]=$this->checkComponent($subComponent);
+            }
+            return $component
                 ->schema($subComponents);
         }elseif($component instanceof Tabs){
             $subComponents = [];
