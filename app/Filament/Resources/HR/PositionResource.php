@@ -4,6 +4,7 @@ namespace App\Filament\Resources\HR;
 
 use App\Filament\Resources\HR\PositionResource\Pages;
 use App\Filament\Resources\HR\PositionResource\RelationManagers;
+use App\Filament\Resources\HR\PositionResource\RelationManagers\EmployeesRelationManager;
 use App\Models\HR\Position;
 use App\Traits\Core\OwnerableTrait;
 use Filament\Forms;
@@ -45,8 +46,7 @@ class PositionResource extends Resource
                     ->columnSpanFull(),
                 ])
                 ->columnSpanFull()
-                ->visible(fn($operation)=>$operation=="create"),
-
+                ->visible(fn($operation)=>$operation!="edit"),
                 Group::make([
                     static::Field()
                     ->columns(2)
@@ -88,7 +88,8 @@ class PositionResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                Tables\Filters\TrashedFilter::make(),
+                Tables\Filters\TrashedFilter::make()
+                ->native(0),
             ])
             ->actions([
             ])
@@ -104,7 +105,7 @@ class PositionResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            EmployeesRelationManager::class
         ];
     }
 

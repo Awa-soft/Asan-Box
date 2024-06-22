@@ -2,9 +2,9 @@
 
 namespace App\Filament\Resources\HR;
 
-use App\Filament\Resources\HR\EmployeeNoteResource\Pages;
-use App\Filament\Resources\HR\EmployeeNoteResource\RelationManagers;
-use App\Models\HR\EmployeeNote;
+use App\Filament\Resources\HR\EmployeeLeaveResource\Pages;
+use App\Filament\Resources\HR\EmployeeLeaveResource\RelationManagers;
+use App\Models\HR\EmployeeLeave;
 use App\Traits\Core\HasTranslatableResource;
 use App\Traits\Core\OwnerableTrait;
 use Filament\Forms;
@@ -15,14 +15,14 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class EmployeeNoteResource extends Resource
+class EmployeeLeaveResource extends Resource
 {
     use OwnerableTrait;
     use HasTranslatableResource;
 
-    protected static ?string $model = EmployeeNote::class;
+    protected static ?string $model = EmployeeLeave::class;
 
-    protected static ?string $navigationIcon = 'tabler-notes';
+    protected static ?string $navigationIcon = 'pepicon-leave-circle';
 
     public static function form(Form $form): Form
     {
@@ -34,12 +34,18 @@ class EmployeeNoteResource extends Resource
                     ->searchable()
                     ->preload()
                     ->required(),
-                Forms\Components\DatePicker::make('date')
-                    ->required()
-                    ->default(now()),
-                    Forms\Components\Textarea::make('note')
-                    ->required()
-                    ->columnSpanFull(),
+                Forms\Components\DateTimePicker::make('from')
+                    ->required(),
+                Forms\Components\DateTimePicker::make('to')
+                    ->required(),
+                Forms\Components\TextInput::make('note')
+                    ->maxLength(255),
+                Forms\Components\Select::make('status')
+                ->options(
+                    static::$model::getStatus()
+                )
+                ->native(false)
+                    ->required(),
             ]);
     }
 
@@ -48,12 +54,31 @@ class EmployeeNoteResource extends Resource
         return $table
             ->columns([
                 static::Column(),
+                Tables\Columns\TextColumn::make('status')
+                ->badge()
+                ->color(function($state){
+                    if($state == 'pending'){
+                        return 'warning';
+                    }
+                    if($state == 'approved'){
+                        return 'success';
+                    }
+                    if($state == 'rejected'){
+                        return 'danger';
+                    }
+                }),
                 Tables\Columns\TextColumn::make('employee.name')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('date')
-                    ->date()
+                Tables\Columns\TextColumn::make('from')
+                    ->dateTime()
                     ->sortable(),
+                Tables\Columns\TextColumn::make('to')
+                    ->dateTime()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('note')
+                    ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: true),
 
                 Tables\Columns\TextColumn::make('user.name')
                     ->numeric()
@@ -94,9 +119,9 @@ class EmployeeNoteResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListEmployeeNotes::route('/'),
-            // 'create' => Pages\CreateEmployeeNote::route('/create'),
-            'edit' => Pages\EditEmployeeNote::route('/{record}/edit'),
+            'index' => Pages\ListEmployeeLeaves::route('/'),
+            // 'create' => Pages\CreateEmployeeLeave::route('/create'),
+            'edit' => Pages\EditEmployeeLeave::route('/{record}/edit'),
         ];
     }
 
