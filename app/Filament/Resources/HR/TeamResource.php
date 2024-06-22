@@ -4,6 +4,7 @@ namespace App\Filament\Resources\HR;
 
 use App\Filament\Resources\HR\TeamResource\Pages;
 use App\Filament\Resources\HR\TeamResource\RelationManagers;
+use App\Filament\Resources\HR\TeamResource\RelationManagers\MembersRelationManager;
 use App\Models\HR\Team;
 use App\Traits\Core\HasTranslatableResource;
 use App\Traits\Core\OwnerableTrait;
@@ -83,7 +84,7 @@ class TeamResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            MembersRelationManager::class,
         ];
     }
 

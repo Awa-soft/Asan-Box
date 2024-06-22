@@ -4,6 +4,7 @@ namespace App\Filament\Resources\HR;
 
 use App\Filament\Resources\HR\IdentityTypeResource\Pages;
 use App\Filament\Resources\HR\IdentityTypeResource\RelationManagers;
+use App\Filament\Resources\HR\IdentityTypeResource\RelationManagers\EmployeesRelationManager;
 use App\Models\HR\IdentityType;
 use App\Traits\Core\HasTranslatableResource;
 use App\Traits\Core\OwnerableTrait;
@@ -75,7 +76,7 @@ class IdentityTypeResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            EmployeesRelationManager::class,
         ];
     }
 

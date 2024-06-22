@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Employee extends Model
@@ -47,9 +48,24 @@ class Employee extends Model
         return $this->belongsToMany(Position::class,'employee_positions');
     }
 
-    public function teams(): BelongsToMany{
+    public function team(): BelongsToMany{
         return $this->belongsToMany(Team::class,'team_employees');
     }
+    public function activities() :HasMany{
+        return $this->hasMany(EmployeeActivity::class, 'employee_id');
+    }
+    public function notes() :HasMany{
+        return $this->hasMany(EmployeeNote::class, 'employee_id');
+    }
+    public function salaries() :HasMany{
+        return $this->hasMany(EmployeeSalary::class);
+    }
+
+    public function getLastSalaryDateAttribute():?string{
+        return $this->salaries()->latest()->first()?->salary_date ?? $this->hire_date;
+    }
+
+
 
 
 }

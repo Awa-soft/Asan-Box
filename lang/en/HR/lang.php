@@ -20,6 +20,15 @@ return [
     'employee'=>[
         'plural_label'=>'Employees',
         'singular_label'=>'Employee'
+    ],
+
+    "position"=>[
+        "plural_label"=>"Positions",
+        "singular_label"=>"Position"
+    ],
+    "employee_salary"=>[
+        "plural_label"=>"Employee Salaries",
+        "singular_label"=>"Employee Salary"
     ]
 
 ];
