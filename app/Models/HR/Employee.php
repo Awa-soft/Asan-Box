@@ -57,6 +57,7 @@ class Employee extends Model
     public function notes() :HasMany{
         return $this->hasMany(EmployeeNote::class, 'employee_id');
     }
+
     public function leaves() :HasMany{
         return $this->hasMany(EmployeeLeave::class, 'employee_id');
     }
@@ -65,6 +66,16 @@ class Employee extends Model
     public function getRemainingLeaveAttribute(){
         return $this->annual_leave - $this->leaves()->where('status', 'approved')->whereYear('from', now())->count();
     }
+
+    public function salaries() :HasMany{
+        return $this->hasMany(EmployeeSalary::class);
+    }
+
+    public function getLastSalaryDateAttribute():?string{
+        return $this->salaries()->latest()->first()?->salary_date ?? $this->hire_date;
+    }
+
+
 
 
 

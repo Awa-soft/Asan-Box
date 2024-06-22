@@ -40,11 +40,6 @@ class EmployeeActivityResource extends Resource
                     ->required()
                     ->options(EmployeeActivity::getTypes())
                     ->required(),
-                Forms\Components\Select::make('currency_id')
-                    ->relationship('currency', 'name')
-                    ->searchable()
-                    ->preload()
-                    ->required(),
                 Forms\Components\TextInput::make('amount')
                     ->required()
                     ->numeric(),
