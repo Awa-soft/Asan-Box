@@ -24,7 +24,8 @@
         "laravel/framework": "^11.9",
         "laravel/tinker": "^2.9",
         "owenvoke/blade-fontawesome": "^2.6",
-        "ryangjchandler/blade-tabler-icons": "^2.3"
+        "ryangjchandler/blade-tabler-icons": "^2.3",
+        "saade/blade-iconsax": "^1.2"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",
