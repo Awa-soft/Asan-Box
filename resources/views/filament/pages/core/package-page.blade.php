@@ -44,10 +44,7 @@
     type="Primary"
     status="false"
     color="#088395"
-<<<<<<< Updated upstream
     price="200"
-=======
->>>>>>> Stashed changes
      />
 </div>
     <div class="grid grid-cols-2 ctn fi-section">
