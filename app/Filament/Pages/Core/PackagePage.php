@@ -26,9 +26,21 @@ use ZipArchive;
 class PackagePage extends Page implements HasForms, HasTable
 {
     use  TranslatableForm,  InteractsWithTable;
-    protected static ?string $navigationIcon = 'heroicon-o-document-text';
+    protected static ?string $navigationIcon = 'ri-sound-module-line';
     public ?array $packageData = [];
     public $packages;
+    public static function getNavigationLabel(): string
+    {
+        return trans('settings/lang.package.plural_label');
+    }
+    public  function getHeading(): string
+    {
+        return "";
+    }
+    public static function getNavigationGroup(): ?string
+    {
+        return trans('settings/lang.group_label');
+    }
     protected function getForms(): array
     {
         return [
