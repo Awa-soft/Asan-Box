@@ -5,6 +5,7 @@ namespace App\Filament\Resources\HR;
 use App\Filament\Resources\HR\EmployeeResource\Pages;
 use App\Filament\Resources\HR\EmployeeResource\RelationManagers;
 use App\Filament\Resources\HR\EmployeeResource\RelationManagers\ActivitiesRelationManager;
+use App\Filament\Resources\HR\EmployeeResource\RelationManagers\LeavesRelationManager;
 use App\Filament\Resources\HR\EmployeeResource\RelationManagers\NotesRelationManager;
 use App\Models\HR\Employee;
 use App\Models\Settings\Currency;
@@ -83,7 +84,7 @@ class EmployeeResource extends Resource
                         Forms\Components\TimePicker::make('start_time'),
                         Forms\Components\TimePicker::make('end_time'),
                         Forms\Components\Select::make('currency_id')
-                            ->relationship('currency', 'name')
+                            ->relationship('currency', 'symbol')
                             ->searchable()
                             ->preload()
                             ->live()
@@ -154,8 +155,8 @@ class EmployeeResource extends Resource
                         ->sortable(),
 
                 Tables\Columns\TextColumn::make('salary')
-                    ->suffix(fn ($record) => getCurrencySymbol($record->currency_id))
-                    ->numeric()
+                    ->suffix(fn ($record) => " ".getCurrencySymbol($record->currency_id))
+                    ->numeric(fn($record)=>getCurrencyDecimal( $record->currency_id))
                     ->sortable(),
                 Tables\Columns\TextColumn::make('hire_date')
                     ->date()
@@ -172,6 +173,9 @@ class EmployeeResource extends Resource
                 Tables\Columns\TextColumn::make('annual_leave')
                     ->numeric()
                     ->toggleable(isToggledHiddenByDefault: true)
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('remaining_leave')
+                    ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('absence_amount')
                     ->suffix(fn ($record) => getCurrencySymbol($record->currency_id))
@@ -204,16 +208,17 @@ class EmployeeResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                Tables\Filters\TrashedFilter::make(),
+                Tables\Filters\TrashedFilter::make()
+                ->native(0),
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                // Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
-                    Tables\Actions\ForceDeleteBulkAction::make(),
-                    Tables\Actions\RestoreBulkAction::make(),
+                    // Tables\Actions\ForceDeleteBulkAction::make(),
+                    // Tables\Actions\RestoreBulkAction::make(),
                 ]),
             ]);
     }
@@ -222,7 +227,8 @@ class EmployeeResource extends Resource
     {
         return [
             ActivitiesRelationManager::class,
-            NotesRelationManager::class
+            NotesRelationManager::class,
+            LeavesRelationManager::class
         ];
     }
 

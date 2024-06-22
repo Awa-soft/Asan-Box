@@ -94,7 +94,7 @@ class CurrencyResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                // Tables\Filters\TrashedFilter::make(),
+                // Tables\Filters\TrashedFilter::make()
             ])
             ->actions([
             ])

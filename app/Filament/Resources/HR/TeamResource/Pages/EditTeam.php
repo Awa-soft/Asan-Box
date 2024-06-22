@@ -10,6 +10,7 @@ class EditTeam extends EditRecord
 {
 
     protected static string $resource = TeamResource::class;
+    use \App\Traits\Core\TranslatableForm;
 
     protected function getHeaderActions(): array
     {

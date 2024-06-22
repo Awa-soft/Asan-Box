@@ -11,8 +11,8 @@ use Filament\Resources\Pages\ListRecords;
 class ListPositions extends ListRecords
 {
 
-    
-    use TranslatableForm, TranslatableTable;
+
+        use \App\Traits\Core\TranslatableForm, \App\Traits\Core\TranslatableTable;
     protected static string $resource = PositionResource::class;
 
     protected function getHeaderActions(): array

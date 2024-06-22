@@ -1,57 +1,35 @@
 <?php
 
-namespace App\Filament\Resources\HR;
+namespace App\Filament\Resources\HR\EmployeeResource\RelationManagers;
 
-use App\Filament\Resources\HR\EmployeeLeaveResource\Pages;
-use App\Filament\Resources\HR\EmployeeLeaveResource\RelationManagers;
-use App\Models\HR\EmployeeLeave;
-use App\Traits\Core\HasTranslatableResource;
 use App\Traits\Core\OwnerableTrait;
 use Filament\Forms;
 use Filament\Forms\Form;
-use Filament\Resources\Resource;
+use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class EmployeeLeaveResource extends Resource
+class LeavesRelationManager extends RelationManager
 {
     use OwnerableTrait;
-    use HasTranslatableResource;
+    protected static string $relationship = 'leaves';
 
-    protected static ?string $model = EmployeeLeave::class;
-
-    protected static ?string $navigationIcon = 'pepicon-leave-circle';
-
-    public static function form(Form $form): Form
+    public function form(Form $form): Form
     {
         return $form
             ->schema([
-                static::Field(),
-                Forms\Components\Select::make('employee_id')
-                    ->relationship('employee', 'name')
-                    ->searchable()
-                    ->preload()
-                    ->required(),
-                Forms\Components\DateTimePicker::make('from')
-                    ->required(),
-                Forms\Components\DateTimePicker::make('to')
-                    ->required(),
-                Forms\Components\TextInput::make('note')
+                Forms\Components\TextInput::make('employee.name')
+                    ->required()
                     ->maxLength(255),
-                Forms\Components\Select::make('status')
-                ->options(
-                    static::$model::getStatus()
-                )
-                ->native(false)
-                    ->required(),
             ]);
     }
 
-    public static function table(Table $table): Table
+    public function table(Table $table): Table
     {
         return $table
+            ->recordTitleAttribute('employee.name')
             ->columns([
                 static::Column(),
                 Tables\Columns\TextColumn::make('status')
@@ -97,39 +75,19 @@ class EmployeeLeaveResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                Tables\Filters\TrashedFilter::make()
-                ->native(0),
+                //
+            ])
+            ->headerActions([
+                // Tables\Actions\CreateAction::make(),
             ])
             ->actions([
+                // Tables\Actions\EditAction::make(),
+                // Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                    // Tables\Actions\DeleteBulkAction::make(),
                 ]),
-            ]);
-    }
-
-    public static function getRelations(): array
-    {
-        return [
-            //
-        ];
-    }
-
-    public static function getPages(): array
-    {
-        return [
-            'index' => Pages\ListEmployeeLeaves::route('/'),
-            // 'create' => Pages\CreateEmployeeLeave::route('/create'),
-            'edit' => Pages\EditEmployeeLeave::route('/{record}/edit'),
-        ];
-    }
-
-    public static function getEloquentQuery(): Builder
-    {
-        return parent::getEloquentQuery()
-            ->withoutGlobalScopes([
-                SoftDeletingScope::class,
             ]);
     }
 }

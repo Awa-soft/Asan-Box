@@ -8,5 +8,7 @@ use Filament\Resources\Pages\CreateRecord;
 
 class CreateEmployeeLeave extends CreateRecord
 {
+    use \App\Traits\Core\TranslatableForm;
+
     protected static string $resource = EmployeeLeaveResource::class;
 }
