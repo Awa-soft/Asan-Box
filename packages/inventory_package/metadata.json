@@ -1,0 +1,7 @@
+{
+    "name" : "Inventory",
+    "version" : "1.0.0",
+    "description" : "this is inventory package description",
+    "price" : 100,
+    "type": "primary"
+}
