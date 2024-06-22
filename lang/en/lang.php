@@ -118,6 +118,11 @@ return [
     "salary_date"=>"Salary Date",
     "payment_date"=>"Payment Date",
     "payment_amount"=>"Payment Amount",
+
+    "active_date"=>"Activation Date",
+    "version"=>"Version",
+    "color"=>"Color",
+    "status"=>"Status",
     "leaves"=>"Leaves",
     "statement"=>"<b>:name</b> Statement",
     "statement_date"=>"<b>Date:</b> :from - :to",
