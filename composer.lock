@@ -5,6 +5,7 @@
         "This file is @generated automatically"
     ],
     "content-hash": "685e31d86161d7231063d2fbd4d375dd",
+
     "packages": [
         {
             "name": "andreiio/blade-remix-icon",
@@ -6363,16 +6364,16 @@
         },
         {
             "name": "spatie/laravel-permission",
-            "version": "6.8.0",
+            "version": "6.9.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/laravel-permission.git",
-                "reference": "5147997e92001bf6cc5cd207eac554bc8f16c02a"
+                "reference": "fe973a58b44380d0e8620107259b7bda22f70408"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/laravel-permission/zipball/5147997e92001bf6cc5cd207eac554bc8f16c02a",
-                "reference": "5147997e92001bf6cc5cd207eac554bc8f16c02a",
+                "url": "https://api.github.com/repos/spatie/laravel-permission/zipball/fe973a58b44380d0e8620107259b7bda22f70408",
+                "reference": "fe973a58b44380d0e8620107259b7bda22f70408",
                 "shasum": ""
             },
             "require": {
@@ -6433,7 +6434,7 @@
             ],
             "support": {
                 "issues": "https://github.com/spatie/laravel-permission/issues",
-                "source": "https://github.com/spatie/laravel-permission/tree/6.8.0"
+                "source": "https://github.com/spatie/laravel-permission/tree/6.9.0"
             },
             "funding": [
                 {
@@ -6441,7 +6442,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-06-21T23:50:10+00:00"
+            "time": "2024-06-22T23:04:52+00:00"
         },
         {
             "name": "symfony/clock",
