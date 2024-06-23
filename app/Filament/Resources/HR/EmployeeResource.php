@@ -212,7 +212,38 @@ class EmployeeResource extends Resource
                 ->native(0),
             ])
             ->actions([
-                // Tables\Actions\EditAction::make(),
+                Tables\Actions\Action::make('statement')
+                ->label(trans('lang.statement_action'))
+                ->form([
+                    Forms\Components\DatePicker::make('from')
+                        ->label(trans('lang.from')),
+                    Forms\Components\DatePicker::make('to')
+                        ->label(trans('lang.to')),
+                    Forms\Components\Select::make('activity')
+                        ->label(trans('lang.activities'))
+                        ->options([
+                            'bonus'=>trans('lang.bonus'),
+                            'punish'=>trans('lang.punish'),
+                            'salary'=>trans('lang.salary'),
+                            'leaves'=>trans('lang.leaves'),
+                            'advance'=>trans('lang.advance'),
+                            'absence'=>trans('lang.absence'),
+                            'overtime'=>trans('lang.overtime'),
+                            'notes'=>trans('lang.notes'),
+                        ])->multiple()
+                    ->native(0)
+                ])->action(function(array $data,$record){
+                    if(!$data['from']){
+                        $data['from'] = 'all';
+                    }
+                    if(!$data['to']){
+                        $data['to'] = 'all';
+                    }
+                    if(!$data['activity']){
+                        $data['activity'] = ['all'];
+                    }
+                        redirect(static::getUrl('statement',['record' => $record->id, 'from' => $data['from'], 'to' => $data['to'],'activity'=>json_encode($data['activity'])]));
+                    })->icon('tabler-report')
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -238,6 +269,7 @@ class EmployeeResource extends Resource
             'index' => Pages\ListEmployees::route('/'),
             'create' => Pages\CreateEmployee::route('/create'),
             'edit' => Pages\EditEmployee::route('/{record}/edit'),
+            'statement'=>Pages\Statement::route('{record}/{from}/{to}/{activity}/statement'),
         ];
     }
 
