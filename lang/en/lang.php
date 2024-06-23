@@ -128,4 +128,6 @@ return [
     "statement_date"=>"<b>Date:</b> :from - :to",
     "statement_phone"=>"<b>Phone:</b> :phone",
     "statement_address"=>"<b>Address:</b> :address",
+    'safe_locker' => 'Safe Locker',
+    "core_reports" => "Core Reports"
 ];
