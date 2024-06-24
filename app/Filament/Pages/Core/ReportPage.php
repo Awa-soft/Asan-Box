@@ -2,7 +2,6 @@
 
 namespace App\Filament\Pages\Core;
 
-
 use App\Filament\Pages\Reports\HR\EmployeeNoteReport;
 use App\Filament\Pages\Reports\HR\IdentityTypeReport;
 use App\Filament\Pages\Reports\HR\PositionReport;
@@ -21,14 +20,19 @@ class ReportPage extends Page implements HasForms
 {
     use InteractsWithForms;
     protected static ?string $navigationIcon = 'heroicon-o-document-text';
-    use TranslatableForm;
+
     public ?array $SafeData = [];
-    public $hrEmployeeActivity,$hrEmployeeLeave;
+    public $hrEmployeeActivity,$hrEmployeeLeave,$hrEmployeeNote,$hrIdentityType,$hrTeam,$hrPosition;
     protected function getForms(): array
     {
         return [
             'hrEmployeeActivityForm',
             'hrEmployeeLeaveForm',
+            'hrEmployeeNoteForm',
+            'hrIdentityTypesForm',
+            'hrTeamsForm',
+            'hrPositionsForm',
+            'SafeForm'
         ];
     }
 //    Employee Activity
@@ -144,7 +148,7 @@ class ReportPage extends Page implements HasForms
 
     }
 
-    //  Employee Leave
+//  Employee Leave
     public function searchEmployeeNote(){
         if(checkPackage('HR')){
             $data = $this->hrEmployeeNoteForm->getState();
@@ -250,7 +254,7 @@ class ReportPage extends Page implements HasForms
         }
     }
 
-    //  Positions
+//  Positions
     public function searchTeams(){
         if(checkPackage('HR')){
             $data = $this->hrTeamsForm->getState();
@@ -285,19 +289,17 @@ class ReportPage extends Page implements HasForms
 
         $this->hrEmployeeActivityForm->fill();
         $this->hrEmployeeLeaveForm->fill();
-
-        }
-
-    public function mount()
-    {
+        $this->hrEmployeeNoteForm->fill();
+        $this->hrIdentityTypesForm->fill();
+        $this->hrTeamsForm->fill();
+        $this->hrPositionsForm->fill();
         $this->SafeForm->fill();
+
+
     }
-    protected function getForms(): array
-    {
-        return [
-            'SafeForm',
-        ];
-    }
+
+
+
 
     public function SafeForm(Form $form): Form
     {
