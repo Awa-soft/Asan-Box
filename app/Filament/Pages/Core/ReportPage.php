@@ -2,6 +2,10 @@
 
 namespace App\Filament\Pages\Core;
 
+
+use App\Traits\Core\TranslatableForm;
+use Filament\Forms\Components\DatePicker;
+
 use App\Filament\Pages\Reports\HR\EmployeeActivityReport;
 use App\Filament\Pages\Reports\HR\EmployeeLeaveReport;
 use Filament\Forms\Components\DatePicker;
@@ -15,6 +19,8 @@ class ReportPage extends Page implements HasForms
 {
     use InteractsWithForms;
     protected static ?string $navigationIcon = 'heroicon-o-document-text';
+    use TranslatableForm;
+    public ?array $SafeData = [];
     public $hrEmployeeActivity,$hrEmployeeLeave;
     protected function getForms(): array
     {
@@ -142,5 +148,39 @@ class ReportPage extends Page implements HasForms
 
         }
 
+    public function mount()
+    {
+        $this->SafeForm->fill();
+    }
+    protected function getForms(): array
+    {
+        return [
+            'SafeForm',
+        ];
+    }
+
+    public function SafeForm(Form $form): Form
+    {
+        return $form->schema(
+            [
+                DatePicker::make('from'),
+                DatePicker::make('to'),
+            ]
+        )
+        ->statePath('SafeData');
+    }
+
+    public function navigateToReport($report)
+    {
+        switch ($report) {
+            case 'safe':
+                $this->redirect(route("filament.admin.pages.reports.core.safe.{from}.{to}", [$this->SafeData['from'] ?? 'all', $this->SafeData['to'] ?? 'all']), true);
+                break;
+
+            default:
+                # code...
+                break;
+        }
+    }
     protected static string $view = 'filament.pages.core.report-page';
 }
