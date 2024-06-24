@@ -32,7 +32,7 @@
         <table class="w-full">
             <thead>
                 <th class="pb-4" style="border-width: 0">
-                    <img class="w-full hidden print:block" src="{{asset('storage/'.(auth()->user()?->ownerable?->receipt_header!=null?auth()->user()?->ownerable?->receipt_header:\App\Models\Logistic\Branch::find(1)?->receipt_header))}}">
+                    <img class="hidden w-full print:block" src="{{asset('storage/'.(auth()->user()?->ownerable?->receipt_header!=null?auth()->user()?->ownerable?->receipt_header:\App\Models\Logistic\Branch::find(1)?->receipt_header))}}">
                 </th>
             </thead>
             <tbody>
@@ -41,7 +41,7 @@
                         <div class="px-4">
                             {{$pageHeader??''}}
                             <table class="w-full my-4">
-                                <thead class="bg-primary-500 border text-white">
+                                <thead class="text-white border bg-primary-500">
                                 {{$tableHeader??''}}
                                 </thead>
                                 <tbody>
@@ -62,6 +62,6 @@
             </th>
             </tfoot>
         </table>
-        <img class="w-full fixed opacity-0 print:opacity-100 bottom-0 left-0" src="{{asset('storage/'.(auth()->user()?->ownerable?->receipt_footer!=null ?auth()->user()?->ownerable?->receipt_footer:\App\Models\Logistic\Branch::find(1)?->receipt_footer))}}">
+        <img class="fixed bottom-0 left-0 w-full opacity-0 print:opacity-100" src="{{asset('storage/'.(auth()->user()?->ownerable?->receipt_footer!=null ?auth()->user()?->ownerable?->receipt_footer:\App\Models\Logistic\Branch::find(1)?->receipt_footer))}}">
     </div>
 </div>

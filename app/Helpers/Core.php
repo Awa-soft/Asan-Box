@@ -87,6 +87,10 @@ function valueInArray($value,$array):bool{
     return false;
 }
 
+function getReceiptHeader(){
+    return 'storage/'.(auth()->user()?->ownerable?->receipt_header != null ? auth()->user()?->ownerable?->receipt_header : \App\Models\Logistic\Branch::find(1)->receipt_header);
+}
+
 
 
 

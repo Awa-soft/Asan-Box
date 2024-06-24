@@ -1,7 +1,9 @@
 <x-filament-panels::page>
     <link rel="stylesheet" href="{{asset('assets/css/core/print.css')}}">
+
+
     <section class="sheet A4 ">
-    <div class=" mx-auto  bg-white">
+    <div class="mx-auto bg-white ">
         <table class="w-full">
             <thead>
             <td>
@@ -16,7 +18,7 @@
             <tr>
                 <td>
                     @if(in_array('salary',$activity) || in_array('all',$activity))
-                        <div class="bg-primary-600 mt-4 rounded-sm font-bold text-white p-2 text-center">
+                        <div class="p-2 mt-4 font-bold text-center text-white rounded-sm bg-primary-600">
                             {{trans('HR/lang.employee_salary.plural_label')}}
                         </div>
                         <table class="w-full">
@@ -33,17 +35,17 @@
                             <th class="border">
                                 {{trans('lang.payment_date')}}
                             </th>
-                            <th class="border py-2">
+                            <th class="py-2 border">
                                 {{trans('lang.note')}}
                             </th>
                             </thead>
                             <tbody class="text-center text-[9pt]">
                             @foreach($employee->salaries as $salary)
                                 <tr class="border odd:bg-gray-50">
-                                    <td class="border py-2">
+                                    <td class="py-2 border">
                                         {{ number_format($salary->amount,$salary->currency->decimal) .' '.  $salary->currency->symbol }}
                                     </td>
-                                    <td class="border py-2">
+                                    <td class="py-2 border">
                                         {{ number_format($salary->payment_amount,$salary->currency->decimal) .' '. $salary->currency->symbol }}
                                     </td>
                                     <td class="border">
@@ -61,7 +63,7 @@
                         </table>
                     @endif
                     @if(in_array('leaves',$activity) || in_array('all',$activity))
-                        <div class="bg-primary-600 mt-4 rounded-sm font-bold text-white p-2 text-center">
+                        <div class="p-2 mt-4 font-bold text-center text-white rounded-sm bg-primary-600">
                             {{trans('HR/lang.employee_leave.plural_label')}}
                         </div>
                         <table class="w-full">
@@ -75,7 +77,7 @@
                             <th class="border">
                                 {{trans('lang.status')}}
                             </th>
-                            <th class="border py-2">
+                            <th class="py-2 border">
                                 {{trans('lang.note')}}
                             </th>
                             </thead>
@@ -91,7 +93,7 @@
                                     <td class="border">
                                         {{ \App\Models\HR\EmployeeLeave::getStatus()[$leave->status] }}
                                     </td>
-                                    <td class="border py-2">
+                                    <td class="py-2 border">
                                         {{ $leave->note }}
                                     </td>
                                 </tr>
@@ -100,7 +102,7 @@
                         </table>
                     @endif
                     @if(in_array('bonus',$activity)||in_array('punish',$activity) ||in_array('overtime',$activity) ||in_array('absence',$activity) ||in_array('advance',$activity) || in_array('all',$activity))
-                        <div class="bg-primary-600 mt-4 rounded-sm font-bold text-white p-2 text-center">
+                        <div class="p-2 mt-4 font-bold text-center text-white rounded-sm bg-primary-600">
                             {{trans('HR/lang.employee_activity.plural_label')}}
                         </div>
                         <table class="w-full">
@@ -114,17 +116,17 @@
                             <th class="border">
                                 {{trans('lang.date')}}
                             </th>
-                            <th class="border py-2">
+                            <th class="py-2 border">
                                 {{trans('lang.note')}}
                             </th>
                             </thead>
                             <tbody class="text-center text-[9pt]">
                             @foreach($employee->activities as $activity_record)
                                 <tr class="border odd:bg-gray-50">
-                                    <td class="border py-2">
+                                    <td class="py-2 border">
                                         {{ \App\Models\HR\EmployeeActivity::getTypes()[$activity_record->type]  }}
                                     </td>
-                                    <td class="border py-1">
+                                    <td class="py-1 border">
                                         {{ number_format($activity_record->amount,$activity_record->currency->decimal) .' '. $activity_record->currency->symbol }}
                                     </td>
                                     <td class="border">
@@ -139,7 +141,7 @@
                         </table>
                     @endif
                     @if(in_array('notes',$activity) || in_array('all',$activity))
-                        <div class="bg-primary-600 mt-4 rounded-sm font-bold text-white p-2 text-center">
+                        <div class="p-2 mt-4 font-bold text-center text-white rounded-sm bg-primary-600">
                             {{trans('HR/lang.employee_note.plural_label')}}
                         </div>
                         <table class="w-full">
@@ -147,7 +149,7 @@
                             <th class="border">
                                 {{trans('lang.date')}}
                             </th>
-                            <th class="border py-2">
+                            <th class="py-2 border">
                                 {{trans('lang.note')}}
                             </th>
                             </thead>
@@ -157,7 +159,7 @@
                                     <td class="border">
                                         {{ \Carbon\Carbon::parse($leave->date)->format('Y/m/d') }}
                                     </td>
-                                    <td class="border py-2">
+                                    <td class="py-2 border">
                                         {{ $leave->note }}
                                     </td>
                                 </tr>

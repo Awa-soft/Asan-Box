@@ -2,7 +2,6 @@
 
 namespace App\Filament\Pages\Core;
 
-
 use App\Filament\Pages\Reports\HR\EmployeeNoteReport;
 use App\Filament\Pages\Reports\HR\IdentityTypeReport;
 use App\Filament\Pages\Reports\HR\PositionReport;
@@ -149,7 +148,7 @@ class ReportPage extends Page implements HasForms
 
     }
 
-    //  Employee Leave
+//  Employee Leave
     public function searchEmployeeNote(){
         if(checkPackage('HR')){
             $data = $this->hrEmployeeNoteForm->getState();
@@ -255,7 +254,7 @@ class ReportPage extends Page implements HasForms
         }
     }
 
-    //  Positions
+//  Positions
     public function searchTeams(){
         if(checkPackage('HR')){
             $data = $this->hrTeamsForm->getState();
