@@ -53,10 +53,9 @@ class TeamResource extends Resource
                 static::Column(),
                 Tables\Columns\TextColumn::make('name')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('employee_id')
+                Tables\Columns\TextColumn::make('leader.name')
                     ->numeric()
                     ->sortable(),
-
                 Tables\Columns\TextColumn::make('deleted_at')
                     ->dateTime()
                     ->sortable()
