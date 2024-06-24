@@ -16,12 +16,16 @@ class SafeReport extends Page implements HasForms
     protected static bool $shouldRegisterNavigation = false;
     protected static ?string $slug = 'reports/core/safe/{from}/{to}';
     public ?array $SafeData =[];
+    public $from, $to;
     public $currencies;
     public function mount($from, $to){
         $this->SafeForm->fill([
             'from' => $from,
             'to' => $to,
         ]);
+
+        $this->from = $from;
+        $this->to = $to;
 
         $this->currencies = Currency::all();
     }

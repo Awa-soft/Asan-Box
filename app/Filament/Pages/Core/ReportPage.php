@@ -21,19 +21,14 @@ class ReportPage extends Page implements HasForms
 {
     use InteractsWithForms;
     protected static ?string $navigationIcon = 'heroicon-o-document-text';
-
+    use TranslatableForm;
     public ?array $SafeData = [];
-    public $hrEmployeeActivity,$hrEmployeeLeave,$hrEmployeeNote,$hrIdentityType,$hrTeam,$hrPosition;
+    public $hrEmployeeActivity,$hrEmployeeLeave;
     protected function getForms(): array
     {
         return [
             'hrEmployeeActivityForm',
             'hrEmployeeLeaveForm',
-            'hrEmployeeNoteForm',
-            'hrIdentityTypesForm',
-            'hrTeamsForm',
-            'hrPositionsForm',
-            'SafeForm'
         ];
     }
 //    Employee Activity
@@ -290,17 +285,19 @@ class ReportPage extends Page implements HasForms
 
         $this->hrEmployeeActivityForm->fill();
         $this->hrEmployeeLeaveForm->fill();
-        $this->hrEmployeeNoteForm->fill();
-        $this->hrIdentityTypesForm->fill();
-        $this->hrTeamsForm->fill();
-        $this->hrPositionsForm->fill();
+
+        }
+
+    public function mount()
+    {
         $this->SafeForm->fill();
-
-
     }
-
-
-
+    protected function getForms(): array
+    {
+        return [
+            'SafeForm',
+        ];
+    }
 
     public function SafeForm(Form $form): Form
     {
