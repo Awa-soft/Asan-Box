@@ -174,6 +174,7 @@
       <path value="$PROJECT_DIR$/vendor/codeat3/blade-clarity-icons" />
       <path value="$PROJECT_DIR$/vendor/codeat3/blade-pepicons" />
       <path value="$PROJECT_DIR$/vendor/malzariey/filament-daterangepicker-filter" />
+      <path value="$PROJECT_DIR$/vendor/saade/blade-iconsax" />
     </include_path>
   </component>
   <component name="PhpProjectSharedConfiguration" php_language_level="8.2" />
