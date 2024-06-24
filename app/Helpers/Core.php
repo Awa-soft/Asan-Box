@@ -76,3 +76,17 @@ function packages(){
 function getPackage($id){
     return Package::find($id);
 }
+function checkPackage($name){
+    return Package::where('name', $name)->first()->exists();
+}
+
+function valueInArray($value,$array):bool{
+    if(in_array($value,$array) || $array == []){
+        return true;
+    }
+    return false;
+}
+
+
+
+

@@ -17,7 +17,7 @@
 
 </div>
     <div class="grid grid-cols-1 gap-5 xl:grid-cols-2 ctn fi-section">
-        <x-filament::section>
+        <x-filament::section class="h-max">
             <form wire:submit='uploadPackage'>
                 {{ $this->uploadPackageForm }}
 
@@ -26,7 +26,7 @@
                 </x-filament::button>
             </form>
         </x-filament::section>
-        <x-filament::section>
+        <x-filament::section >
            {{ $this->table }}
         </x-filament::section>
 

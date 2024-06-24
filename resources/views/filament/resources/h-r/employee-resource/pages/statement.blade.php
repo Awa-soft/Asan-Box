@@ -1,8 +1,20 @@
 <x-filament-panels::page>
     <link rel="stylesheet" href="{{asset('assets/css/core/print.css')}}">
     <section class="sheet A4 ">
-    <div class=" mx-auto w-[200mm] h-[287mm] p-[5mm]  bg-white">
-
+    <div class=" mx-auto  bg-white">
+        <table class="w-full">
+            <thead>
+            <td>
+                @if($employee->ownerable_type == 'App\Models\Logistic\Branch')
+                    {{$employee->ownerable->name }}
+                @else
+                    {{\App\Models\Logistic\Branch::find(1)?->name}}
+                @endif
+            </td>
+            </thead>
+            <tbody>
+            <tr>
+                <td>
                     @if(in_array('salary',$activity) || in_array('all',$activity))
                         <div class="bg-primary-600 mt-4 rounded-sm font-bold text-white p-2 text-center">
                             {{trans('HR/lang.employee_salary.plural_label')}}
@@ -153,7 +165,21 @@
                             </tbody>
                         </table>
                     @endif
-
+                </td>
+            </tr>
+            </tbody>
+            <tfoot>
+            <tr>
+                <td>
+                    @if($employee->ownerable_type == 'App\Models\Logistic\Branch')
+                        {{$employee->ownerable->name }}
+                    @else
+                        {{\App\Models\Logistic\Branch::find(1)?->name}}
+                    @endif
+                </td>
+            </tr>
+            </tfoot>
+        </table>
 
     </div>
     </section>

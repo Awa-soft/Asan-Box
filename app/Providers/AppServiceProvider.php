@@ -24,11 +24,19 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+
+        Blade::directive('Package', function ($name) {
+            return "<?php if (\\App\\Models\\Core\\Package::where('name', $name)->exists()): ?>";
+        });
+
+        Blade::directive('endPackage', function () {
+            return "<?php endif; ?>";
+        });
         foreach (glob(app_path('Helpers/*.php')) as $filename) {
             require_once $filename;
         }
         FilamentView::registerRenderHook(
-            PanelsRenderHook::GLOBAL_SEARCH_AFTER ,
+            PanelsRenderHook::GLOBAL_SEARCH_AFTER,
             fn (): View => view("navbar"),
         );
         Model::unguard();
