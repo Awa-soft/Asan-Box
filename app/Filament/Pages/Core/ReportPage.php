@@ -5,10 +5,8 @@ namespace App\Filament\Pages\Core;
 
 use App\Traits\Core\TranslatableForm;
 use Filament\Forms\Components\DatePicker;
-
 use App\Filament\Pages\Reports\HR\EmployeeActivityReport;
 use App\Filament\Pages\Reports\HR\EmployeeLeaveReport;
-use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
@@ -19,7 +17,7 @@ class ReportPage extends Page implements HasForms
 {
     use InteractsWithForms;
     protected static ?string $navigationIcon = 'heroicon-o-document-text';
-    use TranslatableForm;
+
     public ?array $SafeData = [];
     public $hrEmployeeActivity,$hrEmployeeLeave;
     protected function getForms(): array

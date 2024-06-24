@@ -8,6 +8,7 @@
       <sourceFolder url="file://$MODULE_DIR$/tests" isTestSource="true" packagePrefix="Tests\" />
       <sourceFolder url="file://$MODULE_DIR$/tests/Feature" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/tests/Unit" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/spec" isTestSource="true" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/anourvalar/eloquent-serialize" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/blade-ui-kit/blade-heroicons" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/blade-ui-kit/blade-icons" />
@@ -167,6 +168,7 @@
       <excludeFolder url="file://$MODULE_DIR$/vendor/eduard9969/blade-polaris-icons" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/codeat3/blade-pepicons" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/malzariey/filament-daterangepicker-filter" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/milon/barcode" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/saade/blade-iconsax" />
     </content>
     <orderEntry type="inheritedJdk" />
