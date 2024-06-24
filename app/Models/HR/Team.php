@@ -16,7 +16,7 @@ class Team extends Model
     use HasFactory, HasUser, Ownerable, SoftDeletes;
 
     public function leader():BelongsTo{
-        return $this->belongsTo(Employee::class, "employee_id")->withTrashed();
+        return $this->belongsTo(Employee::class, "leader_id")->withTrashed();
     }
 
     public function members(): BelongsToMany{

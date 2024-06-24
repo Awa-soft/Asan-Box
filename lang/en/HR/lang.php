@@ -39,6 +39,11 @@ return [
     "reports"=>[
         "label"=>"HR Reports",
         "activity"=>"Employee Activity",
+        "leave"=>"Employee Leaves",
+        'note'=>'Employee Notes',
+        "identity_types"=>"Identity Types",
+        "positions"=>"Positions",
+        "team"=>"Teams",
     ]
 
 

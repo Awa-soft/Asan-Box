@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->foreignId("leader_id")->constrained("employees")->restrictOnDelete();
+            $table->foreignIdFor(\App\Models\User::class);
             $table->morphs("ownerable");
             $table->softDeletes();
             $table->timestamps();

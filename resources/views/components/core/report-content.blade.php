@@ -29,7 +29,7 @@
         </div>
           </div>
     <div class="mx-auto relative text-black bg-white w-[210mm] min-h-[297mm]">
-        <table>
+        <table class="w-full">
             <thead>
                 <th class="pb-4" style="border-width: 0">
                     <img class="w-full hidden print:block" src="{{asset('storage/'.(auth()->user()?->ownerable?->receipt_header!=null?auth()->user()?->ownerable?->receipt_header:\App\Models\Logistic\Branch::find(1)?->receipt_header))}}">
