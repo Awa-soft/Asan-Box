@@ -35,6 +35,10 @@ return [
     "employee_salary"=>[
         "plural_label"=>"Employee Salaries",
         "singular_label"=>"Employee Salary"
+    ],
+    "reports"=>[
+        "label"=>"HR Reports",
+        "activity"=>"Employee Activity",
     ]
 
 

@@ -12,6 +12,11 @@
         background: white !important;
     }
 
+    main div section{
+        padding: 0!important;
+        margin: 0!important;
+        gap: 0!important;
+    }
     .fi-sidebar,.fi-sidebar * ,.fi-header, .fi-header *, .fi-topbar, .fi-topbar *, .fi-sidebar-close-overlay, .fi-sidebar-close-overlay *, .fi-breadcrumbs, .fi-breadcrumbs * {
         display: none !important;
         visibility: hidden;
