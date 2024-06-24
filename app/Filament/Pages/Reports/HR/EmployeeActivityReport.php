@@ -6,9 +6,8 @@ use App\Models\HR\EmployeeActivity;
 use Carbon\Carbon;
 use Filament\Pages\Page;
 use Illuminate\Contracts\View\View;
-use Livewire\Features\SupportAttributes\AttributeCollection;
 use Livewire\WithPagination;
-
+use Mccarlosen\LaravelMpdf\Facades\LaravelMpdf;
 class EmployeeActivityReport extends Page
 {
     protected static ?string $navigationIcon = 'heroicon-o-document-text';
@@ -17,7 +16,7 @@ class EmployeeActivityReport extends Page
     protected static ?string $slug = 'reports/hr/employee-activity/{from}/{to}/{employee_id}/{attr}/{types}';
     protected static bool $shouldRegisterNavigation = false;
 
-    public  $from,$to,$employee_id,$attr = [],$types=[];
+    public  $from,$to,$employee_id,$attr = [],$types=[], $data;
 
     public function mount($from,$to,$employee_id,$attr,$types){
         $this->from = $from;
@@ -27,10 +26,27 @@ class EmployeeActivityReport extends Page
         $this->types = json_decode($types,0);
     }
 
+    public function generatePdf(){
+        $data = [
+            'from' => $this->from,
+            'to' => $this->to,
+            'employee_id' => $this->employee_id,
+            'attr' => $this->attr,
+            'types' => $this->types,
+            'data' => $this->data,
+        ];
+
+        $pdf = LaravelMpdf::loadView('pdf.HR.employee-activity-report', $data);
+        dd($pdf);
+        return  response()->streamDownload(function () use($pdf) {
+            echo $pdf->output();
+        }, 'employee-activity-report.pdf');
+
+    }
 
     public function render(): View
     {
-        $data = EmployeeActivity::when($this->from != 'all', function ($query) {
+        $this->data = EmployeeActivity::when($this->from != 'all', function ($query) {
             return $query->whereDate('date', '>=', Carbon::parse($this->from));
         })->when($this->to!= 'all', function ($query) {
             return $query->whereDate('date', '<=', Carbon::parse($this->to));
@@ -44,7 +60,7 @@ class EmployeeActivityReport extends Page
                 'livewire' => $this,
                 'maxContentWidth' => $this->getMaxContentWidth(),
                 ...$this->getLayoutData(),
-            ])->with('data', $data);
+            ])->with('data', $this->data);
     }
 
 }
