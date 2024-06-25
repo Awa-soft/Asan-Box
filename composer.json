@@ -25,6 +25,7 @@
         "khatabwedaa/blade-css-icons": "^1.4",
         "laravel/framework": "^11.9",
         "laravel/tinker": "^2.9",
+        "maatwebsite/excel": "^3.1",
         "malzariey/filament-daterangepicker-filter": "^2.7",
         "milon/barcode": "^11.0",
         "mramadan0101/dompdf": "^0.8.3",

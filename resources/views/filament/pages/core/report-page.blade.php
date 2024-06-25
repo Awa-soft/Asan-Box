@@ -1,3 +1,6 @@
+<x-filament-panels::page>
+    <div class="grid items-start grid-cols-1 gap-4 lg:grid-cols-5">
+        @Package('Inventory')
     <x-filament-panels::page>
         <style>
             .report-page  .fi-section{
