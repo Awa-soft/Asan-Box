@@ -4,6 +4,7 @@ namespace App\Filament\Pages\Core;
 
 use App\Filament\Pages\Reports\HR\EmployeeNoteReport;
 use App\Filament\Pages\Reports\HR\EmployeeReport;
+use App\Filament\Pages\Reports\HR\EmployeeSalary;
 use App\Filament\Pages\Reports\HR\EmployeeSummary;
 use App\Filament\Pages\Reports\HR\IdentityTypeReport;
 use App\Filament\Pages\Reports\HR\PositionReport;
@@ -27,7 +28,7 @@ class ReportPage extends Page implements HasForms
     protected static ?string $navigationIcon = 'heroicon-o-document-text';
 
     public ?array $SafeData = [];
-    public $hrEmployeeActivity,$hrEmployeeLeave,$hrEmployeeNote,$hrIdentityType,$hrTeam,$hrPosition,$hrEmployee,$hrEmployeeSummary;
+    public $hrEmployeeActivity,$hrEmployeeLeave,$hrEmployeeNote,$hrIdentityType,$hrTeam,$hrPosition,$hrEmployee,$hrEmployeeSalary,$hrEmployeeSummary;
     protected function getForms(): array
     {
         return [
@@ -38,6 +39,7 @@ class ReportPage extends Page implements HasForms
             'hrTeamsForm',
             'hrPositionsForm',
             'hrEmployeesForm',
+            'hrEmployeesSalaryForm',
             'hrEmployeesSummaryForm',
             'SafeForm'
         ];
@@ -393,6 +395,58 @@ class ReportPage extends Page implements HasForms
             return $form->statePath('hrEmployeeSummary');
         }
     }
+
+//    Employee Salary
+    public function searchEmployeesSalary(){
+        if(checkPackage('HR')){
+            $data = $this->hrEmployeesSalaryForm->getState();
+            $attr = json_encode($data['attr']??[]);
+            $from = $data['from']?? 'all';
+            $to = $data['to']?? 'all';
+            $emplotyeeId = $data['employee_id']?? 'all';
+            return $this->redirect(EmployeeSalary::getUrl(['employee_id'=>$emplotyeeId,'from'=>$from,'to'=>$to,'attr' => $attr]));
+        }else{
+            return null;
+        }
+    }
+    public function hrEmployeesSalaryForm(Form $form): Form
+    {
+        if(checkPackage('HR')){
+            return $form->columns(2)->model(\App\Models\HR\EmployeeSalary::class)
+                ->schema([
+                    DatePicker::make('from')
+                        ->label(trans('lang.from')),
+                    DatePicker::make('to')
+                        ->label(trans('lang.to')),
+                    Select::make('employee_id')
+                        ->label(trans('lang.employee'))
+                        ->searchable()
+                        ->preload()
+                    ->relationship('employee', 'name'),
+                    Select::make('attr')
+                        ->label(trans('lang.attributes'))
+                        ->required()
+                        ->options([
+                            'owner' => trans('lang.owner'),
+                            'user'=>trans('lang.user'),
+                            'employee'=>trans('lang.employee'),
+                            'last_salary'=>trans('lang.last_salary'),
+                            'salary_date'=>trans('lang.salary_date'),
+                            'payment_date'=>trans('lang.payment_date'),
+                            'punish'=>trans('lang.punish'),
+                            'bonus'=>trans('lang.bonus'),
+                            'overtime'=>trans('lang.overtime'),
+                            'advance'=>trans('lang.advance'),
+                            'absence'=>trans('lang.absence'),
+                            'amount'=>trans('lang.amount'),
+                            'payment_amount'=>trans('lang.payment_amount'),
+                        ])->native(0)
+                        ->multiple()
+                ])->statePath('hrEmployeeSalary');
+        }else{
+            return $form->statePath('hrEmployeeSalary');
+        }
+    }
     public function mount(){
 
         $this->hrEmployeeActivityForm->fill();
@@ -402,6 +456,7 @@ class ReportPage extends Page implements HasForms
         $this->hrTeamsForm->fill();
         $this->hrPositionsForm->fill();
         $this->hrEmployeesForm->fill();
+        $this->hrEmployeesSalaryForm->fill();
         $this->hrEmployeesSummaryForm->fill();
         $this->SafeForm->fill();
 

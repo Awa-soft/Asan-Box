@@ -21,6 +21,7 @@
         "dutchcodingcompany/filament-developer-logins": "^1.2",
         "eduard9969/blade-polaris-icons": "^2.6",
         "filament/filament": "3.*",
+        "hasnayeen/themes": "^3.0",
         "khaled.alshamaa/ar-php": "^6.3",
         "khatabwedaa/blade-css-icons": "^1.4",
         "laravel/framework": "^11.9",

@@ -9,6 +9,7 @@ use App\Traits\Core\Ownerable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use function Laravel\Prompts\select;
 
 class EmployeeSalary extends Model
 {
@@ -59,7 +60,6 @@ class EmployeeSalary extends Model
         });
 
     }
-
     public function employee():BelongsTo{
         return $this->belongsTo(Employee::class)->withTrashed();
     }
@@ -70,8 +70,14 @@ class EmployeeSalary extends Model
         return $this->belongsTo(Branch::class)->withTrashed();
     }
 
-    public function getDollarAmountAttribute():float{
+    public function getBaseAmountAttribute():float{
         return $this->amount / ($this->currency_rate?? 1);
+    }
+    public function getLastSalaryAttribute(){
+        return self::where('salary_date','<',$this->salary_date)->where('employee_id',$this->employee_id)->first()?->salary_date??Employee::find($this->employee_id)->hire_date;
+    }
+    public function getActivitiesAttribute(){
+        return EmployeeActivity::where('employee_id',$this->employee_id)->where('date','>=',$this->last_salary)->where('date','<',$this->salary_date)->get();
     }
 
 }
