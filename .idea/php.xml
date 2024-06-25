@@ -176,6 +176,7 @@
       <path value="$PROJECT_DIR$/vendor/malzariey/filament-daterangepicker-filter" />
       <path value="$PROJECT_DIR$/vendor/saade/blade-iconsax" />
       <path value="$PROJECT_DIR$/vendor/milon/barcode" />
+      <path value="$PROJECT_DIR$/vendor/_laravel_idea" />
     </include_path>
   </component>
   <component name="PhpProjectSharedConfiguration" php_language_level="8.2" />

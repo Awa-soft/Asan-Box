@@ -3,6 +3,7 @@
 namespace App\Filament\Pages\Core;
 
 use App\Filament\Pages\Reports\HR\EmployeeNoteReport;
+use App\Filament\Pages\Reports\HR\EmployeeReport;
 use App\Filament\Pages\Reports\HR\IdentityTypeReport;
 use App\Filament\Pages\Reports\HR\PositionReport;
 use App\Filament\Pages\Reports\HR\TeamReport;
@@ -22,7 +23,7 @@ class ReportPage extends Page implements HasForms
     protected static ?string $navigationIcon = 'heroicon-o-document-text';
 
     public ?array $SafeData = [];
-    public $hrEmployeeActivity,$hrEmployeeLeave,$hrEmployeeNote,$hrIdentityType,$hrTeam,$hrPosition;
+    public $hrEmployeeActivity,$hrEmployeeLeave,$hrEmployeeNote,$hrIdentityType,$hrTeam,$hrPosition,$hrEmployee;
     protected function getForms(): array
     {
         return [
@@ -32,6 +33,7 @@ class ReportPage extends Page implements HasForms
             'hrIdentityTypesForm',
             'hrTeamsForm',
             'hrPositionsForm',
+            'hrEmployeesForm',
             'SafeForm'
         ];
     }
@@ -198,6 +200,7 @@ class ReportPage extends Page implements HasForms
             return $form
                 ->model(\App\Models\HR\IdentityType::class)
                 ->schema([
+
                     Select::make('attr')
                         ->label(trans('lang.attributes'))
                         ->options([
@@ -229,6 +232,7 @@ class ReportPage extends Page implements HasForms
             return $form
                 ->model(\App\Models\HR\Position::class)
                 ->schema([
+
                     Select::make('attr')
                         ->label(trans('lang.attributes'))
                         ->options([
@@ -275,6 +279,71 @@ class ReportPage extends Page implements HasForms
             return $form->statePath('hrTeam');
         }
     }
+    //  Positions
+    public function searchEmployees(){
+        if(checkPackage('HR')){
+            $data = $this->hrEmployeesForm->getState();
+            $hireDateFrom = $data['hire_date_from']?? 'all';
+            $hireDateTo = $data['hire_date_to']?? 'all';
+            $attr = json_encode($data['attr']??[]);
+            $positions = json_encode($data['positions']??[]);
+            $teams = json_encode($data['team_id']??[]);
+            return $this->redirect(EmployeeReport::getUrl(['positions'=>$positions,'teams'=>$teams,'hire_date_to'=>$hireDateTo,'hire_date_from'=>$hireDateFrom,'attr' => $attr]));
+        }else{
+            return null;
+        }
+    }
+    public function hrEmployeesForm(Form $form): Form
+    {
+        if(checkPackage('HR')){
+            return $form
+                ->model(\App\Models\HR\Employee::class)
+                ->schema([
+                    DatePicker::make('hire_date_from')
+                        ->label(trans('lang.hire_date') . ' - ' . trans('lang.from')),
+                    DatePicker::make('hire_date_to')
+                        ->label(trans('lang.hire_date') . ' - ' . trans('lang.to')),
+                    Select::make('team_id')
+                        ->multiple()
+                        ->preload()
+                        ->relationship('team', 'name'),
+                    Select::make('positions')
+                        ->multiple()
+                        ->preload()
+                        ->relationship('positions', 'name'),
+                    Select::make('attr')
+                        ->label(trans('lang.attributes'))
+                        ->options([
+                            'owner' => trans('lang.owner'),
+                            'user'=>trans('user'),
+                            'name'=>trans('lang.name'),
+                            'email'=>trans('lang.email'),
+                            'phone'=>trans('lang.phone'),
+                            'nationality'=>trans('lang.nationality'),
+                            'address'=>trans('lang.address'),
+                            'gender'=>trans('lang.gender'),
+                            'identity_type_id'=>trans('lang.identity_type'),
+                            'identity_number'=>trans('lang.identity_number'),
+                            'hire_date'=>trans('lang.hire_date'),
+                            'termination_date'=>trans('lang.termination_date'),
+                            'start_time'=>trans('lang.start_time'),
+                            'end_time'=>trans('lang.end_time'),
+                            'currency_id'=>trans('lang.currency'),
+                            'salary_type_id'=>trans('lang.salary_type'),
+                            'salary'=>trans('lang.salary'),
+                            'absence_amount'=>trans('lang.absence_amount'),
+                            'overtime_amount'=>trans('lang.overtime_amount'),
+                            'annual_leave'=>trans('lang.annual_leave'),
+                            'team_id'=>trans('lang.team'),
+                            'positions'=>trans('lang.positions'),
+                            'note'=>trans('lang.note')
+                        ])->native(0)
+                        ->multiple()
+                ])->statePath('hrEmployee');
+        }else{
+            return $form->statePath('hrEmployee');
+        }
+    }
     public function mount(){
 
         $this->hrEmployeeActivityForm->fill();
@@ -283,6 +352,7 @@ class ReportPage extends Page implements HasForms
         $this->hrIdentityTypesForm->fill();
         $this->hrTeamsForm->fill();
         $this->hrPositionsForm->fill();
+        $this->hrEmployeesForm->fill();
         $this->SafeForm->fill();
 
 

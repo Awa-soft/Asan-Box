@@ -1,6 +1,5 @@
 <x-filament-panels::page>
-
-    <div class="grid lg:grid-cols-5 grid-cols-1 gap-4">
+    <div class="grid items-start lg:grid-cols-5 grid-cols-1 gap-4">
         @Package('Inventory')
             <div class="col-span-full">
                 <p class="my-3 text-lg font-bold ">{{ trans('lang.core_reports') }}</p>
@@ -57,7 +56,20 @@
             </x-slot>
         </x-filament::section>
 
-        <div class="grid grid-cols-1 lg:grid-cols-3 col-span-full gap-4">
+            <x-filament::section>
+                <x-slot name="heading">
+                    {{ trans('HR/lang.reports.employees') }}
+                </x-slot>
+                {{$this->hrEmployeesForm}}
+                <x-slot name="footerActions">
+                    <x-filament::button type="submit" wire:click="searchEmployees()" class="mt-5">
+                        {{ trans('filament-actions::modal.actions.submit.label') }}
+                    </x-filament::button>
+                </x-slot>
+            </x-filament::section>
+
+
+        <div class="flex flex-col gap-4">
             <x-filament::section>
                 <x-slot name="heading">
                     {{ trans('HR/lang.reports.identity_types') }}
