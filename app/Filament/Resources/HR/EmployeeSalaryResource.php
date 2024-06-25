@@ -26,6 +26,47 @@ class EmployeeSalaryResource extends Resource
 
     protected static ?string $navigationIcon = 'fas-hand-holding-dollar';
 
+    protected static function calculateSalary(Forms\Get $get, Forms\Set $set): void{
+        $date = $get('salary_date')??now();
+        $work_average = $get('work_average');
+        $employee_id = $get('employee_id');
+        $employee = Employee::find($employee_id);
+        $lastSalaryDate = $get('lastSalaryDate');
+        if(!$lastSalaryDate){
+            $lastSalaryDate = Employee::find($employee_id)?->last_salary_date??now();
+            $set('lastSalaryDate',$lastSalaryDate);
+        }
+        $set('salary', number_format($employee?->salary??0, $employee?->currency?->decimal??2));
+//                            $absences = EmployeeActivity::where('employee_id', $employee_id)->where('date', '>=', $lastSalaryDate)
+//                                ->where('date','<',$date)
+//                                ->where('type', 'absence')
+//                                ->sum('amount');
+        $punish = EmployeeActivity::where('employee_id', $employee_id)->where('date', '>=', $lastSalaryDate)
+            ->where('date','<',$date)
+            ->where('type', 'punish')
+            ->sum('amount');
+        $bonus  = EmployeeActivity::where('employee_id', $employee_id)->where('date', '>=', $lastSalaryDate)
+            ->where('date','<',$date)
+            ->where('type', 'bonus')
+            ->sum('amount');
+        $advance  = EmployeeActivity::where('employee_id', $employee_id)->where('date', '>=', $lastSalaryDate)
+            ->where('date','<',$date)
+            ->where('type', 'advance')
+            ->sum('amount');
+        $overtime  = EmployeeActivity::where('employee_id', $employee_id)->where('date', '>=', $lastSalaryDate)
+            ->where('date','<',$date)
+            ->where('type', 'overtime')
+            ->sum('amount');
+//                            $set('absences', number_format($absences,$employee?->currency?->decimal??2));
+        $set('punish', number_format($punish,$employee?->currency?->decimal??2));
+        $set('bonus', number_format($bonus,$employee?->currency?->decimal??2));
+        $set('advance', number_format($advance,$employee?->currency?->decimal??2));
+        $set('overtime', number_format($overtime,$employee?->currency?->decimal??2));
+        $perHourSalary = $employee?->hour_salary??0;
+        $salary_amount = $employee?->work_days*$work_average*$perHourSalary;
+        $amount = ($bonus+$overtime+$salary_amount) - ($punish+$advance);
+        $set('amount', number_format($amount,$employee?->currency?->decimal??2,'.',''));
+    }
     public static function form(Form $form): Form
     {
         return $form
@@ -39,77 +80,14 @@ class EmployeeSalaryResource extends Resource
                         ->live()
                         ->disabled(fn($operation)=>$operation == 'edit')
                         ->afterStateUpdated(function(Forms\Get $get,Forms\Set $set){
-                            $date = $get('salary_date')??now();
-                            $employee_id = $get('employee_id');
-                            $employee = Employee::find($employee_id);
-                            $lastSalaryDate = Employee::find($employee_id)?->last_salary_date??now();
-                            $set('lastSalaryDate',$lastSalaryDate);
-                            $set('salary', number_format($employee?->salary??0, $employee?->currency?->decimal??2));
-                            $absences = EmployeeActivity::where('employee_id', $employee_id)->where('date', '>=', $lastSalaryDate)
-                                ->where('date','<',$date)
-                                ->where('type', 'absence')
-                                ->sum('amount');
-                            $punish = EmployeeActivity::where('employee_id', $employee_id)->where('date', '>=', $lastSalaryDate)
-                                ->where('date','<',$date)
-                                ->where('type', 'punish')
-                                ->sum('amount');
-                            $bonus  = EmployeeActivity::where('employee_id', $employee_id)->where('date', '>=', $lastSalaryDate)
-                                ->where('date','<',$date)
-                                ->where('type', 'bonus')
-                                ->sum('amount');
-                            $advance  = EmployeeActivity::where('employee_id', $employee_id)->where('date', '>=', $lastSalaryDate)
-                                ->where('date','<',$date)
-                                ->where('type', 'advance')
-                                ->sum('amount');
-                            $overtime  = EmployeeActivity::where('employee_id', $employee_id)->where('date', '>=', $lastSalaryDate)
-                                ->where('date','<',$date)
-                                ->where('type', 'overtime')
-                                ->sum('amount');
-                            $set('absences', number_format($absences,$employee?->currency?->decimal??2));
-                            $set('punish', number_format($punish,$employee?->currency?->decimal??2));
-                            $set('bonus', number_format($bonus,$employee?->currency?->decimal??2));
-                            $set('advance', number_format($advance,$employee?->currency?->decimal??2));
-                            $set('overtime', number_format($overtime,$employee?->currency?->decimal??2));
-                            $amount = ($bonus+$overtime+$employee?->salary??0) - ($absences+$punish+$advance);
-                            $set('amount', number_format($amount,$employee?->currency?->decimal??2,'.',''));
+                          static::calculateSalary($get, $set);
                         })
                         ->preload()
                         ->required(),
                     Forms\Components\DatePicker::make('lastSalaryDate')
                         ->live()
                         ->afterStateUpdated(function(Forms\Get $get,Forms\Set $set){
-                            $date = $get('salary_date')??now();
-                            $employee_id = $get('employee_id');
-                            $employee = Employee::find($employee_id);
-                            $lastSalaryDate = $get('lastSalaryDate');
-                            $set('salary', number_format($employee?->salary??0, $employee?->currency?->decimal??2));
-                            $absences = EmployeeActivity::where('employee_id', $employee_id)->where('date', '>=', $lastSalaryDate)
-                                ->where('date','<',$date)
-                                ->where('type', 'absence')
-                                ->sum('amount');
-                            $punish = EmployeeActivity::where('employee_id', $employee_id)->where('date', '>=', $lastSalaryDate)
-                                ->where('date','<',$date)
-                                ->where('type', 'punish')
-                                ->sum('amount');
-                            $bonus  = EmployeeActivity::where('employee_id', $employee_id)->where('date', '>=', $lastSalaryDate)
-                                ->where('date','<',$date)
-                                ->where('type', 'bonus')
-                                ->sum('amount');
-                            $advance  = EmployeeActivity::where('employee_id', $employee_id)->where('date', '>=', $lastSalaryDate)
-                                ->where('date','<',$date)
-                                ->where('type', 'advance')
-                                ->sum('amount');
-                            $overtime  = EmployeeActivity::where('employee_id', $employee_id)->where('date', '>=', $lastSalaryDate)
-                                ->where('date','<',$date)
-                                ->where('type', 'overtime')
-                                ->sum('amount');
-                            $set('absences', number_format($absences,$employee?->currency?->decimal??2));
-                            $set('punish', number_format($punish,$employee?->currency?->decimal??2));
-                            $set('bonus', number_format($bonus,$employee?->currency?->decimal??2));
-                            $set('advance', number_format($advance,$employee?->currency?->decimal??2));
-                            $set('overtime', number_format($overtime,$employee?->currency?->decimal??2));
-                            $amount = ($bonus+$overtime+($employee?->salary??0)) - ($absences+$punish+$advance);
-                            $set('amount', number_format($amount,$employee?->currency?->decimal??2,'.',''));
+                            static::calculateSalary($get, $set);
                         })
                         ->hidden(fn($operation)=>$operation == 'edit')
                         ->required(),
@@ -163,10 +141,6 @@ class EmployeeSalaryResource extends Resource
                             ->hidden(fn($operation)=>$operation == 'edit')
                             ->suffix(fn(Forms\Get $get)=>(Employee::find($get('employee_id'))?->currency?->symbol)??'$')
                             ->disabled(),
-                        Forms\Components\TextInput::make('absences')
-                            ->hidden(fn($operation)=>$operation == 'edit')
-                            ->suffix(fn(Forms\Get $get)=>(Employee::find($get('employee_id'))?->currency?->symbol)??'$')
-                            ->disabled(),
                         Forms\Components\TextInput::make('punish')
                             ->hidden(fn($operation)=>$operation == 'edit')
                             ->suffix(fn(Forms\Get $get)=>(Employee::find($get('employee_id'))?->currency?->symbol)??'$')
@@ -184,6 +158,13 @@ class EmployeeSalaryResource extends Resource
                             ->suffix(fn(Forms\Get $get)=>(Employee::find($get('employee_id'))?->currency?->symbol)??'$')
                             ->disabled(),
                     ])->columnSpan(fn($operation) => $operation == 'edit'? 2 : 1)->columns(2),
+                Forms\Components\TextInput::make('work_average')
+                    ->required()
+                    ->afterStateUpdated(function(Forms\Get $get,Forms\Set $set){
+                        static::calculateSalary($get, $set);
+                    })
+                    ->live(onBlur: true)
+                    ->default(8),
                 Forms\Components\TextInput::make('amount')
                     ->required()
                     ->numeric(),
