@@ -136,5 +136,9 @@ return [
     "excel"=>"Excel",
     "work_time"=>"Work Time",
     "dates"=>"Dates",
+    'last_salary'=>"Last Salary",
+    'work_average'=>"Work Average",
+    "work_days"=>"Work Days",
+    "work_hours"=>"Work Hours",
 
 ];

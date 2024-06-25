@@ -46,6 +46,7 @@ return [
         "team"=>"Teams",
         "employees"=>"Employees",
         'employees_summary'=>"Employees Summary",
+        'employees_salary'=>"Employees Salary"
     ]
 
 

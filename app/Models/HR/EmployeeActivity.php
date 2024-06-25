@@ -48,7 +48,7 @@ class EmployeeActivity extends Model
         return [
           'punish'=>trans('lang.punishment'),
           'bonus'=>trans('lang.bonus'),
-          'absence'=>trans('lang.absence'),
+//          'absence'=>trans('lang.absence'),
           'advance'=>trans('lang.advance'),
           'overtime'=>trans('lang.overtime'),
         ];
@@ -78,9 +78,9 @@ class EmployeeActivity extends Model
     public function scopeOvertime($query){
         return $query->where('type','overtime');
     }
-    public function scopeAbsence($query){
-        return $query->where('type','absence');
-    }
+//    public function scopeAbsence($query){
+//        return $query->where('type','absence');
+//    }
 
 
     // attributes owner_name, user_name, employee_name
