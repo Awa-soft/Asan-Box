@@ -2,6 +2,7 @@
 <project version="4">
   <component name="BladeInjectionConfiguration" default="false">
     <directives>
+      <data directive="@Package" injection="true" prefix="&lt;?php _bladeDirective(" suffix="); ?&gt;" />
       <data directive="@append" />
       <data directive="@assets" />
       <data directive="@auth" injection="true" prefix="&lt;?php&#10;if(auth()-&gt;guard(" suffix=")-&gt;check()): ?&gt;" />
@@ -39,6 +40,7 @@
       <data directive="@elseif" injection="true" prefix="&lt;?php&#10;elseif(" suffix="): ?&gt;" />
       <data directive="@elserole" injection="true" prefix="&lt;?php elseif(\Spatie\Permission\PermissionServiceProvider::bladeMethodWrapper('hasRole', {" suffix="})): ?&gt;" />
       <data directive="@empty" injection="true" prefix="&lt;?php&#10;if(empty(" suffix=")): ?&gt;" />
+      <data directive="@endPackage" />
       <data directive="@endassets" />
       <data directive="@endauth" />
       <data directive="@endcan" />
