@@ -29,11 +29,7 @@
                     {{trans('lang.name')}}
                 </th>
             @endif
-                @if(valueInArray('email',$attr))
-                    <th>
-                        {{trans('lang.email')}}
-                    </th>
-                @endif
+
                 @if(valueInArray('phone',$attr))
                     <th>
                         {{trans('lang.phone')}}
@@ -44,136 +40,160 @@
                         {{trans('lang.gender')}}
                     </th>
                 @endif
-                @if(valueInArray('identity_type_id',$attr))
-                    <th>
-                        {{trans('lang.nationality')}}
-                    </th>
-                @endif
                 @if(valueInArray('nationality',$attr))
                     <th>
-                        {{trans('lang.nationality')}}
+                        {{trans('lang.address')}}
                     </th>
                 @endif
-                @if(valueInArray('nationality',$attr))
+                @if(valueInArray('identity_number',$attr))
                     <th>
-                        {{trans('lang.nationality')}}
+                        {{trans('lang.identity_number')}}
                     </th>
                 @endif
-                @if(valueInArray('nationality',$attr))
+                @if(valueInArray('hire_date',$attr))
                     <th>
-                        {{trans('lang.nationality')}}
+                        {{trans('lang.dates')}}
                     </th>
                 @endif
-                @if(valueInArray('nationality',$attr))
+                @if(valueInArray('start_time',$attr))
                     <th>
-                        {{trans('lang.nationality')}}
+                        {{trans('lang.work_time')}}
                     </th>
                 @endif
-                @if(valueInArray('nationality',$attr))
+                @if(valueInArray('salary',$attr))
                     <th>
-                        {{trans('lang.nationality')}}
+                        {{trans('lang.salary')}}
                     </th>
                 @endif
-                @if(valueInArray('nationality',$attr))
+                @if(valueInArray('annual_leave',$attr))
                     <th>
-                        {{trans('lang.nationality')}}
+                        {{trans('lang.annual_leave')}}
                     </th>
                 @endif
-                @if(valueInArray('nationality',$attr))
+                @if(valueInArray('overtime_amount',$attr))
                     <th>
-                        {{trans('lang.nationality')}}
+                        {{trans('lang.overtime_amount')}}
                     </th>
                 @endif
-                @if(valueInArray('nationality',$attr))
+                @if(valueInArray('absence_amount',$attr))
                     <th>
-                        {{trans('lang.nationality')}}
+                        {{trans('lang.absence_amount')}}
                     </th>
                 @endif
-                @if(valueInArray('nationality',$attr))
+                @if(valueInArray('team_id',$attr))
                     <th>
-                        {{trans('lang.nationality')}}
+                        {{trans('lang.team')}}
                     </th>
                 @endif
-                @if(valueInArray('nationality',$attr))
+                @if(valueInArray('positions',$attr))
                     <th>
-                        {{trans('lang.nationality')}}
+                        {{trans('lang.positions')}}
                     </th>
                 @endif
-                @if(valueInArray('nationality',$attr))
+                @if(valueInArray('note',$attr))
                     <th>
-                        {{trans('lang.nationality')}}
+                        {{trans('lang.note')}}
                     </th>
                 @endif
-                @if(valueInArray('nationality',$attr))
-                    <th>
-                        {{trans('lang.nationality')}}
-                    </th>
-                @endif
-                @if(valueInArray('nationality',$attr))
-                    <th>
-                        {{trans('lang.nationality')}}
-                    </th>
-                @endif
-                @if(valueInArray('nationality',$attr))
-                    <th>
-                        {{trans('lang.nationality')}}
-                    </th>
-                @endif
-                @if(valueInArray('nationality',$attr))
-                    <th>
-                        {{trans('lang.nationality')}}
-                    </th>
-                @endif
-                @if(valueInArray('nationality',$attr))
-                    <th>
-                        {{trans('lang.nationality')}}
-                    </th>
-                @endif
-                @if(valueInArray('nationality',$attr))
-                    <th>
-                        {{trans('lang.nationality')}}
-                    </th>
-                @endif
-                @if(valueInArray('nationality',$attr))
-                    <th>
-                        {{trans('lang.nationality')}}
-                    </th>
-                @endif
-                @if(valueInArray('nationality',$attr))
-                    <th>
-                        {{trans('lang.nationality')}}
-                    </th>
-                @endif
-
         @endslot
         @slot('tableContent')
             @foreach($data as $dt)
-                <tr>
+                    <tr>
+
                     @if(valueInArray('owner',$attr))
                         <td>
-                            {{$dt->ownerable->name??''}}
+                            {{$dt->ownerable->name?? ''}}
                         </td>
                     @endif
                     @if(valueInArray('user',$attr))
                         <td>
-                            {{$dt->user->name??''}}
+                            {{$dt->user->name?? ''}}
                         </td>
                     @endif
-                    @if(valueInArray('employee.name',$attr))
+                    @if(valueInArray('name',$attr))
                         <td>
-                            {{$dt->employee->name??''}}
+                            {{$dt->name}}
                         </td>
                     @endif
-                    @if(valueInArray('date',$attr))
+                    @if(valueInArray('phone',$attr))
                         <td>
-                            {{\Carbon\Carbon::parse($dt->created_at)->format('Y-m-d')}}
+                            {{$dt->phone?? '' }}
                         </td>
                     @endif
+                    @if(valueInArray('gender',$attr))
+                        <td>
+                            {{\App\Models\HR\Employee::getGenders()[$dt->gender]}}
+                        </td>
+                    @endif
+                    @if(valueInArray('nationality',$attr))
+                        <td>
+                            {{trans('countries.'.$dt->nationality?? '')}} <br>
+                            {{$dt->address?? ''}}
+                        </td>
+                    @endif
+
+                    @if(valueInArray('identity_number',$attr))
+                        <td>
+                            {{$dt->identityType->name?? ''}}
+                            <br>
+                            {{$dt->identity_number?? ''}}
+                        </td>
+                    @endif
+                    @if(valueInArray('hire_date',$attr))
+                        <td>
+                            {{$dt->hire_date}}
+                            <br>
+                            {{$dt->termination_date}}
+                        </td>
+                    @endif
+                    @if(valueInArray('start_time',$attr))
+                        <td>
+                            {{$dt->start_time?? ''}} <br>
+                            {{$dt->end_time?? '' }}
+                        </td>
+                    @endif
+                    @if(valueInArray('salary',$attr))
+                        <td>
+                            {{number_format($dt->salary,$dt->currency->decimal) . $dt->currency->symbol}}
+                            <br>
+                            {{\App\Models\HR\Employee::getSalaryTypes()[$dt->salary_type]}}
+                        </td>
+                    @endif
+                    @if(valueInArray('annual_leave',$attr))
+                        <td>
+                            {{number_format($dt->annual_leave,0)}}
+                        </td>
+                    @endif
+                    @if(valueInArray('overtime_amount',$attr))
+                        <td>
+                            {{number_format($dt->overtime_amount,$dt->currency->decimal) . $dt->currency->symbol}}
+                        </td>
+                    @endif
+                    @if(valueInArray('absence_amount',$attr))
+                        <td>
+                            {{number_format($dt->absence_amount,$dt->currency->decimal) . $dt->currency->symbol}}
+                        </td>
+                    @endif
+                        @if(valueInArray('team_id',$attr))
+                            <td>
+                                @foreach($dt->team as $team)
+                                    {{$team->name}} <br>
+                                @endforeach
+                            </td>
+                        @endif
+                        @if(valueInArray('positions',$attr))
+                            <td>
+                                @foreach($dt->positions as $position)
+                                    {{$position->name}} <br>
+                                @endforeach
+                            </td>
+                        @endif
                     @if(valueInArray('note',$attr))
                         <td>
-                            {{$dt->note}}
+                            {{trans('lang.note')}}
                         </td>
                     @endif
+
                 </tr>
             @endforeach
         @endslot

@@ -134,4 +134,7 @@ return [
     "attributes"=>"Attributes",
     "employees"=>"Employees",
     "excel"=>"Excel",
+    "work_time"=>"Work Time",
+    "dates"=>"Dates",
+
 ];

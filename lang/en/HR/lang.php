@@ -44,7 +44,8 @@ return [
         "identity_types"=>"Identity Types",
         "positions"=>"Positions",
         "team"=>"Teams",
-        "employees"=>"Employees"
+        "employees"=>"Employees",
+        'employees_summary'=>"Employees Summary",
     ]
 
 
