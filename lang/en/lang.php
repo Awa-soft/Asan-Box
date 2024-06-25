@@ -132,5 +132,8 @@ return [
     "currency_rate"=>"Rate",
     'print'=>"Print",
     "attributes"=>"Attributes",
-    "employees"=>"Employees"
+    "employees"=>"Employees",
+    "work_time"=>"Work Time",
+    "dates"=>"Dates",
+
 ];

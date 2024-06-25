@@ -4,6 +4,7 @@ namespace App\Filament\Pages\Core;
 
 use App\Filament\Pages\Reports\HR\EmployeeNoteReport;
 use App\Filament\Pages\Reports\HR\EmployeeReport;
+use App\Filament\Pages\Reports\HR\EmployeeSummary;
 use App\Filament\Pages\Reports\HR\IdentityTypeReport;
 use App\Filament\Pages\Reports\HR\PositionReport;
 use App\Filament\Pages\Reports\HR\TeamReport;
@@ -23,7 +24,7 @@ class ReportPage extends Page implements HasForms
     protected static ?string $navigationIcon = 'heroicon-o-document-text';
 
     public ?array $SafeData = [];
-    public $hrEmployeeActivity,$hrEmployeeLeave,$hrEmployeeNote,$hrIdentityType,$hrTeam,$hrPosition,$hrEmployee;
+    public $hrEmployeeActivity,$hrEmployeeLeave,$hrEmployeeNote,$hrIdentityType,$hrTeam,$hrPosition,$hrEmployee,$hrEmployeeSummary;
     protected function getForms(): array
     {
         return [
@@ -34,6 +35,7 @@ class ReportPage extends Page implements HasForms
             'hrTeamsForm',
             'hrPositionsForm',
             'hrEmployeesForm',
+            'hrEmployeesSummaryForm',
             'SafeForm'
         ];
     }
@@ -54,8 +56,7 @@ class ReportPage extends Page implements HasForms
     public function hrEmployeeActivityForm(Form $form): Form
     {
         if(checkPackage('HR')){
-            return $form
-                ->model(\App\Models\HR\EmployeeActivity::class)
+            return $form->columns(2)->model(\App\Models\HR\EmployeeActivity::class)
                 ->schema([
                     DatePicker::make('from')
                         ->label(trans('lang.from')),
@@ -84,6 +85,7 @@ class ReportPage extends Page implements HasForms
                         'date'=>trans('lang.date'),
                         'note'=>trans('lang.note'),
                     ])->native(0)
+                        ->columnSpanFull()
                     ->multiple()
                 ])->statePath('hrEmployeeActivity');
         }else{
@@ -111,8 +113,7 @@ class ReportPage extends Page implements HasForms
     public function hrEmployeeLeaveForm(Form $form): Form
     {
         if(checkPackage('HR')){
-            return $form
-                ->model(\App\Models\HR\EmployeeLeave::class)
+            return $form->columns(2)->model(\App\Models\HR\EmployeeLeave::class)
                 ->schema([
                     DatePicker::make('from')
                         ->label(trans('lang.from')),
@@ -140,6 +141,7 @@ class ReportPage extends Page implements HasForms
                             'date'=>trans('lang.date'),
                             'note'=>trans('lang.note'),
                         ])->native(0)
+                        ->columnSpanFull()
                         ->multiple()
                 ])->statePath('hrEmployeeLeave');
         }else{
@@ -166,8 +168,7 @@ class ReportPage extends Page implements HasForms
     public function hrEmployeeNoteForm(Form $form): Form
     {
         if(checkPackage('HR')){
-            return $form
-                ->model(\App\Models\HR\EmployeeNote::class)
+            return $form->columns(2)->model(\App\Models\HR\EmployeeNote::class)
                 ->schema([
                     DatePicker::make('from')
                         ->label(trans('lang.from')),
@@ -176,6 +177,7 @@ class ReportPage extends Page implements HasForms
                     Select::make('employee_id')
                         ->label(trans('lang.employee'))
                         ->relationship('employee', 'name')
+                        ->columnSpanFull()
                         ->searchable()
                         ->preload(),
                     Select::make('attr')
@@ -187,6 +189,7 @@ class ReportPage extends Page implements HasForms
                             'date'=>trans('lang.date'),
                             'note'=>trans('lang.note'),
                         ])->native(0)
+                        ->columnSpanFull()
                         ->multiple()
                 ])->statePath('hrEmployeeNote');
         }else{
@@ -207,8 +210,7 @@ class ReportPage extends Page implements HasForms
     public function hrIdentityTypesForm(Form $form): Form
     {
         if(checkPackage('HR')){
-            return $form
-                ->model(\App\Models\HR\IdentityType::class)
+            return $form->model(\App\Models\HR\IdentityType::class)
                 ->schema([
 
                     Select::make('attr')
@@ -239,8 +241,7 @@ class ReportPage extends Page implements HasForms
     public function hrPositionsForm(Form $form): Form
     {
         if(checkPackage('HR')){
-            return $form
-                ->model(\App\Models\HR\Position::class)
+            return $form->model(\App\Models\HR\Position::class)
                 ->schema([
 
                     Select::make('attr')
@@ -271,8 +272,7 @@ class ReportPage extends Page implements HasForms
     public function hrTeamsForm(Form $form): Form
     {
         if(checkPackage('HR')){
-            return $form
-                ->model(\App\Models\HR\Team::class)
+            return $form->model(\App\Models\HR\Team::class)
                 ->schema([
                     Select::make('attr')
                         ->label(trans('lang.attributes'))
@@ -289,7 +289,7 @@ class ReportPage extends Page implements HasForms
             return $form->statePath('hrTeam');
         }
     }
-    //  Positions
+    //  Employees
     public function searchEmployees(){
         if(checkPackage('HR')){
             $data = $this->hrEmployeesForm->getState();
@@ -306,8 +306,7 @@ class ReportPage extends Page implements HasForms
     public function hrEmployeesForm(Form $form): Form
     {
         if(checkPackage('HR')){
-            return $form
-                ->model(\App\Models\HR\Employee::class)
+            return $form->columns(2)->model(\App\Models\HR\Employee::class)
                 ->schema([
                     DatePicker::make('hire_date_from')
                         ->label(trans('lang.hire_date') . ' - ' . trans('lang.from')),
@@ -323,23 +322,18 @@ class ReportPage extends Page implements HasForms
                         ->relationship('positions', 'name'),
                     Select::make('attr')
                         ->label(trans('lang.attributes'))
+                        ->required()
+                        ->maxItems(5)
                         ->options([
                             'owner' => trans('lang.owner'),
                             'user'=>trans('user'),
                             'name'=>trans('lang.name'),
-                            'email'=>trans('lang.email'),
                             'phone'=>trans('lang.phone'),
-                            'nationality'=>trans('lang.nationality'),
-                            'address'=>trans('lang.address'),
+                            'nationality'=>trans('lang.nationality') . ' - ' . trans('lang.address'),
                             'gender'=>trans('lang.gender'),
-                            'identity_type_id'=>trans('lang.identity_type'),
                             'identity_number'=>trans('lang.identity_number'),
-                            'hire_date'=>trans('lang.hire_date'),
-                            'termination_date'=>trans('lang.termination_date'),
-                            'start_time'=>trans('lang.start_time'),
-                            'end_time'=>trans('lang.end_time'),
-                            'currency_id'=>trans('lang.currency'),
-                            'salary_type_id'=>trans('lang.salary_type'),
+                            'hire_date'=>trans('lang.hire_date') . ' - ' . trans('lang.termination_date'),
+                            'start_time'=>trans('lang.start_time') . ' - ' . trans('lang.end_time'),
                             'salary'=>trans('lang.salary'),
                             'absence_amount'=>trans('lang.absence_amount'),
                             'overtime_amount'=>trans('lang.overtime_amount'),
@@ -348,10 +342,53 @@ class ReportPage extends Page implements HasForms
                             'positions'=>trans('lang.positions'),
                             'note'=>trans('lang.note')
                         ])->native(0)
+                        ->columnSpanFull()
                         ->multiple()
                 ])->statePath('hrEmployee');
         }else{
             return $form->statePath('hrEmployee');
+        }
+    }
+
+    //  Employees
+    public function searchEmployeesSummary(){
+        if(checkPackage('HR')){
+            $data = $this->hrEmployeesSummaryForm->getState();
+            $attr = json_encode($data['attr']??[]);
+            $from = $data['from']?? 'all';
+            $to = $data['to']?? 'all';
+            return $this->redirect(EmployeeSummary::getUrl(['from'=>$from,'to'=>$to,'attr' => $attr]));
+        }else{
+            return null;
+        }
+    }
+    public function hrEmployeesSummaryForm(Form $form): Form
+    {
+        if(checkPackage('HR')){
+            return $form->columns(2)->model(\App\Models\HR\Employee::class)
+                ->schema([
+                    DatePicker::make('from')
+                        ->label(trans('lang.from')),
+                    DatePicker::make('to')
+                        ->label(trans('lang.to')),
+                    Select::make('attr')
+                        ->label(trans('lang.attributes'))
+                        ->options([
+                            'owner' => trans('lang.owner'),
+                            'name'=>trans('lang.name'),
+                            'punish'=>trans('lang.punish'),
+                            'bonus'=>trans('lang.bonus'),
+                            'overtime'=>trans('lang.overtime'),
+                            'advance'=>trans('lang.advance'),
+                            'salary'=>trans('lang.salary'),
+                            'leave'=>trans('lang.leaves'),
+                            'absence'=>trans('lang.absence'),
+                        ])->native(0)
+                        ->columnSpanFull()
+                        ->multiple()
+                ])->statePath('hrEmployeeSummary');
+        }else{
+            return $form->statePath('hrEmployeeSummary');
         }
     }
     public function mount(){
@@ -363,6 +400,7 @@ class ReportPage extends Page implements HasForms
         $this->hrTeamsForm->fill();
         $this->hrPositionsForm->fill();
         $this->hrEmployeesForm->fill();
+        $this->hrEmployeesSummaryForm->fill();
         $this->SafeForm->fill();
 
 

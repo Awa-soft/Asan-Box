@@ -27,7 +27,6 @@ class EmployeeReport extends Page
         $this->teams = json_decode($teams,0);
         $this->positions = json_decode($positions,0);
         $this->attr = json_decode($attr,0);
-        dd($this->attr);
     }
     public function render(): View
     {
