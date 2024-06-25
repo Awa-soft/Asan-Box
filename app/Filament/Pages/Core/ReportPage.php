@@ -12,6 +12,9 @@ use App\Traits\Core\TranslatableForm;
 use Filament\Forms\Components\DatePicker;
 use App\Filament\Pages\Reports\HR\EmployeeActivityReport;
 use App\Filament\Pages\Reports\HR\EmployeeLeaveReport;
+use App\Models\HR\EmployeeLeave;
+use App\Models\HR\EmployeeNote;
+use App\Models\HR\IdentityType;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
@@ -74,6 +77,7 @@ class ReportPage extends Page implements HasForms
                     ->preload(),
                     Select::make('attr')
                         ->label(trans('lang.attributes'))
+                    ->options(\App\Models\HR\EmployeeActivity::getLabels())->native(0)
                     ->options([
                         'invoice_number' => trans('lang.invoice_number'),
                         'owner' => trans('lang.owner'),
@@ -86,6 +90,7 @@ class ReportPage extends Page implements HasForms
                         'note'=>trans('lang.note'),
                     ])->native(0)
                         ->columnSpanFull()
+
                     ->multiple()
                 ])->statePath('hrEmployeeActivity');
         }else{
@@ -131,6 +136,7 @@ class ReportPage extends Page implements HasForms
                         ->preload(),
                     Select::make('attr')
                         ->label(trans('lang.attributes'))
+                        ->options(EmployeeLeave::getLabels())->native(0)
                         ->options([
                             'owner' => trans('lang.owner'),
                             'user'=>trans('user'),
@@ -182,6 +188,7 @@ class ReportPage extends Page implements HasForms
                         ->preload(),
                     Select::make('attr')
                         ->label(trans('lang.attributes'))
+                        ->options(EmployeeNote::getLabels())->native(0)
                         ->options([
                             'owner' => trans('lang.owner'),
                             'user'=>trans('user'),
@@ -215,12 +222,7 @@ class ReportPage extends Page implements HasForms
 
                     Select::make('attr')
                         ->label(trans('lang.attributes'))
-                        ->options([
-                            'owner' => trans('lang.owner'),
-                            'user'=>trans('user'),
-                            'name'=>trans('lang.name'),
-                            'employees'=>trans('lang.employees'),
-                        ])->native(0)
+                        ->options(IdentityType::getLabels())->native(0)
                         ->multiple()
                 ])->statePath('hrIdentityType');
         }else{

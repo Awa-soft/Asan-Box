@@ -15,7 +15,34 @@ class EmployeeNote extends Model
     use HasFactory;
     use HasUser;
     use Ownerable, SoftDeletes;
+    protected $appends = [
+        'owner_name',
+        'user_name',
+        'employee_name',
+    ];
+    public function getOwnerNameAttribute()
+    {
+        return $this->ownerable?->name;
+    }
+    public function getUserNameAttribute()
+    {
+        return $this->user?->name;
+    }
+    public function getEmployeeNameAttribute()
+    {
+        return $this->employee?->name;
+    }
 
+    public static function getLabels(){
+        return [
+           'owner_name' => trans('lang.owner'),
+            'user_name'=>trans('user'),
+            'employee_name'=>trans('lang.employee'),
+            'date'=>trans('lang.date'),
+            'note'=>trans('lang.note'),
+        ];
+
+    }
     public function employee():BelongsTo{
         return $this->belongsTo(Employee::class)->withTrashed();
     }
@@ -23,5 +50,6 @@ class EmployeeNote extends Model
     public function branch(): BelongsTo{
         return $this->belongsTo(Branch::class)->withTrashed();
     }
+
 
 }
