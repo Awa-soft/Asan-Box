@@ -53,9 +53,9 @@
                     {{trans('lang.leaves')}}
                 </th>
             @endif
-            @if(valueInArray('absence',$attr))
+            @if(valueInArray('work_average',$attr))
                 <th>
-                    {{trans('lang.absence')}}
+                    {{trans('lang.work_average')}}
                 </th>
             @endif
                 @if(valueInArray('amount',$attr))
@@ -109,9 +109,9 @@
                             {{number_format($dt->activities->where('type','advance')->sum('amount')?? 0,$dt->currency->decimal) . $dt->currency->symbol}}
                         </td>
                     @endif
-                    @if(valueInArray('absence',$attr))
+                    @if(valueInArray('work_average',$attr))
                         <td>
-                            {{number_format($dt->activities->where('type','absence')->sum('amount')?? 0,$dt->currency->decimal) . $dt->currency->symbol}}
+                            {{number_format($dt->work_average)}}
                         </td>
                     @endif
                         @if(valueInArray('amount',$attr))

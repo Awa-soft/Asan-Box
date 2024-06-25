@@ -59,7 +59,7 @@ class EmployeeActivityResource extends Resource
                 Tables\Columns\TextColumn::make('employee.name')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('type'),
+                Tables\Columns\TextColumn::make('type')->formatStateUsing(fn($state)=>static::$model::getTypes()[$state]),
                 Tables\Columns\TextColumn::make('amount')
                     ->numeric()
                     ->sortable(),
