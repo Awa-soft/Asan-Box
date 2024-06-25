@@ -8,12 +8,13 @@ use Maatwebsite\Excel\Concerns\WithHeadings;
 
 class ExcelExport implements FromCollection, WithHeadings
 {
-    private $data, $heading;
+    private $data, $heading, $hidden;
 
-    public function __construct($data, $heading)
+    public function __construct($data, $heading, $hidden= null)
     {
         $this->data = $data;
         $this->heading = $heading;
+        $this->hidden = $hidden;
 
     }
     /**
@@ -21,7 +22,15 @@ class ExcelExport implements FromCollection, WithHeadings
     */
     public function collection()
     {
-        return $this->data->get();
+        return $this->data->get()
+        ->map(function ($row) {
+            return collect($this->heading)
+                ->map(function ($key) use ($row) {
+                    return $row[$key];
+                })
+                ->toArray();
+        })
+        ;
     }
 
     public function headings(): array

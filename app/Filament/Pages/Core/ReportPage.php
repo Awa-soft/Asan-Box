@@ -11,6 +11,9 @@ use App\Traits\Core\TranslatableForm;
 use Filament\Forms\Components\DatePicker;
 use App\Filament\Pages\Reports\HR\EmployeeActivityReport;
 use App\Filament\Pages\Reports\HR\EmployeeLeaveReport;
+use App\Models\HR\EmployeeLeave;
+use App\Models\HR\EmployeeNote;
+use App\Models\HR\IdentityType;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
@@ -120,16 +123,7 @@ class ReportPage extends Page implements HasForms
                         ->preload(),
                     Select::make('attr')
                         ->label(trans('lang.attributes'))
-                        ->options([
-                            'owner' => trans('lang.owner'),
-                            'user'=>trans('user'),
-                            'employee.name'=>trans('lang.employee'),
-                            'status'=>trans('lang.status'),
-                            'from'=>trans('lang.from'),
-                            'to'=>trans('lang.to'),
-                            'date'=>trans('lang.date'),
-                            'note'=>trans('lang.note'),
-                        ])->native(0)
+                        ->options(EmployeeLeave::getLabels())->native(0)
                         ->multiple()
                 ])->statePath('hrEmployeeLeave');
         }else{
@@ -170,13 +164,7 @@ class ReportPage extends Page implements HasForms
                         ->preload(),
                     Select::make('attr')
                         ->label(trans('lang.attributes'))
-                        ->options([
-                            'owner' => trans('lang.owner'),
-                            'user'=>trans('user'),
-                            'employee.name'=>trans('lang.employee'),
-                            'date'=>trans('lang.date'),
-                            'note'=>trans('lang.note'),
-                        ])->native(0)
+                        ->options(EmployeeNote::getLabels())->native(0)
                         ->multiple()
                 ])->statePath('hrEmployeeNote');
         }else{
@@ -203,12 +191,7 @@ class ReportPage extends Page implements HasForms
 
                     Select::make('attr')
                         ->label(trans('lang.attributes'))
-                        ->options([
-                            'owner' => trans('lang.owner'),
-                            'user'=>trans('user'),
-                            'name'=>trans('lang.name'),
-                            'employees'=>trans('lang.employees'),
-                        ])->native(0)
+                        ->options(IdentityType::getLabels())->native(0)
                         ->multiple()
                 ])->statePath('hrIdentityType');
         }else{

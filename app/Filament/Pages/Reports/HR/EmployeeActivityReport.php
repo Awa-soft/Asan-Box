@@ -23,8 +23,10 @@ class EmployeeActivityReport extends Page
     protected function getHeaderActions(): array
     {
         return [
-            Action::make("export")
-                ->action(fn()=>$this->exportExcel()),
+            Action::make("excel")
+            ->label(trans("lang.excel"))
+                ->action(fn()=>$this->exportExcel())
+                ->color("success"),
         ];
     }
     public function mount($from,$to,$employee_id,$attr,$types){
@@ -36,15 +38,23 @@ class EmployeeActivityReport extends Page
     }
 
     public function exportExcel(){
-        return Excel::download(new ExcelExport(EmployeeActivity::when($this->from != 'all', function ($query) {
-            return $query->whereDate('date', '>=', Carbon::parse($this->from));
-        })->when($this->to!= 'all', function ($query) {
-            return $query->whereDate('date', '<=', Carbon::parse($this->to));
-        })->when($this->employee_id!= 'all', function ($query) {
-            return $query->where('employee_id', $this->employee_id);
-        })->when($this->types != [], function ($query) {
-            return $query->whereIn('type', $this->types);
-        })->select(count($this->attr)>0?$this->attr : array_keys(EmployeeActivity::getLabels())), count($this->attr)>0?$this->attr : EmployeeActivity::getLabels()), now()." - employee-activity.xlsx");
+        return Excel::download(new ExcelExport(
+            EmployeeActivity::when($this->from != 'all', function ($query) {
+                return $query->whereDate('date', '>=', Carbon::parse($this->from));
+            })->when($this->to != 'all', function ($query) {
+                return $query->whereDate('date', '<=', Carbon::parse($this->to));
+            })->when($this->employee_id != 'all', function ($query) {
+                return $query->where('employee_id', $this->employee_id);
+            })->when($this->types != [], function ($query) {
+                return $query->whereIn('type', $this->types);
+            })
+            ,
+            count(array_keys($this->attr))>0 ? array_keys($this->attr) : array_keys(EmployeeActivity::getLabels()),
+            [
+                "ownerable_type",
+                "ownerable_id"
+            ]
+        ), now() . " - employee-activity.xlsx");
     }
 
     public function render(): View

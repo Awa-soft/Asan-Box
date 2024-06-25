@@ -1,5 +1,5 @@
 <x-filament-panels::page>
-    <div class="grid items-start lg:grid-cols-5 grid-cols-1 gap-4">
+    <div class="grid items-start grid-cols-1 gap-4 lg:grid-cols-5">
         @Package('Inventory')
             <div class="col-span-full">
                 <p class="my-3 text-lg font-bold ">{{ trans('lang.core_reports') }}</p>
