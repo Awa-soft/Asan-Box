@@ -77,7 +77,7 @@ function getPackage($id){
     return Package::find($id);
 }
 function checkPackage($name){
-    return Package::where('name', $name)->first()->exists();
+    return Package::where('name', $name)->exists();
 }
 
 function valueInArray($value,$array):bool{
@@ -85,6 +85,10 @@ function valueInArray($value,$array):bool{
         return true;
     }
     return false;
+}
+
+function getReceiptHeader(){
+    return 'storage/'.(auth()->user()?->ownerable?->receipt_header != null ? auth()->user()?->ownerable?->receipt_header : \App\Models\Logistic\Branch::find(1)->receipt_header);
 }
 
 

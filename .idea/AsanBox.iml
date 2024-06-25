@@ -167,7 +167,9 @@
       <excludeFolder url="file://$MODULE_DIR$/vendor/eduard9969/blade-polaris-icons" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/codeat3/blade-pepicons" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/malzariey/filament-daterangepicker-filter" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/milon/barcode" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/saade/blade-iconsax" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/_laravel_idea" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

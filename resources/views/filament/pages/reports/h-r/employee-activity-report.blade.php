@@ -2,7 +2,7 @@
 
 <x-core.report-content  listner="employee_activity_report">
         @slot('pageHeader')
-        <div class="grid grid-cols-3 items-center p-2 rounded-md align-middle border ">
+        <div class="grid items-center grid-cols-3 p-2 align-middle border rounded-md ">
                     <div>
                         {!! trans('lang.statement_date', ['from' => $from, 'to' => $to!='all'?$to:now()->format('Y/m/d') ]) !!}
                     </div>
@@ -63,11 +63,6 @@
         @slot('tableContent')
             @foreach($data as $dt)
                 <tr>
-
-
-
-
-
                         @if(valueInArray('invoice_number',$attr))
                         <td>
                         {{$dt->id}}

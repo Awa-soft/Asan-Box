@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Core\Package;
 use App\Models\Inventory\Brand;
 use App\Models\Inventory\Category;
 use App\Models\Inventory\Unit;
@@ -104,6 +105,25 @@ class DatabaseSeeder extends Seeder
             "base" => 0,
             "decimal" => 2,
         ]);
+        Package::create([
+            'name' => 'HR',
+            'description' => 'Human Resource Management',
+            'color' => 'bg-blue-500 text-white',
+            'price'=>0,
+            'type'=>'primary',
+            'version'=>'1.0.0',
+            'image'=>1
+        ]);
+        Package::create([
+            'name' => 'Inventory',
+            'description' => 'Inventory',
+            'color' => 'bg-blue-500 text-white',
+            'price'=>0,
+            'type'=>'primary',
+            'version'=>'1.0.0',
+            'image'=>1
+        ]);
+
 
     }
 }

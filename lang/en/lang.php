@@ -130,5 +130,11 @@ return [
     "core_reports" => "Core Reports",
     "owner"=>"Owner",
     "currency_rate"=>"Rate",
-    'print'=>"Print"
+    'print'=>"Print",
+    "attributes"=>"Attributes",
+    "employees"=>"Employees",
+    "excel"=>"Excel",
+    "work_time"=>"Work Time",
+    "dates"=>"Dates",
+
 ];
