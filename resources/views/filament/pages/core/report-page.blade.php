@@ -1,22 +1,25 @@
 <x-filament-panels::page>
-    <div class="grid items-start grid-cols-1 gap-4 lg:grid-cols-5">
+    <div class="grid items-start grid-cols-1 gap-4 xl:grid-cols-4">
         @Package('Inventory')
-    <x-filament-panels::page>
         <style>
             .report-page  .fi-section{
                 display: flex !important;
                 flex-flow: column !important;
                 justify-content: normal !important;
+                overflow: hidden;
             }
             .report-page .fi-section-content-ctn{
                 display: flex !important;
                 flex-flow: column !important;
                 justify-content: space-between !important;
-                height: -webkit-fill-available !important;
+                height: -webkit-text-available !important;
+            }
+
+            .fi-section-header-icon{
+                margin-left: 10px !important;
+                margin-right: 10px !important;
             }
         </style>
-        <div class="grid  report-page lg:grid-cols-2 2xl:grid-cols-4 grid-cols-1 gap-4">
-            @Package('Inventory')
             <div class="col-span-full">
                 <p class="my-3 text-lg font-bold ">{{ trans('lang.core_reports') }}</p>
             </div>
@@ -80,10 +83,9 @@
                     </x-filament::button>
                 </x-slot>
             </x-filament::section>
-
             <x-filament::section>
                 <x-slot name="icon">
-                    @svg(\App\Filament\Resources\HR\EmployeeResource::getNavigationIcon(),'w-8 fill-primary-500' )
+                    @svg(\App\Filament\Resources\HR\EmployeeResource::getNavigationIcon(),'w-8 text-primary-500' )
                 </x-slot>
                 <x-slot name="heading">
                     {{ trans('HR/lang.reports.employees') }}
@@ -98,7 +100,7 @@
             <div class="grid grid-col-1 xl:grid-cols-2 col-span-full gap-4">
                 <x-filament::section>
                     <x-slot name="icon">
-                        @svg(\App\Filament\Resources\HR\EmployeeResource::getNavigationIcon(),'w-8 fill-primary-500' )
+                        @svg(\App\Filament\Resources\HR\EmployeeResource::getNavigationIcon(),'w-8 text-primary-500' )
                     </x-slot>
                     <x-slot name="heading">
                         {{ trans('HR/lang.reports.employees_summary') }}
@@ -110,11 +112,25 @@
                         </x-filament::button>
                     </x-slot>
                 </x-filament::section>
+                <x-filament::section>
+                    <x-slot name="icon">
+                        @svg(\App\Filament\Resources\HR\EmployeeSalaryResource::getNavigationIcon(),'w-8 text-primary-500' )
+                    </x-slot>
+                    <x-slot name="heading">
+                        {{ trans('HR/lang.reports.employees_salary') }}
+                    </x-slot>
+                    {{$this->hrEmployeesSalaryForm}}
+                    <x-slot name="footerActions">
+                        <x-filament::button type="submit" wire:click="searchEmployeesSalary()" class="mt-5">
+                            {{ trans('filament-actions::modal.actions.submit.label') }}
+                        </x-filament::button>
+                    </x-slot>
+                </x-filament::section>
             </div>
                <div class="grid grid-col-1 xl:grid-cols-3 col-span-full gap-4">
                    <x-filament::section>
                        <x-slot name="icon">
-                           @svg(\App\Filament\Resources\HR\IdentityTypeResource::getNavigationIcon(),'w-8 fill-primary-500' )
+                           @svg(\App\Filament\Resources\HR\IdentityTypeResource::getNavigationIcon(),'w-8 text-primary-500' )
                        </x-slot>
                        <x-slot name="heading">
                            {{ trans('HR/lang.reports.identity_types') }}
@@ -128,7 +144,7 @@
                    </x-filament::section>
                    <x-filament::section>
                        <x-slot name="icon">
-                           @svg(\App\Filament\Resources\HR\PositionResource::getNavigationIcon(),'w-8 fill-primary-500' )
+                           @svg(\App\Filament\Resources\HR\PositionResource::getNavigationIcon(),'w-8 text-primary-500' )
                        </x-slot>
                        <x-slot name="heading">
                            {{ trans('HR/lang.reports.positions') }}
@@ -142,7 +158,7 @@
                    </x-filament::section>
                    <x-filament::section>
                        <x-slot name="icon">
-                           @svg(\App\Filament\Resources\HR\TeamResource::getNavigationIcon(),'w-8 fill-primary-500' )
+                           @svg(\App\Filament\Resources\HR\TeamResource::getNavigationIcon(),'w-8 text-primary-500' )
                        </x-slot>
                        <x-slot name="heading">
                            {{ trans('HR/lang.reports.team') }}
