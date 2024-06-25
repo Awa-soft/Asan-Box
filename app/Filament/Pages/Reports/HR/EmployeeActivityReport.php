@@ -26,21 +26,8 @@ class EmployeeActivityReport extends Page
         $this->types = json_decode($types,0);
     }
 
-    public function generatePdf(){
-        $data = [
-            'from' => $this->from,
-            'to' => $this->to,
-            'employee_id' => $this->employee_id,
-            'attr' => $this->attr,
-            'types' => $this->types,
-            'data' => $this->data,
-        ];
+    public function exportExcel(){
 
-        $pdf = LaravelMpdf::loadView('pdf.HR.employee-activity-report', $data);
-        dd($pdf);
-        return  response()->streamDownload(function () use($pdf) {
-            echo $pdf->output();
-        }, 'employee-activity-report.pdf');
 
     }
 

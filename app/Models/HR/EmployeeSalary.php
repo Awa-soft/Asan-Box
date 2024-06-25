@@ -22,6 +22,7 @@ class EmployeeSalary extends Model
         self::creating(function ($model) {
             $model->currency_id = Employee::find($model->employee_id)?->currency_id??1;
             unset($model['lastSalaryDate']);
+             $model->currency_rate = getCurrencyRate($model->currency_id);
         });
         self::updating(function ($model) {
             unset($model['lastSalaryDate']);
@@ -37,6 +38,10 @@ class EmployeeSalary extends Model
     }
     public function branch(): BelongsTo{
         return $this->belongsTo(Branch::class)->withTrashed();
+    }
+
+    public function getDollarAmountAttribute():float{
+        return $this->amount / ($this->currency_rate?? 1);
     }
 
 }

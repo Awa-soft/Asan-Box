@@ -64,7 +64,7 @@ class Employee extends Model
 
 
     public function getRemainingLeaveAttribute(){
-        return $this->annual_leave - $this->leaves()->where('status', 'approved')->whereYear('from', now())->count();
+        return $this->annual_leave - $this->leaves()->where('status', 'approved')->whereYear('from', now())->get()->sum('leave_days');
     }
 
     public function salaries() :HasMany{

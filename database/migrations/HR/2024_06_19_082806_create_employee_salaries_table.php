@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('note')->nullable();
             $table->foreignIdFor(\App\Models\Settings\Currency::class)->constrained()->restrictOnDelete();
             $table->foreignIdFor(\App\Models\User::class)->constrained()->restrictOnDelete();
+            $table->decimal('currency_rate', 64, 2);
             $table->morphs("ownerable");
             $table->softDeletes();
             $table->timestamps();

@@ -11,12 +11,19 @@
 
 <body>
     <div class="mx-auto relative text-black bg-white w-[210mm] min-h-[297mm]">
+
+        @php
+            $imagePath = asset("storage/01J14R11T9C4K7J5XQ66H98HQX.png");
+        @endphp
+        <p class="w-full">{{ $imagePath }}</p>
         <table class="w-full">
             <thead>
                 <th class="pb-4" style="border-width: 0">
+                    <img src="{{ $imagePath }}" style="width: 100%;">
                 </th>
             </thead>
             <tbody>
+
                 <tr class="tableContent">
                     <td style="border-width: 0">
                         <div class="px-4">

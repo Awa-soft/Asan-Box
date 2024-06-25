@@ -1,12 +1,7 @@
 <x-filament-panels::page>
-    <button wire:click='generatePdf' class="px-10 py-2 rounded-md bg-primary-600 w-max">
-        pdf
-    </button>
-
 
 <x-core.report-content  listner="employee_activity_report">
         @slot('pageHeader')
-
         <div class="grid items-center grid-cols-3 p-2 align-middle border rounded-md ">
                     <div>
                         {!! trans('lang.statement_date', ['from' => $from, 'to' => $to!='all'?$to:now()->format('Y/m/d') ]) !!}
