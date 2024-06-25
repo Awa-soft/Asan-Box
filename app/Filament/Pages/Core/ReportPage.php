@@ -426,6 +426,7 @@ class ReportPage extends Page implements HasForms
                     Select::make('attr')
                         ->label(trans('lang.attributes'))
                         ->required()
+                        ->maxItems(6)
                         ->options([
                             'owner' => trans('lang.owner'),
                             'user'=>trans('lang.user'),
