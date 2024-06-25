@@ -434,11 +434,11 @@ class ReportPage extends Page implements HasForms
                             'last_salary'=>trans('lang.last_salary'),
                             'salary_date'=>trans('lang.salary_date'),
                             'payment_date'=>trans('lang.payment_date'),
+                            'work_average'=>trans('lang.work_average'),
                             'punish'=>trans('lang.punish'),
                             'bonus'=>trans('lang.bonus'),
                             'overtime'=>trans('lang.overtime'),
                             'advance'=>trans('lang.advance'),
-                            'absence'=>trans('lang.absence'),
                             'amount'=>trans('lang.amount'),
                             'payment_amount'=>trans('lang.payment_amount'),
                         ])->native(0)

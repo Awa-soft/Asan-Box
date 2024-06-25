@@ -30,6 +30,8 @@ return new class extends Migration
             $table->decimal('absence_amount',64,2)->default(0);
             $table->enum('salary_type',['monthly','weekly','daily'])->default('monthly');
             $table->decimal('overtime_amount',64,2)->default(0);
+            $table->decimal('work_hours',64,2)->default(8);
+            $table->decimal('work_days',64,2)->default(30);
             $table->foreignIdFor(\App\Models\HR\IdentityType::class)->nullable()->constrained()->nullOnDelete();
             $table->foreignIdFor(\App\Models\User::class)->constrained()->restrictOnDelete();
             $table->morphs("ownerable");
