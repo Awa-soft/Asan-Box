@@ -23,12 +23,13 @@
         padding: 0;
         margin: 0;
     }
+    .fi-header, .fi-header *, .fi-breadcrumbs, .fi-breadcrumbs * {
+        display: none !important;
+        visibility: hidden;
+        padding: 0;
+        margin: 0;
+    }
 }
-.fi-header, .fi-header *, .fi-breadcrumbs, .fi-breadcrumbs * {
-    display: none !important;
-    visibility: hidden;
-    padding: 0;
-    margin: 0;
-}
+
 
 

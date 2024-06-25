@@ -44,6 +44,19 @@ class EmployeeActivity extends Model
           'overtime'=>trans('lang.overtime'),
         ];
     }
+    public static function getLabels():array{
+        return [
+            'invoice_number' => trans('lang.invoice_number'),
+            'owner' => trans('lang.owner'),
+            'user'=>trans('user'),
+            'employee.name'=>trans('lang.employee'),
+            'type'=>trans('lang.type'),
+            'amount'=>trans('lang.amount'),
+            'currency_rate'=>trans('lang.currency_rate'),
+            'date'=>trans('lang.date'),
+            'note'=>trans('lang.note'),
+        ];
+    }
 
     public function scopePunish($query){
         return $query->where('type','punish');
