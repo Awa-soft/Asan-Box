@@ -140,5 +140,6 @@ return [
     'work_average'=>"Work Average",
     "work_days"=>"Work Days",
     "work_hours"=>"Work Hours",
+    'partners'=>"Partners",
 
 ];
