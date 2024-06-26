@@ -19,7 +19,7 @@ ASAN-BOX is one of the best ERP (Enterprise Resource Planning) systems, leveragi
 - **Comprehensive ERP Modules:** Manage various business processes with modules for inventory, finance, HR, and more.
 - **Real-time Interactions:** Leveraging Livewire for seamless, real-time user interactions without leaving the comfort of PHP.
 - **Beautiful UI:** Tailwind CSS ensures a modern, responsive, and clean user interface.
-- **Admin Dashboard:** Built with FilamentPHP for an intuitive admin experience.
+- **Dashboard:** Built with FilamentPHP for an intuitive admin experience.
 - **Secure and Scalable:** Powered by Laravel, ensuring security and scalability.
 - **Database Management:** MySQL for efficient and reliable database management.
 
