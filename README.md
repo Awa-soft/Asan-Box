@@ -1,6 +1,6 @@
 # ASAN-BOX Management System
 
---------
+
 ASAN-BOX is one of the best ERP (Enterprise Resource Planning) systems, leveraging the power of Laravel, Livewire, MySQL, FilamentPHP, and Tailwind CSS to provide a robust and user-friendly experience.
 
 ## Table of Contents
@@ -13,7 +13,7 @@ ASAN-BOX is one of the best ERP (Enterprise Resource Planning) systems, leveragi
 - [Contributing](#contributing)
 - [License](#license)
 
------------
+
 
 ## Features
 - **Comprehensive ERP Modules:** Manage various business processes with modules for inventory, finance, HR, and more.
@@ -23,7 +23,7 @@ ASAN-BOX is one of the best ERP (Enterprise Resource Planning) systems, leveragi
 - **Secure and Scalable:** Powered by Laravel, ensuring security and scalability.
 - **Database Management:** MySQL for efficient and reliable database management.
 
------------
+
 
 ## Requirements
 - PHP >= 8.2
@@ -32,7 +32,7 @@ ASAN-BOX is one of the best ERP (Enterprise Resource Planning) systems, leveragi
 - Node.js & npm
 - Laravel 11.9 or higher
 
------------
+
 
 ## Installation
 
@@ -62,7 +62,7 @@ php artisan migrate
 ```sh
 php artisan shield:install
 ```
------------
+
 ## Packages
 ASAN-BOX utilizes the following packages:
 
@@ -96,12 +96,12 @@ ASAN-BOX utilizes the following packages:
 * Blade Iconsax: saade/blade-iconsax ^1.2
 * Laravel PDF: spatie/laravel-pdf ^1.5
 
------------
+
 
 ## Contributing
 We welcome contributions! Please see our CONTRIBUTING.md for details on how to get started.
 
------------
+
 
 ## License
 This project is licensed under the MIT License. See the LICENSE file for more details.
