@@ -2,6 +2,7 @@
 
 namespace App\Providers\Filament;
 
+use App\Filament\Pages\Core\Settings;
 use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
 use DutchCodingCompany\FilamentDeveloperLogins\FilamentDeveloperLoginsPlugin;
 use Filament\Http\Middleware\Authenticate;
@@ -19,9 +20,10 @@ use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Session\Middleware\StartSession;
-use Illuminate\Support\Facades\Request;
-use Illuminate\Support\Facades\Route;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use Joaopaulolndev\FilamentGeneralSettings\FilamentGeneralSettingsPlugin;
+use Outerweb\FilamentSettings\Filament\Plugins\FilamentSettingsPlugin;
+use Tobiasla78\FilamentSimplePages\FilamentSimplePagesPlugin;
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -62,6 +64,10 @@ class AdminPanelProvider extends PanelProvider
                 Authenticate::class,
             ])
             ->plugins([
+                FilamentSettingsPlugin::make()
+                    ->pages([
+                        Settings::class
+                    ]),
                 \Hasnayeen\Themes\ThemesPlugin::make(),
                 FilamentShieldPlugin::make()
                 ->gridColumns([

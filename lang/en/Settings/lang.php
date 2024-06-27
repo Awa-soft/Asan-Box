@@ -14,4 +14,8 @@ return [
         'plural_label'=>'Packages',
         'singular_label'=>'Package',
     ],
+    "settings"=>[
+        'plural_label'=>'Settings',
+        'singular_label'=>'Settings'
+    ]
 ];

@@ -4,8 +4,66 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e1a58f494b54a1ff067fe888265eaa2f",
+    "content-hash": "f42ff1fc703de18e2994213d981ec109",
     "packages": [
+        {
+            "name": "amidesfahani/filament-tinyeditor",
+            "version": "v2.0.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/amidesfahani/filament-tinyeditor.git",
+                "reference": "16f3e4f56cb419da90249c5435f3c656d46822d6"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/amidesfahani/filament-tinyeditor/zipball/16f3e4f56cb419da90249c5435f3c656d46822d6",
+                "reference": "16f3e4f56cb419da90249c5435f3c656d46822d6",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^8.1",
+                "spatie/laravel-package-tools": "^1.16",
+                "tinymce/tinymce": "^7.0"
+            },
+            "require-dev": {
+                "laravel/pint": "^1.13"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "AmidEsfahani\\FilamentTinyEditor\\TinyeditorServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "AmidEsfahani\\FilamentTinyEditor\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Amid Esfahani",
+                    "email": "amid.esfahani@gmail.com"
+                }
+            ],
+            "description": "Filament TinyMce Editor v6",
+            "keywords": [
+                "filament",
+                "laravel",
+                "tinyeditor",
+                "tinymce"
+            ],
+            "support": {
+                "issues": "https://github.com/amidesfahani/filament-tinyeditor/issues",
+                "source": "https://github.com/amidesfahani/filament-tinyeditor/tree/v2.0.3"
+            },
+            "time": "2024-06-10T20:11:52+00:00"
+        },
         {
             "name": "andreiio/blade-remix-icon",
             "version": "3.3.0",
@@ -553,16 +611,16 @@
         },
         {
             "name": "codeat3/blade-carbon-icons",
-            "version": "2.26.0",
+            "version": "2.27.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/codeat3/blade-carbon-icons.git",
-                "reference": "def7ff23a06d633f744dfbea65b67ec650e92d4d"
+                "reference": "26eb43c7d6fda66d7f8612796011869fcb8a1f02"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/codeat3/blade-carbon-icons/zipball/def7ff23a06d633f744dfbea65b67ec650e92d4d",
-                "reference": "def7ff23a06d633f744dfbea65b67ec650e92d4d",
+                "url": "https://api.github.com/repos/codeat3/blade-carbon-icons/zipball/26eb43c7d6fda66d7f8612796011869fcb8a1f02",
+                "reference": "26eb43c7d6fda66d7f8612796011869fcb8a1f02",
                 "shasum": ""
             },
             "require": {
@@ -613,7 +671,7 @@
             ],
             "support": {
                 "issues": "https://github.com/codeat3/blade-carbon-icons/issues",
-                "source": "https://github.com/codeat3/blade-carbon-icons/tree/2.26.0"
+                "source": "https://github.com/codeat3/blade-carbon-icons/tree/2.27.0"
             },
             "funding": [
                 {
@@ -621,7 +679,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-06-17T17:28:43+00:00"
+            "time": "2024-06-24T17:03:49+00:00"
         },
         {
             "name": "codeat3/blade-clarity-icons",
@@ -3517,16 +3575,16 @@
         },
         {
             "name": "laravel/framework",
-            "version": "v11.11.1",
+            "version": "v11.12.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/framework.git",
-                "reference": "c9b52e84bd18f155e5ba59b948c7da3e7f37e87f"
+                "reference": "9a6d9cea83cfa6b9e8eda05c89741d0411d8ebe8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/framework/zipball/c9b52e84bd18f155e5ba59b948c7da3e7f37e87f",
-                "reference": "c9b52e84bd18f155e5ba59b948c7da3e7f37e87f",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/9a6d9cea83cfa6b9e8eda05c89741d0411d8ebe8",
+                "reference": "9a6d9cea83cfa6b9e8eda05c89741d0411d8ebe8",
                 "shasum": ""
             },
             "require": {
@@ -3718,7 +3776,7 @@
                 "issues": "https://github.com/laravel/framework/issues",
                 "source": "https://github.com/laravel/framework"
             },
-            "time": "2024-06-20T10:54:53+00:00"
+            "time": "2024-06-25T19:33:56+00:00"
         },
         {
             "name": "laravel/prompts",
@@ -5990,6 +6048,114 @@
                 }
             ],
             "time": "2024-06-17T08:53:37+00:00"
+        },
+        {
+            "name": "outerweb/filament-settings",
+            "version": "v1.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/outer-web/filament-settings.git",
+                "reference": "5c5c58e7271269de1f81af8acdade9ad4c319b6a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/outer-web/filament-settings/zipball/5c5c58e7271269de1f81af8acdade9ad4c319b6a",
+                "reference": "5c5c58e7271269de1f81af8acdade9ad4c319b6a",
+                "shasum": ""
+            },
+            "require": {
+                "filament/filament": "^3.2",
+                "laravel/framework": "^10.0|^11.0",
+                "outerweb/settings": "^1.0",
+                "php": "^8.0",
+                "spatie/laravel-package-tools": "^1.16"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Outerweb\\FilamentSettings\\FilamentSettingsServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "files": [
+                    "src\\Helpers\\helpers.php"
+                ],
+                "psr-4": {
+                    "Outerweb\\FilamentSettings\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Outerweb",
+                    "email": "info@outerweb.be"
+                }
+            ],
+            "description": "This package adds a way to interact with outerweb/settings in Filament.",
+            "homepage": "https://github.com/outer-web/filament-settings",
+            "support": {
+                "issues": "https://github.com/outer-web/filament-settings/issues",
+                "source": "https://github.com/outer-web/filament-settings/tree/v1.2.0"
+            },
+            "time": "2024-03-25T15:53:11+00:00"
+        },
+        {
+            "name": "outerweb/settings",
+            "version": "v1.0.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/outer-web/settings.git",
+                "reference": "259a0742b986ecb5f7e74a02c0c495330b6010d3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/outer-web/settings/zipball/259a0742b986ecb5f7e74a02c0c495330b6010d3",
+                "reference": "259a0742b986ecb5f7e74a02c0c495330b6010d3",
+                "shasum": ""
+            },
+            "require": {
+                "laravel/framework": "^10.0|^11.0",
+                "php": "^8.0",
+                "spatie/laravel-package-tools": "^1.16"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Outerweb\\Settings\\SettingsServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "files": [
+                    "src\\Helpers\\helpers.php"
+                ],
+                "psr-4": {
+                    "Outerweb\\Settings\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Outerweb",
+                    "email": "info@outerweb.be"
+                }
+            ],
+            "description": "This package adds application wide settings stored in your database.",
+            "homepage": "https://github.com/outer-web/settings",
+            "support": {
+                "issues": "https://github.com/outer-web/settings/issues",
+                "source": "https://github.com/outer-web/settings/tree/v1.0.3"
+            },
+            "time": "2024-03-12T20:47:31+00:00"
         },
         {
             "name": "owenvoke/blade-fontawesome",
@@ -10507,6 +10673,65 @@
             "time": "2023-12-08T13:03:43+00:00"
         },
         {
+            "name": "tinymce/tinymce",
+            "version": "7.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/tinymce/tinymce-dist.git",
+                "reference": "ca4b8ce34f4d4f4c1485da90a4247886c4e45335"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/tinymce/tinymce-dist/zipball/ca4b8ce34f4d4f4c1485da90a4247886c4e45335",
+                "reference": "ca4b8ce34f4d4f4c1485da90a4247886c4e45335",
+                "shasum": ""
+            },
+            "type": "component",
+            "extra": {
+                "component": {
+                    "scripts": [
+                        "tinymce.js",
+                        "plugins/*/plugin.js",
+                        "themes/*/theme.js",
+                        "models/*/model.js",
+                        "icons/*/icons.js"
+                    ],
+                    "files": [
+                        "tinymce.min.js",
+                        "plugins/*/plugin.min.js",
+                        "themes/*/theme.min.js",
+                        "models/*/model.min.js",
+                        "skins/**",
+                        "icons/*/icons.min.js"
+                    ]
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "description": "Web based JavaScript HTML WYSIWYG editor control.",
+            "homepage": "https://www.tiny.cloud/",
+            "keywords": [
+                "contenteditable",
+                "editing",
+                "html",
+                "javascript",
+                "rich editor",
+                "rich text",
+                "rich text editor",
+                "richtext",
+                "rte",
+                "text",
+                "tinymce",
+                "wysiwyg"
+            ],
+            "support": {
+                "source": "https://github.com/tinymce/tinymce-dist/tree/7.2.0"
+            },
+            "time": "2024-06-19T06:08:58+00:00"
+        },
+        {
             "name": "vlucas/phpdotenv",
             "version": "v5.6.0",
             "source": {
@@ -10977,16 +11202,16 @@
         },
         {
             "name": "laravel/sail",
-            "version": "v1.29.3",
+            "version": "v1.30.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/sail.git",
-                "reference": "e35b3ffe1b9ea598246d7e99197ee8799f6dc2e5"
+                "reference": "e08b594052385ab9891dd86047e52da8a953c827"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/sail/zipball/e35b3ffe1b9ea598246d7e99197ee8799f6dc2e5",
-                "reference": "e35b3ffe1b9ea598246d7e99197ee8799f6dc2e5",
+                "url": "https://api.github.com/repos/laravel/sail/zipball/e08b594052385ab9891dd86047e52da8a953c827",
+                "reference": "e08b594052385ab9891dd86047e52da8a953c827",
                 "shasum": ""
             },
             "require": {
@@ -11036,7 +11261,7 @@
                 "issues": "https://github.com/laravel/sail/issues",
                 "source": "https://github.com/laravel/sail"
             },
-            "time": "2024-06-12T16:24:41+00:00"
+            "time": "2024-06-18T17:36:56+00:00"
         },
         {
             "name": "mockery/mockery",
