@@ -7,6 +7,7 @@
     "require": {
         "php": "^8.2",
         "andreiio/blade-remix-icon": "^3.2",
+        "awcodes/filament-table-repeater": "^3.0",
         "bezhansalleh/filament-shield": "^3.2",
         "carlos-meneses/laravel-mpdf": "^2.1",
         "codeat3/blade-carbon-icons": "^2.25",
@@ -17,6 +18,7 @@
         "codeat3/blade-line-awesome-icons": "^1.4",
         "codeat3/blade-pepicons": "^1.5",
         "codeat3/blade-simple-line-icons": "^1.4",
+        "codeat3/blade-vaadin-icons": "^1.5",
         "davidhsianturi/blade-bootstrap-icons": "^1.5",
         "dutchcodingcompany/filament-developer-logins": "^1.2",
         "eduard9969/blade-polaris-icons": "^2.6",

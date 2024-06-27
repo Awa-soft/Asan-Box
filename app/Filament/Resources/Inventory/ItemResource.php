@@ -4,6 +4,7 @@ namespace App\Filament\Resources\Inventory;
 
 use App\Filament\Resources\Inventory\ItemResource\Pages;
 use App\Filament\Resources\Inventory\ItemResource\RelationManagers;
+use App\Filament\Resources\Inventory\ItemResource\RelationManagers\CodesRelationManager;
 use App\Models\Inventory\Item;
 use App\Traits\Core\HasTranslatableResource;
 use App\Traits\Core\OwnerableTrait;
@@ -32,7 +33,6 @@ class ItemResource extends Resource
     {
         return $form
             ->schema([
-                static::Field(),
                 Forms\Components\TextInput::make('name')
                     ->label(trans("lang.name"))
                     ->required()
@@ -49,7 +49,13 @@ class ItemResource extends Resource
                     ->preload()
                     ->searchable()
                     ->createOptionForm(fn (Form $form) => CategoryResource::form($form))
-
+                    ->required(),
+                Forms\Components\Select::make('unit_id')
+                    ->label(trans("lang.unit"))
+                    ->relationship('unit', 'name')
+                    ->preload()
+                    ->searchable()
+                    ->createOptionForm(fn (Form $form) => CategoryResource::form($form))
                     ->required(),
                 Forms\Components\Select::make('brand_id')
                     ->relationship('brand', 'name')
@@ -58,40 +64,22 @@ class ItemResource extends Resource
                     ->createOptionForm(fn (Form $form) => BrandResource::form($form))
                     ->preload()
                     ->searchable(),
-                Forms\Components\Select::make('single_unit_id')
-                    ->label(trans("lang.single_unit"))
-                    ->relationship('singleUnit', 'name')
-                    ->required()
-                    ->createOptionForm(fn (Form $form) => UnitResource::form($form))
-                    ->preload()
-                    ->searchable(),
-                Forms\Components\Select::make('multiple_unit_id')
-                    ->relationship('multiUnit', 'name')
-                    ->required()
-                    ->createOptionForm(fn (Form $form) => UnitResource::form($form))
-                    ->label(trans("lang.multiple_unit"))
-                    ->preload()
-                    ->searchable(),
-                Forms\Components\TextInput::make('single_price')
-                    ->label(trans("lang.single_price"))
+                Forms\Components\TextInput::make('min_price')
+                    ->label(trans("lang.min_price"))
                     ->required()
                     ->numeric()
                     ->default(0.00),
-                Forms\Components\TextInput::make('multiple_price')
-                    ->label(trans("lang.multiple_price"))
+                Forms\Components\TextInput::make('max_price')
+                    ->label(trans("lang.max_price"))
                     ->required()
                     ->numeric()
                     ->default(0.00),
-                Forms\Components\TextInput::make('benifit_ratio')
+                Forms\Components\TextInput::make('discount')
                     ->label(trans("lang.benifit_ratio"))
                     ->required()
+                    ->prefix("%")
                     ->numeric()
                     ->default(0),
-                Forms\Components\TextInput::make('multi_quantity')
-                    ->label(trans("lang.multi_quantity"))
-                    ->required()
-                    ->numeric()
-                    ->default(1.00),
                 Forms\Components\DatePicker::make('expire_date')
                     ->label(trans("lang.expire_date")),
                 Forms\Components\FileUpload::make('image')
@@ -106,7 +94,6 @@ class ItemResource extends Resource
     {
         return $table
             ->columns([
-                static::Column(),
                 Tables\Columns\ImageColumn::make('image')
                     ->circular()
                     ->label(trans("lang.image"))
@@ -117,7 +104,8 @@ class ItemResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('description')
                     ->label(trans("lang.description"))
-                    ->searchable(),
+                    ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('cost')
                     ->label(trans("lang.cost"))
                     ->searchable()
@@ -142,14 +130,6 @@ class ItemResource extends Resource
                         return $record;
                     })
                     ->label(trans("lang.price")),
-
-                Tables\Columns\TextColumn::make('multi_quantity')
-                    ->label(trans("lang.multi_quantity"))
-                    ->suffix(fn ($record) => " " . $record->singleUnit->name)
-                    ->description(fn ($record) => $record->multiUnit->name)
-                    ->numeric()
-                    ->toggleable(isToggledHiddenByDefault: true)
-                    ->sortable(),
                 Tables\Columns\TextColumn::make('benifit_ratio')
                     ->numeric()
                     ->label(trans("lang.benifit_ratio"))
@@ -197,7 +177,7 @@ class ItemResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            CodesRelationManager::class
         ];
     }
 

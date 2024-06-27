@@ -1,21 +1,20 @@
-
 <x-filament-panels::page>
     <div class="grid w-full gap-5 xl:grid-cols-12">
         <p class="text-3xl font-bold xl:col-span-8 2xl:col-span-8">{{ trans('POS/lang.purchase.plural_label') }}</p>
-        <div class="grid grid-cols-5 gap-2 text-xs xl:col-span-4 2xl:col-span-4"
-        x-data="{
-        active:'single',
-        }"
-        >
+        <div class="grid grid-cols-5 gap-2 text-xs xl:col-span-4 2xl:col-span-4" x-data="{
+            active: 'single',
+        }">
             <div
-
                 class="relative grid items-center grid-cols-2 text-center border-2 border-gray-400 rounded-full dark:border-gray-900">
                 <div class="absolute grid items-center justify-center w-full h-full grid-cols-2 text-center">
-                    <p wire:click="$set('multipleSelect', false)" @click="active='single'" class="top-0 z-10 cursor-pointer">{{ trans('lang.single') }}</p>
-                    <p wire:click="$set('multipleSelect', true)" @click="active='multiple'" class="z-10 cursor-pointer">{{ trans('lang.multiple') }} </p>
+                    <p wire:click="$set('multipleSelect', false)" @click="active='single'"
+                        class="top-0 z-10 cursor-pointer">{{ trans('lang.single') }}</p>
+                    <p wire:click="$set('multipleSelect', true)" @click="active='multiple'" class="z-10 cursor-pointer">
+                        {{ trans('lang.multiple') }} </p>
                 </div>
                 <div class="absolute top-0 grid w-full h-full grid-cols-2">
-                    <div  :class="active=='single'?'translate-x-0':'translate-x-full'" class="w-full h-full duration-300 rounded-full bg-primary-500"></div>
+                    <div :class="active == 'single' ? 'translate-x-0' : 'translate-x-full'"
+                        class="w-full h-full duration-300 rounded-full bg-primary-500"></div>
                 </div>
             </div>
 
@@ -101,28 +100,18 @@
                                     </x-filament::input.wrapper>
                                 </td>
                                 <td class="py-2 text-center">
-                                    <p>{{ collect($data['codes'])->where('gift', 'no')->count() }}</p>
+                                    <p>{{ collect($data['codes'])->where('gift', 0)->count() }}</p>
                                 </td>
                                 <td class="py-2 text-center">
-                                    <p>{{ collect($data['codes'])->where('gift', 'yes')->count() }}</p>
+                                    <p>{{ collect($data['codes'])->where('gift', 1)->count() }}</p>
                                 </td>
                                 <td class="py-2 text-center"><x-filament::input.wrapper>
-                                        @if ($data['type'] == 'single')
-                                            <x-filament::input type="number"
-                                                wire:model.live.debounce.500ms="tableData.{{ $key }}.single_price" />
-                                        @else
-                                            <x-filament::input type="number"
-                                                wire:model.live.debounce.500ms="tableData.{{ $key }}.multiple_price" />
-                                        @endif
+                                        <x-filament::input type="number"
+                                            wire:model.live.debounce.500ms="tableData.{{ $key }}.price" />
                                     </x-filament::input.wrapper></td>
                                 <td class="py-2 text-center">
-                                    @if ($data['type'] == 'single')
-                                        {{ number_format($data['single_price'] *collect($data['codes'])->where('gift', 'no')->count(),getCurrencyDecimal($data['currency_id'] ?? 1)) }}
-                                        {{ getCurrencySymbol($data['currency_id'] ?? 1) }}
-                                    @else
-                                        {{ number_format($data['multiple_price'] *collect($data['codes'])->where('gift', 'no')->count(),getCurrencyDecimal($data['currency_id'] ?? 1)) }}
-                                        {{ getCurrencySymbol($data['currency_id'] ?? 1) }}
-                                    @endif
+                                    {{ number_format($data['price'] *collect($data['codes'])->where('gift', 0)->count(),getCurrencyDecimal($data['currency_id'] ?? 1)) }}
+                                    {{ getCurrencySymbol($data['currency_id'] ?? 1) }}
                                 </td>
                                 <td class="py-2 ">
                                     <div class="grid grid-cols-3 gap-y-5">
@@ -145,7 +134,12 @@
                     </tbody>
                 </table>
             </div>
-
+            <div
+                class="flex w-full gap-5 p-2 border-2 border-dotted rounded-md h-maxdark:border-gray-700 border-black/50">
+                <form class="w-full ">
+                    {{ $this->invoiceForm2 }}
+                </form>
+            </div>
         </div>
 
         <div
@@ -178,8 +172,8 @@
                                         {{ $item->category->name }}</p>
                                 </div>
                                 <div class="flex flex-col gap-2">
-                                    <p class="text-xs font-light">{{ number_format($item->single_price, 2) }} $</p>
-                                    <p class="text-xs font-light">{{ number_format($item->multiple_price, 2) }} $</p>
+                                    <p class="text-xs font-light">{{ number_format($item->min_price, 2) }} $</p>
+                                    <p class="text-xs font-light">{{ number_format($item->max_price, 2) }} $</p>
                                 </div>
                             </div>
                         </li>
@@ -205,10 +199,10 @@
                                 placeholder="{{ trans('lang.code') }}" />
                         </x-filament::input.wrapper>
                     </div>
-                    <div class="flex items-center gap-3 mt-5 w-max" >
-                                <label for="">{{ trans('lang.gift') }}</label>
-                                <input type="checkbox" wire:model='codes.gift' value="yes" id=""
-                                    name="gift">
+                    <div class="flex items-center gap-3 mt-5 w-max">
+                        <label for="">{{ trans('lang.gift') }}</label>
+                        <input type="checkbox" wire:model='codes.gift' value="yes" id=""
+                            name="gift">
                     </div>
                 </div>
 
@@ -224,14 +218,20 @@
                         <p>{{ $code['code'] }}</p>
 
                         <div class="flex gap-3">
-                            @if ($code['gift'] == 'gift')
-                                <p class="p-2 text-xs text-white uppercase rounded-md bg-primary-600">{{ $code['gift']}}</p>
+                            @if ($code['gift'] == 1)
+                                <p wire:click='toggleGift({{ $key }})'
+                                    class="p-2 text-xs text-white uppercase bg-green-600 rounded-md cursor-pointer">
+                                    {{ trans('lang.gift') }}</p>
+                            @else
+                                <p wire:click='toggleGift({{ $key }})'
+                                    class="p-2 text-xs text-white uppercase bg-yellow-500 rounded-md cursor-pointer">
+                                    {{ trans('lang.cost') }}</p>
                             @endif
 
                             <div wire:click="removeCode('{{ $key }}')"
-                            class="w-8 duration-300 cursor-pointer text-danger-600 hover:text-danger-500">
-                            <x-heroicon-o-trash />
-                        </div>
+                                class="w-8 duration-300 cursor-pointer text-danger-600 hover:text-danger-500">
+                                <x-heroicon-o-trash />
+                            </div>
                         </div>
                     </div>
                 @empty

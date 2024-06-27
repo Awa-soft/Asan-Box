@@ -14,7 +14,8 @@ return [
     "multiple_unit" => "Multiple Unit",
     "unit" => "Unit",
     "price" => "Price",
-    "multiple_price" => "Multiple Price",
+    "min_price" => "Min Price",
+    "max_price" => "Max Price",
     "cost" => "Cost",
     "multi_quantity" => "Multi Quantity",
     "benifit_ratio" => "Benifit Ratio",
@@ -136,5 +137,13 @@ return [
     "excel"=>"Excel",
     "work_time"=>"Work Time",
     "dates"=>"Dates",
+    "contact" => "Contact",
+    "expense" => "Expense",
+    "title" => "Title",
+    "amount" => "Amount",
+    "attachement" => "Attachement",
+    "invoice" => "Invoice",
+    "purchase_invoice" => "Purchase Invoice",
+    "total_expenses" => "Total Expenses",
 
 ];

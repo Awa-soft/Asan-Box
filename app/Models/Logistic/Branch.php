@@ -23,8 +23,8 @@ class Branch extends Model
         return $this->hasMany(Currency::class);
     }
 
-    public function items() :HasMany
+    public function items() :BelongsToMany
     {
-        return $this->hasMany(Item::class);
+        return $this->belongsToMany(Item::class,'branch_items');
     }
 }

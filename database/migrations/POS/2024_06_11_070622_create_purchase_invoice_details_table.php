@@ -22,6 +22,7 @@ return new class extends Migration
             $table->float("quantity", 2)->default(1);
             $table->float("gift", 2)->default(0);
             $table->decimal("price", 64, 2)->default(0);
+            $table->decimal("currency_rate", 64, 2)->default(0);
             $table->timestamps();
         });
     }
