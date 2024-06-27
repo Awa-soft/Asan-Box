@@ -75,6 +75,9 @@ class Employee extends Model
         return $this->salaries()->latest()->first()?->salary_date ?? $this->hire_date;
     }
 
+    public function getHourSalaryAttribute():float{
+        return (($this->salary>0 ? $this->salary:1)/ ($this->work_days >0?$this->work_days :0)) / (($this->work_hours >0 ? $this->work_hours:1)) ;
+    }
 
 
 

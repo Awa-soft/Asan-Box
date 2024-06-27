@@ -70,7 +70,6 @@ class EmployeeResource extends Resource
                         Forms\Components\TextInput::make('identity_number')
                             ->maxLength(255)
                             ->default(null),
-
                     ])->columns(1),
                 Forms\Components\Section::make(trans('lang.company_information'))
                     ->columnSpan(1)
@@ -118,6 +117,16 @@ class EmployeeResource extends Resource
                         static::selectField('positions',PositionResource::class)
                             ->relationship('positions', 'name')
                             ->multiple(),
+                        Forms\Components\TextInput::make('work_days')
+                        ->required()
+                            ->numeric()
+                            ->minValue(0)
+                        ->default(30),
+                        Forms\Components\TextInput::make('work_hours')
+                            ->required()
+                            ->numeric()
+                            ->minValue(0)
+                            ->default(8),
                     ]),
                 Forms\Components\Textarea::make('note')
                     ->columnSpanFull(),
@@ -187,6 +196,14 @@ class EmployeeResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('overtime_amount')
                     ->suffix(fn ($record) => getCurrencySymbol($record->currency_id))
+                    ->numeric()
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('work_days')
+                    ->numeric()
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('work_hours')
                     ->numeric()
                     ->toggleable(isToggledHiddenByDefault: true)
                     ->sortable(),
