@@ -198,6 +198,11 @@
       <path value="$PROJECT_DIR$/vendor/phenx/php-font-lib" />
       <path value="$PROJECT_DIR$/vendor/ezyang/htmlpurifier" />
       <path value="$PROJECT_DIR$/vendor/mramadan0101/dompdf" />
+      <path value="$PROJECT_DIR$/vendor/outerweb/filament-settings" />
+      <path value="$PROJECT_DIR$/vendor/outerweb/settings" />
+      <path value="$PROJECT_DIR$/vendor/tinymce/tinymce" />
+      <path value="$PROJECT_DIR$/vendor/amidesfahani/filament-tinyeditor" />
+      <path value="$PROJECT_DIR$/vendor/andreiio/blade-iconoir" />
     </include_path>
   </component>
   <component name="PhpProjectSharedConfiguration" php_language_level="8.2" />

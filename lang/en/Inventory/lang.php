@@ -17,6 +17,10 @@ return [
         "plural_label"=>"Items",
         "singular_label"=>"Item",
     ],
+    "item_loss"=>[
+        "plural_label"=>"Item Losses",
+        "singular_label"=>"Item Loss",
+    ]
 
-  
+
 ];
