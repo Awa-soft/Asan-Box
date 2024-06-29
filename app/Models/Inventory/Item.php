@@ -4,6 +4,7 @@ namespace App\Models\Inventory;
 
 use App\Models\POS\PurchaseDetailCode;
 use App\Models\POS\PurchaseInvoiceDetail;
+use App\Models\Settings\Currency;
 use App\Traits\Core\Ownerable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -13,7 +14,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Item extends Model
 {
-    use HasFactory, SoftDeletes,Ownerable;
+    use HasFactory, SoftDeletes;
 
 
     public function category() :BelongsTo{
@@ -23,12 +24,9 @@ class Item extends Model
         return $this->belongsTo(Brand::class);
     }
 
-    public function multiUnit():BelongsTo{
-        return $this->belongsTo(Unit::class, "multiple_unit_id");
-    }
 
-    public function singleUnit():BelongsTo{
-        return $this->belongsTo(Unit::class, "single_unit_id");
+    public function unit():BelongsTo{
+        return $this->belongsTo(Unit::class, "unit_id");
     }
 
     public function purchases() :HasMany{
@@ -41,12 +39,16 @@ class Item extends Model
     public function getCostAttribute(){
         $sumBase = 0;
         $sumQuantity = 0;
+        $sumExpensesBase = 0;
         foreach ($this->purchases as $key => $purchase) {
+            $sumExpensesBase += $purchase->invoice->expenses->map(function($expense){
+                return convertToCurrency($expense->currency_id,getBaseCurrency()->id,$expense->amount, from_rate: $expense->rate);
+            })->sum();
             $sumBase += convertToCurrency($purchase->currency_id,getBaseCurrency()->id,$purchase->codes->count("code") * $purchase->price);
             $sumQuantity += $purchase->codes->count("code");
         }
+        return ($sumBase / ($sumQuantity==0?1:$sumQuantity)) +  ($sumExpensesBase/$purchase->codes->count("code"));
 
-        return $sumBase / $sumQuantity;
     }
 
 

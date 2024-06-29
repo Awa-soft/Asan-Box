@@ -31,7 +31,7 @@ class PackagePage extends Page implements HasForms, HasTable
     public $packages;
     public static function getNavigationLabel(): string
     {
-        return trans('Settings/lang.package.plural_label');
+        return trans('settings/lang.package.plural_label');
     }
     public  function getHeading(): string
     {
@@ -39,7 +39,7 @@ class PackagePage extends Page implements HasForms, HasTable
     }
     public static function getNavigationGroup(): ?string
     {
-        return trans('Settings/lang.group_label');
+        return trans('settings/lang.group_label');
     }
     protected function getForms(): array
     {

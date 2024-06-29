@@ -191,6 +191,11 @@
       <excludeFolder url="file://$MODULE_DIR$/vendor/spatie/browsershot" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/spatie/laravel-pdf" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/spatie/temporary-directory" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/amidesfahani/filament-tinyeditor" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/outerweb/filament-settings" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/outerweb/settings" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/tinymce/tinymce" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/andreiio/blade-iconoir" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
