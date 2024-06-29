@@ -5,6 +5,7 @@ namespace App\Models\POS;
 use App\Models\CRM\Contact;
 use App\Models\Logistic\Branch;
 use App\Models\Settings\Currency;
+use App\Models\User;
 use App\Traits\Core\HasCurrency;
 use App\Traits\Core\HasUser;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -38,6 +39,9 @@ class PurchaseInvoice extends Model
     public function contact() :BelongsTo{
         return $this->belongsTo(Contact::class);
     }
+    public function currency() :BelongsTo{
+        return $this->belongsTo(Currency::class);
+    }
 
     public function details() :HasMany{
         return $this->hasMany(PurchaseInvoiceDetail::class);
@@ -45,6 +49,35 @@ class PurchaseInvoice extends Model
     public function user() :BelongsTo{
         return $this->belongsTo(User::class);
     }
+    public function expenses() :HasMany{
+        return $this->hasMany(PurchaseExpense::class);
+    }
+
+    public function getTotalAttribute(){
+        $total = 0;
+        foreach ($this->details as $detail) {
+            $total += $detail->price * $detail->codes()->where("gift", 0)->count();
+        }
+        return $total;
+    }
+
+    public function getTotalExpensesAttribute(){
+        $sumBaseExpenses = 0;
+        foreach ($this->expenses as $expense) {
+            $sumBaseExpenses += convertToCurrency(
+                $expense->currency_id,
+                getBaseCurrency()->id,
+                $expense->amount,
+                from_rate: $expense->currency_rate,
+            );
+    }
+
+    return $sumBaseExpenses;
+}
+
+public function getNetTotalAttribute(){
+    return $this->total - $this->total_expenses;
+}
 
 
 }
