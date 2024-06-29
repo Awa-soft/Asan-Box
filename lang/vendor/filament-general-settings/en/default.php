@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'title' => 'General Settings',
+    'title' => 'General settings',
     'application' => 'Application',
     'analytics' => 'Analytics',
     'seo' => 'SEO',
@@ -36,7 +36,7 @@ return [
     'seo_metadata' => 'SEO Metadata',
     'seo_preview_helper_text' => 'Here a preview of what a search engine might display about your page.',
     'save' => 'Save',
-    'settings_saved' => 'Settings saved successfully.',
+    'settings_saved' => 'settings saved successfully.',
     'test_email_error' => 'An error occurred while sending the test email. Please check your email settings and try again.',
     'test_email_success' => 'Test email sent successfully.',
     'social_network_helper_text' => 'Leave it empty to hide the social network icon.',

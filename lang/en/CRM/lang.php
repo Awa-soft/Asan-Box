@@ -21,4 +21,12 @@ return [
         'plural_label'=>'Partners',
         'singular_label'=>'Partner'
     ],
+    "partner_account"=>[
+        'plural_label'=>'Partner Accounts',
+        'singular_label'=>'Partner Account'
+    ],
+    "partnership"=>[
+        'plural_label'=>'Partnerships',
+        'singular_label'=>'Partnership'
+    ]
 ];

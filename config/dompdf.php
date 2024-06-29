@@ -4,7 +4,7 @@ return array(
 
     /*
     |--------------------------------------------------------------------------
-    | Settings
+    | settings
     |--------------------------------------------------------------------------
     |
     | Set some default values. It is possible to add all defines that can be set

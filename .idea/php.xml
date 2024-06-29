@@ -202,6 +202,7 @@
       <path value="$PROJECT_DIR$/vendor/outerweb/settings" />
       <path value="$PROJECT_DIR$/vendor/tinymce/tinymce" />
       <path value="$PROJECT_DIR$/vendor/amidesfahani/filament-tinyeditor" />
+      <path value="$PROJECT_DIR$/vendor/andreiio/blade-iconoir" />
     </include_path>
   </component>
   <component name="PhpProjectSharedConfiguration" php_language_level="8.2" />

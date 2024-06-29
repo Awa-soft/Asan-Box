@@ -127,7 +127,7 @@ return [
     "statement_phone"=>"<b>Phone:</b> :phone",
     "statement_address"=>"<b>Address:</b> :address",
     'safe_locker' => 'Safe Locker',
-    "core_reports" => "Core Reports",
+    "core_reports" => "settings Reports",
     "owner"=>"Owner",
     "currency_rate"=>"Rate",
     'print'=>"Print",
@@ -141,5 +141,14 @@ return [
     "work_days"=>"Work Days",
     "work_hours"=>"Work Hours",
     'partners'=>"Partners",
+    "installment_contract"=>"Installment Contract",
+    "bill_of_exchange"=>"Bill of Exchange",
+    "pledge"=>"Pledge",
+    "contracts"=>"Contracts",
+    "active"=>"Active",
+    "deactivate"=>"Deactivate",
+    'percent'=>"Percent",
+    'start_date'=>"Start Date",
+    'end_date'=>"End Date"
 
 ];

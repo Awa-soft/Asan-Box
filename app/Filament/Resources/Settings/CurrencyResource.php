@@ -43,7 +43,7 @@ class CurrencyResource extends Resource
                     ->label(trans("lang.rate"))
                     ->required()
                     ->numeric()
-                    ->helperText(trans("Settings/lang.currency.rate_hint")),
+                    ->helperText(trans("settings/lang.currency.rate_hint")),
 
 
             ])

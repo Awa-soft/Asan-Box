@@ -1,6 +1,6 @@
 <?php
 return [
-    "group_label"=>"Settings",
+    "group_label"=>"settings",
     'currency'=>[
         'plural_label'=>'Currencies',
         'singular_label'=>'Currency',
@@ -15,7 +15,7 @@ return [
         'singular_label'=>'Package',
     ],
     "settings"=>[
-        'plural_label'=>'Settings',
-        'singular_label'=>'Settings'
+        'plural_label'=>'settings',
+        'singular_label'=>'settings'
     ]
 ];
