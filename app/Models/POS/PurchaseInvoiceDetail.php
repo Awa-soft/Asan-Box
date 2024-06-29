@@ -3,6 +3,7 @@
 namespace App\Models\POS;
 
 use App\Models\Inventory\Item;
+use App\Models\Settings\Currency;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -23,5 +24,8 @@ class PurchaseInvoiceDetail extends Model
 
     public function codes() :HasMany{
         return $this->hasMany(PurchaseDetailCode::class);
+    }
+    public function currency():BelongsTo{
+        return $this->belongsTo(Currency::class);
     }
 }

@@ -27,7 +27,7 @@ class PurchasePage extends Page implements HasForms
     protected static ?string $navigationIcon = 'iconpark-buy';
     public static function getNavigationLabel(): string
     {
-        return trans('POS/lang.purchase.plural_label');
+        return trans('POS/lang.purchase_pos.singular_label');
     }
     public  function getHeading(): string
     {
@@ -44,6 +44,7 @@ class PurchasePage extends Page implements HasForms
     {
         return [
             'invoiceForm',
+            'invoiceForm2',
         ];
     }
     public function invoiceForm(Form $form): Form
@@ -68,13 +69,14 @@ class PurchasePage extends Page implements HasForms
                 ->label(trans("lang.vendor_invoice")),
                 DateTimePicker::make('date')
                     ->default(now())
-                    ->label(trans("lang.date"))
-                    ->required(),
+                    ->required()
+                    ->label(trans("lang.date")),
                 Select::make('branch_id')
                 ->label(trans("Logistic/lang.branch.singular_label"))
                 ->label(trans("Logistic/lang.branch.singular_label"))
                 ->relationship("branch", "name")
                 ->preload()
+                ->required()
                 ->searchable(),
                 Select::make('contact_id')
                 ->label(trans("CRM/lang.vendor.singular_label"))
@@ -82,9 +84,29 @@ class PurchasePage extends Page implements HasForms
                     ->preload()
                     ->searchable()
                     ->required(),
+
+                Textarea::make('note')
+                ->label(trans("lang.note"))
+                ->columnSpan(2)
+                ,
+
+            ])
+            ->model(PurchaseInvoice::class)
+            ->statePath('invoiceData')
+            ->columns(5);
+    }
+    public function invoiceForm2(Form $form): Form
+    {
+        return $form
+            ->schema([
                 Select::make('currency_id')
+
+                ->label(trans("Settings/lang.currency.singular_label"))
+                ->default(Currency::where('base', true)->first()->id)
+
                 ->label(trans("settings/lang.currency.singular_label"))
                 ->default(1)
+
                     ->relationship("currency", "name")
                     ->preload()
                     ->live()
@@ -106,11 +128,6 @@ class PurchasePage extends Page implements HasForms
                 ->label(trans("lang.paid_amount"))
                     ->required()
                     ->default(0),
-                Textarea::make('note')
-                ->label(trans("lang.note"))
-                ->columnSpan(2)
-                ,
-
             ])
             ->model(PurchaseInvoice::class)
             ->statePath('invoiceData')
@@ -122,6 +139,7 @@ class PurchasePage extends Page implements HasForms
         $this->categories = Category::all();
         $this->items = Item::all();
         $this->invoiceForm->fill();
+        $this->invoiceForm2->fill();
 
     }
 
@@ -136,7 +154,7 @@ class PurchasePage extends Page implements HasForms
                     return convertToCurrency(
                         $record['currency_id'],
                         $this->invoiceData['currency_id'],
-                        $record[$record['type'] . '_price']
+                        $record['price']
                     );
                 })
                 ->sum();
@@ -147,6 +165,7 @@ class PurchasePage extends Page implements HasForms
             $this->selected[] = $record['id'];
         }
         else{
+            $record['price'] = $record['max_price'];
             $record['currency_id'] = 1;
             $record['type'] = 'single';
             $record['quantity'] = 1;
@@ -174,8 +193,7 @@ class PurchasePage extends Page implements HasForms
             return [
                 'id' => $record->id,
                 'name' => $record->name,
-                'single_price' => $record->single_price,
-                'multiple_price' => $record->multiple_price,
+                'price' => $record->price,
                 'quantity' => 1,
                 "type" => 'single',
                 "image" => $record->image,
@@ -187,9 +205,8 @@ class PurchasePage extends Page implements HasForms
         })->toArray();
         $this->tableData = array_merge($this->tableData, $records);
         $this->selected = [];
-        $this->refreshTable();
+        // $this->refreshTable();
 
-    $this->refreshTable();
     }
 
     public function selectAll()
@@ -233,10 +250,10 @@ class PurchasePage extends Page implements HasForms
     public function addToCode(){
         if (count($this->codes) > 0) {
             if (isset($this->codes['gift'])) {
-                $this->codes['gift'] ='gift' ;
+                $this->codes['gift'] =1 ;
             }
             else{
-                $this->codes['gift'] ='no' ;
+                $this->codes['gift'] =0 ;
             }
             $this->tableData[$this->key]['codes'][] = $this->codes;
             $this->codes = [];
@@ -252,7 +269,7 @@ class PurchasePage extends Page implements HasForms
             return convertToCurrency(
                 $record['currency_id'],
                 $this->invoiceData['currency_id'],
-                $record[$record['type'] . '_price']
+                $record['price']
                 *  collect($record['codes'])->where("gift", "no")->count()
             );
         })
@@ -277,7 +294,7 @@ class PurchasePage extends Page implements HasForms
                         'item_id' => $record['id'],
                         'quantity' => $record['quantity'],
                         'gift' => $record['gift'],
-                        'price' => $record['type'] == "single" ? $record['single_price'] : $record['multiple_price'],
+                        'price' => $record['price'],
                         'currency_id' => $record['currency_id'],
                     ]
                 );
@@ -311,6 +328,10 @@ class PurchasePage extends Page implements HasForms
 
     public function removeCode($key){
         unset($this->tableData[$this->key]['codes'][$key]);
+        $this->refreshTable();
+    }
+    public function toggleGift($key){
+        $this->tableData[$this->key]['codes'][$key]['gift'] = $this->tableData[$this->key]['codes'][$key]['gift'] == 1? 0 : 1;
         $this->refreshTable();
     }
     protected static string $view = 'filament.pages.p-o-s.purchase-page';
