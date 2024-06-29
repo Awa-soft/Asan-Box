@@ -2,10 +2,12 @@
 
 namespace App\Filament\Resources\Logistic;
 
+use App\Filament\Resources\CRM\PartnerResource;
 use App\Filament\Resources\Logistic\BranchResource\Pages;
 use App\Filament\Resources\Logistic\BranchResource\RelationManagers;
 use App\Models\Logistic\Branch;
 use App\Models\Logistic\Warehouse;
+use App\Traits\Core\HasCreateAnother;
 use App\Traits\Core\HasTranslatableResource;
 use Filament\Forms;
 use Filament\Forms\Components\Select;
@@ -23,7 +25,7 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 class BranchResource extends Resource
 {
     use HasTranslatableResource;
-
+    use HasCreateAnother;
     protected static ?string $model = Branch::class;
 
     protected static ?string $navigationIcon = 'fas-code-branch';
@@ -50,6 +52,11 @@ class BranchResource extends Resource
                     ->email()
                     ->maxLength(255)
                     ->default(null),
+                static::selectField('partners',PartnerResource::class)
+                    ->relationship('partners','name')
+                    ->preload()
+                    ->searchable()
+                    ->multiple(),
                 Forms\Components\TextInput::make('longitude')
                     ->label(trans('lang.longitude'))
                     ->maxLength(255)
@@ -100,6 +107,10 @@ class BranchResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('warehouses.name')
                     ->label(trans('Logistic/lang.warehouse.plural_label'))
+                    ->listWithLineBreaks()
+                    ->badge()
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('partners.name')
                     ->listWithLineBreaks()
                     ->badge()
                     ->searchable(),

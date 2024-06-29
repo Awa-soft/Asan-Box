@@ -48,6 +48,7 @@ class Item extends Model
             $sumQuantity += $purchase->codes->count("code");
         }
         return ($sumBase / ($sumQuantity==0?1:$sumQuantity)) +  ($sumExpensesBase/$purchase->codes->count("code"));
+
     }
 
 

@@ -100,8 +100,13 @@ class PurchasePage extends Page implements HasForms
         return $form
             ->schema([
                 Select::make('currency_id')
+
                 ->label(trans("Settings/lang.currency.singular_label"))
                 ->default(Currency::where('base', true)->first()->id)
+
+                ->label(trans("settings/lang.currency.singular_label"))
+                ->default(1)
+
                     ->relationship("currency", "name")
                     ->preload()
                     ->live()
