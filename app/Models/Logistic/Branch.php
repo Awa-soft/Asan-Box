@@ -2,6 +2,7 @@
 
 namespace App\Models\Logistic;
 
+use App\Models\CRM\Partner;
 use App\Models\Inventory\Item;
 use App\Models\Setting\Currency;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -26,5 +27,9 @@ class Branch extends Model
     public function items() :BelongsToMany
     {
         return $this->belongsToMany(Item::class,'branch_items');
+    }
+
+    public function partners() :BelongsToMany{
+        return $this->belongsToMany(Partner::class,'branch_partners');
     }
 }

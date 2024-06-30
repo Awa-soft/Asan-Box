@@ -20,6 +20,7 @@ class VendorResource extends Resource
     protected static ?string $model = Contact::class;
 
     protected static ?string $navigationIcon = 'bi-person';
+
     public static function getModelLabel(): string
     {
         return trans('CRM/lang.vendor.plural_label');

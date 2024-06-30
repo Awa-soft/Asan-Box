@@ -4,9 +4,12 @@ namespace App\Filament\Resources\CRM;
 
 use App\Filament\Resources\CRM\PartnerResource\Pages;
 use App\Filament\Resources\CRM\PartnerResource\RelationManagers;
+use App\Filament\Resources\Logistic\BranchResource;
 use App\Models\CRM\Partner;
+use App\Traits\Core\HasCreateAnother;
 use App\Traits\Core\HasTranslatableResource;
 use Filament\Forms;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -17,7 +20,7 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 class PartnerResource extends Resource
 {
     use HasTranslatableResource;
-
+    use HasCreateAnother;
     protected static ?string $model = Partner::class;
 
     protected static ?string $navigationIcon = 'carbon-partnership';
@@ -39,6 +42,11 @@ class PartnerResource extends Resource
             Forms\Components\TextInput::make('address')
                 ->label(trans("lang.address"))
                 ->maxLength(255),
+                static::selectField('branches',BranchResource::class)
+                    ->relationship('branches','name')
+                    ->preload()
+                    ->searchable()
+                    ->multiple(),
                 Forms\Components\FileUpload::make('image')
                 ->label(trans("lang.image"))
                 ->directory("bourses/image"),
@@ -60,6 +68,10 @@ class PartnerResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('address')
                     ->label(trans("lang.address"))
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('branches.name')
+                    ->listWithLineBreaks()
+                    ->badge()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('user.name')
                     ->numeric()
