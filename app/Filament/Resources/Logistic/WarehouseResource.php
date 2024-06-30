@@ -16,6 +16,7 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class WarehouseResource extends Resource
 {
+    use \App\Traits\Core\HasSoftDeletes;
     protected static ?string $model = Warehouse::class;
     use HasTranslatableResource;
 

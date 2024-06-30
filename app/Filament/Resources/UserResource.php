@@ -20,6 +20,7 @@ use Illuminate\Support\Facades\Hash;
 
 class UserResource extends Resource
 {
+    use \App\Traits\Core\HasSoftDeletes;
     use OwnerableTrait;
     protected static ?string $model = User::class;
     protected static ?string $navigationIcon = 'heroicon-o-user';

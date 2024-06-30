@@ -21,6 +21,7 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class PurchaseExpenseResource extends Resource
 {
+    use \App\Traits\Core\HasSoftDeletes;
     protected static ?string $model = PurchaseExpense::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
