@@ -18,6 +18,7 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class PositionResource extends Resource
 {
+    use \App\Traits\Core\HasSoftDeletes;
     protected static ?string $model = Position::class;
     use OwnerableTrait;
     protected static ?string $navigationIcon = 'eos-job';

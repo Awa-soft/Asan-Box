@@ -20,14 +20,10 @@ class PurchaseDetailCode extends Model
     }
 
     public function getPriceAttribute(){
-        $price = 0;
-        $expenses = 0;
-
-        return $this->detail->price ;
+           return $this->detail->price ;
 
     }
     public function getExpenseAttribute(){
-        $price = 0;
         $expenses = 0;
 
         foreach($this->detail->invoice->expenses as $expense){
@@ -38,9 +34,7 @@ class PurchaseDetailCode extends Model
 
     }
     public function getCostAttribute(){
-        $price = 0;
         $expenses = 0;
-
         foreach($this->detail->invoice->expenses as $expense){
             $expenses += convertToCurrency($expense->currency_id, getBaseCurrency()->id,$expense->amount, to_rate:$expense->rate);
         }

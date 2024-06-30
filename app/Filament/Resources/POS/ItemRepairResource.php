@@ -1,14 +1,13 @@
 <?php
 
-namespace App\Filament\Resources\Inventory;
+namespace App\Filament\Resources\POS;
 
-use App\Filament\Resources\Inventory\ItemLossResource\Pages;
-use App\Filament\Resources\Inventory\ItemLossResource\RelationManagers;
-use App\Models\Inventory\Item;
+use App\Filament\Resources\POS\ItemRepairResource\Pages;
+use App\Filament\Resources\POS\ItemRepairResource\RelationManagers;
 use App\Models\Inventory\ItemLoss;
+use App\Models\POS\ItemRepair;
 use App\Models\POS\PurchaseDetailCode;
 use App\Models\Settings\Currency;
-use App\Traits\Core\HasSoftDeletes;
 use App\Traits\Core\HasTranslatableResource;
 use App\Traits\Core\OwnerableTrait;
 use Filament\Forms;
@@ -20,15 +19,14 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\HtmlString;
 
-class ItemLossResource extends Resource
+class ItemRepairResource extends Resource
 {
     use \App\Traits\Core\HasSoftDeletes;
     use HasTranslatableResource;
     use OwnerableTrait;
+    protected static ?string $model = ItemRepair::class;
 
-    protected static ?string $model = ItemLoss::class;
-
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'rpg-repair';
 
     public static function form(Form $form): Form
     {
@@ -48,25 +46,14 @@ class ItemLossResource extends Resource
                 Forms\Components\TextInput::make('code')
                     ->live()
                     ->afterStateUpdated(function ($state,Forms\Set $set,Forms\Get $get){
-                        if(ItemLoss::where('code',$state)->count()==0 && PurchaseDetailCode::where('code',$state)->where('item_id',$get('item_id'))->count() != 0){
                             $set('cost',PurchaseDetailCode::where('code',$state)->where('item_id',$get('item_id'))->get()->first()?->price);
-                        }
                     })
-                    ->helperText(function ($state,Forms\Get $get){
-                        if($state == null){
-                            return null;
-                        }
-                        if(ItemLoss::where('code',$state)->count()>0){
-                            return new HtmlString(trans('lang.losses_available',['code'=>$state]));
-                        }
-                        if(PurchaseDetailCode::where('code',$state)->where('item_id',$get('item_id'))->count() == 0){
-                            return new HtmlString(trans('lang.code_not_found',['code'=>$state]));
-                        }
-                        return null;
-                    })
-                    ->unique(ignoreRecord: true)
                     ->required()
                     ->maxLength(255),
+                Forms\Components\Select::make('type')
+                    ->options(static::$model::getTypes())
+                    ->required()
+                    ->native(0),
                 Forms\Components\TextInput::make('cost')
                     ->required()
                     ->numeric()
@@ -78,7 +65,9 @@ class ItemLossResource extends Resource
                     ->default(1)
                     ->native(0)
                     ->required(),
-                Forms\Components\DatePicker::make('date')->default(now())->required(),
+                Forms\Components\DatePicker::make('date')
+                    ->default(now())
+                    ->required(),
                 Forms\Components\TextInput::make('note')
                     ->maxLength(255)
                     ->default(null),
@@ -95,6 +84,8 @@ class ItemLossResource extends Resource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('code')
                     ->searchable(),
+                Tables\Columns\TextColumn::make('type')
+                    ->formatStateUsing(fn($state)=>static::$model::getTypes()[$state]),
                 Tables\Columns\TextColumn::make('cost')
                     ->suffix(fn ($record)=>' ' . $record->currency->symbol)
                     ->numeric(fn($record)=>$record->currency->decimal,locale: 'en')
@@ -119,19 +110,15 @@ class ItemLossResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                Tables\Filters\TrashedFilter::make(),
+                //
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
-                Tables\Actions\ForceDeleteAction::make(),
-                Tables\Actions\RestoreAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
-                    Tables\Actions\ForceDeleteBulkAction::make(),
-                    Tables\Actions\RestoreBulkAction::make(),
                 ]),
             ]);
     }
@@ -139,15 +126,7 @@ class ItemLossResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ManageItemLosses::route('/'),
+            'index' => Pages\ManageItemRepairs::route('/'),
         ];
-    }
-
-    public static function getEloquentQuery(): Builder
-    {
-        return parent::getEloquentQuery()
-            ->withoutGlobalScopes([
-                SoftDeletingScope::class,
-            ]);
     }
 }

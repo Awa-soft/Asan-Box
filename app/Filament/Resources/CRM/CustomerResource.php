@@ -16,6 +16,7 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class CustomerResource extends Resource
 {
+    use \App\Traits\Core\HasSoftDeletes;
     use OwnerableTrait;
     protected static ?string $model = Contact::class;
 

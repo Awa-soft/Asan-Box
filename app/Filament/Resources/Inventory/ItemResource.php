@@ -19,6 +19,7 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class ItemResource extends Resource
 {
+    use \App\Traits\Core\HasSoftDeletes;
     use OwnerableTrait;
     use HasTranslatableResource;
 

@@ -23,6 +23,7 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class EmployeeResource extends Resource
 {
+    use \App\Traits\Core\HasSoftDeletes;
     use OwnerableTrait;
     use HasCountries, HasCreateAnother;
     use HasTranslatableResource;

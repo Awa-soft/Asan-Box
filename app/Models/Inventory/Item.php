@@ -47,7 +47,7 @@ class Item extends Model
             $sumBase += convertToCurrency($purchase->currency_id,getBaseCurrency()->id,$purchase->codes->count("code") * $purchase->price);
             $sumQuantity += $purchase->codes->count("code");
         }
-        return ($sumBase / ($sumQuantity==0?1:$sumQuantity)) +  ($sumExpensesBase/$purchase->codes->count("code"));
+        return ($sumBase / ($sumQuantity==0?1:$sumQuantity)) +  ($sumExpensesBase/($this->purchases()->get()->sum("codes_count")==0?1:$this->purchases()->get()->sum("codes_count")));
 
     }
 

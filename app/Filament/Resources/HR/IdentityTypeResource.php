@@ -19,6 +19,7 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class IdentityTypeResource extends Resource
 {
+    use \App\Traits\Core\HasSoftDeletes;
     protected static ?string $model = IdentityType::class;
     use OwnerableTrait;
     use HasTranslatableResource;

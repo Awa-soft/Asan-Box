@@ -19,6 +19,7 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class BrandResource extends Resource
 {
+    use \App\Traits\Core\HasSoftDeletes;
     use OwnerableTrait;
     use HasTranslatableResource;
     protected static ?string $model = Brand::class;

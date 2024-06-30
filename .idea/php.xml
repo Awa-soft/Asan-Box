@@ -203,6 +203,9 @@
       <path value="$PROJECT_DIR$/vendor/tinymce/tinymce" />
       <path value="$PROJECT_DIR$/vendor/amidesfahani/filament-tinyeditor" />
       <path value="$PROJECT_DIR$/vendor/andreiio/blade-iconoir" />
+      <path value="$PROJECT_DIR$/vendor/awcodes/filament-table-repeater" />
+      <path value="$PROJECT_DIR$/vendor/codeat3/blade-vaadin-icons" />
+      <path value="$PROJECT_DIR$/vendor/codeat3/blade-rpg-awesome-icons" />
     </include_path>
   </component>
   <component name="PhpProjectSharedConfiguration" php_language_level="8.2" />

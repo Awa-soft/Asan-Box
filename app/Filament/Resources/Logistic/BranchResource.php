@@ -24,6 +24,7 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class BranchResource extends Resource
 {
+    use \App\Traits\Core\HasSoftDeletes;
     use HasTranslatableResource;
     use HasCreateAnother;
     protected static ?string $model = Branch::class;
