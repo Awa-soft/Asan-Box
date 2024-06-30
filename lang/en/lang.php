@@ -140,7 +140,6 @@ return [
     "contact" => "Contact",
     "expense" => "Expense",
     "title" => "Title",
-    "amount" => "Amount",
     "attachement" => "Attachement",
     "invoice" => "Invoice",
     "purchase_invoice" => "Purchase Invoice",
@@ -158,6 +157,10 @@ return [
     "deactivate"=>"Deactivate",
     'percent'=>"Percent",
     'start_date'=>"Start Date",
-    'end_date'=>"End Date"
+    'end_date'=>"End Date",
+    "losses_available"=>"<div class='text-danger-500'>Code <b>:code</b> is Available in Losses Items</div>",
+    "code_not_found"=>"<div class='text-danger-500'> Code <b>:code</b> Not Found </div>",
+    "decrease"=>"Decrease",
+    "increase"=>"Increase"
 
 ];

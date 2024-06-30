@@ -11,18 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('item_losses', function (Blueprint $table) {
+        Schema::create('purchase_order_details', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(\App\Models\Inventory\Item::class)->constrained()->restrictOnDelete();
-            $table->string('code');
-            $table->decimal('cost',64,2)->default(0);
-            $table->foreignIdFor(\App\Models\Settings\Currency::class)->constrained()->restrictOnDelete();
-            $table->decimal('rate',64,4);
+            $table->foreignIdFor(\App\Models\POS\PurchaseOrder::class)->constrained()->restrictOnDelete();
+            $table->decimal('quantity',64,2);
+            $table->foreignIdFor(\App\Models\Inventory\Unit::class)->constrained()->restrictOnDelete();
             $table->string('note')->nullable();
-            $table->date('date')->nullable();
-            $table->foreignIdFor(\App\Models\User::class)->constrained()->restrictOnDelete();
-            $table->morphs("ownerable");
-            $table->softDeletes();
             $table->timestamps();
         });
     }
@@ -32,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('item_losses');
+        Schema::dropIfExists('purchase_order_details');
     }
 };

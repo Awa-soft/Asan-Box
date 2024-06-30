@@ -1,12 +1,11 @@
 <?php
 
-namespace App\Filament\Resources\HR;
+namespace App\Filament\Resources\POS;
 
-use App\Filament\Resources\HR\EmployeeActivityResource\Pages;
-use App\Filament\Resources\HR\EmployeeActivityResource\RelationManagers;
-use App\Models\HR\EmployeeActivity;
+use App\Filament\Resources\POS\PurchaseOrderResource\Pages;
+use App\Filament\Resources\POS\PurchaseOrderResource\RelationManagers;
+use App\Models\POS\PurchaseOrder;
 use App\Traits\Core\HasTranslatableResource;
-use App\Traits\Core\OwnerableTrait;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -15,39 +14,43 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class EmployeeActivityResource extends Resource
+class PurchaseOrderResource extends Resource
 {
     use \App\Traits\Core\HasSoftDeletes;
-    use OwnerableTrait;
     use HasTranslatableResource;
+    protected static ?string $model = PurchaseOrder::class;
 
-    protected static ?string $model = EmployeeActivity::class;
-
-    protected static ?string $navigationIcon = 'carbon-user-activity';
+    protected static ?string $navigationIcon = 'iconpark-order';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                static::Field()
-                ->columns(2),
-                Forms\Components\Select::make('employee_id')
-                    ->relationship('employee', 'name')
-                    ->searchable()
-                    ->preload()
+                Forms\Components\Select::make('branch_id')
+                    ->relationship('branch', 'name')
+                    ->hidden(auth()->user()->ownerable_type == 'App\Models\Logistic\Branch')
+                    ->live()
+                    ->afterStateUpdated(function ($state,Forms\Set $set){
+                        $set('invoice_number',static::$model::getInvoiceNumber($state));
+                    })
+                    ->native(false)
                     ->required(),
-                Forms\Components\Select::make('type')
-                    ->native(0)
-                    ->required()
-                    ->options(EmployeeActivity::getTypes())
-                    ->required(),
-                Forms\Components\TextInput::make('amount')
+                Forms\Components\TextInput::make('invoice_number')
+                    ->default(function (){
+                        if(auth()->user()->ownerable_type == 'App\Models\Logistic\Branch'){
+                            return static::$model::getInvoiceNumber(auth()->user()->ownerable_id);
+                        }
+                        return null;
+                    })
+                    ->disabled()
                     ->required()
                     ->numeric(),
                 Forms\Components\DatePicker::make('date')
+                    ->default(now())
                     ->required(),
-                Forms\Components\Textarea::make('note')
-                    ->columnSpanFull(),
+                Forms\Components\TextInput::make('note')
+                    ->maxLength(255)
+                    ->default(null),
 
             ]);
     }
@@ -56,21 +59,19 @@ class EmployeeActivityResource extends Resource
     {
         return $table
             ->columns([
-                static::Column(),
-                Tables\Columns\TextColumn::make('employee.name')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('type')->formatStateUsing(fn($state)=>static::$model::getTypes()[$state]),
-                Tables\Columns\TextColumn::make('amount')
+                Tables\Columns\TextColumn::make('invoice_number')
+                    ->searchable()
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('date')
-                    ->date()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('currency.name')
-                    ->numeric()
+                    ->searchable()
+                    ->date('Y-m-d')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('user.name')
+                    ->numeric()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('branch.name')
+                    ->searchable()
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('deleted_at')
@@ -87,15 +88,15 @@ class EmployeeActivityResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                Tables\Filters\TrashedFilter::make()
-                ->native(0),
+                Tables\Filters\TrashedFilter::make(),
             ])
             ->actions([
-
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\ForceDeleteBulkAction::make(),
+                    Tables\Actions\RestoreBulkAction::make(),
                 ]),
             ]);
     }
@@ -103,16 +104,16 @@ class EmployeeActivityResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            RelationManagers\DetailRelationManager::class
         ];
     }
 
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListEmployeeActivities::route('/'),
-            // 'create' => Pages\CreateEmployeeActivity::route('/create'),
-            'edit' => Pages\EditEmployeeActivity::route('/{record}/edit'),
+            'index' => Pages\ListPurchaseOrders::route('/'),
+            'create' => Pages\CreatePurchaseOrder::route('/create'),
+            'edit' => Pages\EditPurchaseOrder::route('/{record}/edit'),
         ];
     }
 

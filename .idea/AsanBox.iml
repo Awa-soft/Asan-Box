@@ -196,6 +196,9 @@
       <excludeFolder url="file://$MODULE_DIR$/vendor/outerweb/settings" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/tinymce/tinymce" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/andreiio/blade-iconoir" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/awcodes/filament-table-repeater" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/codeat3/blade-vaadin-icons" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/codeat3/blade-rpg-awesome-icons" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

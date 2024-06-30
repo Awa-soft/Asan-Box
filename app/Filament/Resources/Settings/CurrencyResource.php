@@ -17,6 +17,7 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class CurrencyResource extends Resource
 {
+    use \App\Traits\Core\HasSoftDeletes;
     use HasTranslatableResource;
 
     protected static ?string $model = Currency::class;

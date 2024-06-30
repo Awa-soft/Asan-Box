@@ -11,11 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('item_losses', function (Blueprint $table) {
+        Schema::create('item_repairs', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(\App\Models\Inventory\Item::class)->constrained()->restrictOnDelete();
             $table->string('code');
             $table->decimal('cost',64,2)->default(0);
+            $table->enum('type',['increase','decrease'])->default('increase');
             $table->foreignIdFor(\App\Models\Settings\Currency::class)->constrained()->restrictOnDelete();
             $table->decimal('rate',64,4);
             $table->string('note')->nullable();
@@ -32,6 +33,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('item_losses');
+        Schema::dropIfExists('item_repairs');
     }
 };
