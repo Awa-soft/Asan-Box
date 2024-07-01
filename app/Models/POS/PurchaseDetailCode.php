@@ -21,7 +21,6 @@ class PurchaseDetailCode extends Model
 
     public function getPriceAttribute(){
            return $this->detail->price ;
-
     }
     public function getExpenseAttribute(){
         $expenses = 0;
