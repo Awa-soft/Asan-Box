@@ -20,6 +20,10 @@ return [
     "item_loss"=>[
         "plural_label"=>"Item Losses",
         "singular_label"=>"Item Loss",
+    ],
+    "item_transaction"=>[
+        "plural_label"=>"Item Transactions",
+        "singular_label"=>"Item Transaction",
     ]
 
 

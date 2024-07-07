@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "53b30bf1f438c86b431a02cc79455302",
+    "content-hash": "628cfee5d02ed36c8fe0a4840a8caa98",
     "packages": [
         {
             "name": "amidesfahani/filament-tinyeditor",
@@ -627,7 +627,6 @@
             },
             "dist": {
                 "type": "zip",
-
                 "url": "https://api.github.com/repos/CarbonPHP/carbon-doctrine-types/zipball/99f76ffa36cce3b70a4a6abce41dba15ca2e84cb",
                 "reference": "99f76ffa36cce3b70a4a6abce41dba15ca2e84cb",
                 "shasum": ""
