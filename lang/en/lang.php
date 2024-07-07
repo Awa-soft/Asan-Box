@@ -161,6 +161,7 @@ return [
     "losses_available"=>"<div class='text-danger-500'>Code <b>:code</b> is Available in Losses Items</div>",
     "code_not_found"=>"<div class='text-danger-500'> Code <b>:code</b> Not Found </div>",
     "decrease"=>"Decrease",
-    "increase"=>"Increase"
+    "increase"=>"Increase",
+    "months" => "months"
 
 ];
