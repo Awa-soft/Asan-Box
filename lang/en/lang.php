@@ -162,6 +162,10 @@ return [
     "code_not_found"=>"<div class='text-danger-500'> Code <b>:code</b> Not Found </div>",
     "decrease"=>"Decrease",
     "increase"=>"Increase",
-    "months" => "months"
+    "months" => "months",
+    'accepted'=>"Accepted",
+    'accept'=>"Accept",
+    'reject'=>"Reject",
+    'status_date'=>"Status Date",
 
 ];

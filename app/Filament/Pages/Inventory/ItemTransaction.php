@@ -4,6 +4,9 @@ namespace App\Filament\Pages\Inventory;
 
 use App\Models\Inventory\Category;
 use App\Models\Inventory\Item;
+use App\Models\Inventory\ItemTransactionInvoice;
+use App\Models\Logistic\Branch;
+use App\Models\Logistic\Warehouse;
 use App\Models\POS\PurchaseInvoice;
 use App\Models\Settings\Currency;
 use App\Traits\Core\OwnerableTrait;
@@ -11,6 +14,7 @@ use BezhanSalleh\FilamentShield\Traits\HasPageShield;
 use Exception;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\Hidden;
+use Filament\Forms\Components\MorphToSelect;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
@@ -44,102 +48,54 @@ class ItemTransaction extends Page implements HasForms
     {
         return [
             'invoiceForm',
-            'invoiceForm2',
         ];
     }
     public function invoiceForm(Form $form): Form
     {
         return $form
             ->schema([
-                Select::make("type")
-                    ->options(
-                        [
-                            "purchase" => trans("POS/lang.purchase.singular_label"),
-                            "return" => trans("POS/lang.purchase_return.singular_label"),
-                        ]
-                    )
-                    ->native(false)
-                    ->required()
-                    ->default('purchase'),
-                TextInput::make('invoice_number')
-                    ->label(trans("lang.invoice_number"))
-                    ->readOnly()
-                    ->default(PurchaseInvoice::InvoiceNumber()),
-                TextInput::make('vendor_invoice')
-                    ->label(trans("lang.vendor_invoice")),
-                DateTimePicker::make('date')
-                    ->default(now())
-                    ->required()
-                    ->label(trans("lang.date")),
-                Select::make('branch_id')
-                    ->label(trans("Logistic/lang.branch.singular_label"))
-                    ->label(trans("Logistic/lang.branch.singular_label"))
-                    ->relationship("branch", "name")
-                    ->preload()
-                    ->required()
-                    ->searchable(),
-                Select::make('contact_id')
-                    ->label(trans("CRM/lang.vendor.singular_label"))
-                    ->relationship("contact", "name")
-                    ->preload()
+                MorphToSelect::make('fromable')
+                    ->label(trans("lang.from"))
+                    ->native(0)
+                    ->types([
+                        MorphToSelect\Type::make(Branch::class)
+                            ->titleAttribute('name')
+                            ->label(trans('Logistic/lang.branch.singular_label')),
+                        MorphToSelect\Type::make(Warehouse::class)
+                            ->titleAttribute('name')
+                            ->label(trans('Logistic/lang.warehouse.singular_label')),
+                    ])
+                    ->visible(fn()=>auth()->user()->hasRole('super_admin'))
                     ->searchable()
-                    ->required(),
-
-                Textarea::make('note')
-                    ->label(trans("lang.note"))
-                    ->columnSpan(2)
-                ,
-
-            ])
-            ->model(PurchaseInvoice::class)
-            ->statePath('invoiceData')
-            ->columns(5);
-    }
-    public function invoiceForm2(Form $form): Form
-    {
-        return $form
-            ->schema([
-                Select::make('currency_id')
-
-                    ->label(trans("Settings/lang.currency.singular_label"))
-                    ->default(Currency::where('base', true)->first()->id)
-
-                    ->label(trans("settings/lang.currency.singular_label"))
-                    ->default(1)
-
-                    ->relationship("currency", "name")
-                    ->preload()
                     ->live()
+                    ->columns(2)
+                    ->preload(),
+                MorphToSelect::make('toable')
+                    ->label(trans("lang.to"))
+                    ->native(0)
+                    ->types([
+                        MorphToSelect\Type::make(Branch::class)
+                            ->titleAttribute('name')
+                            ->label(trans('Logistic/lang.branch.singular_label')),
+                        MorphToSelect\Type::make(Warehouse::class)
+                            ->titleAttribute('name')
+                            ->label(trans('Logistic/lang.warehouse.singular_label')),
+                    ])
+                    ->columns(2)
+                    ->visible(fn()=>auth()->user()->hasRole('super_admin'))
                     ->searchable()
-                    ->required(),
-                TextInput::make('balance')
-                    ->label(trans("lang.balance"))
-                    ->disabled()
-                    ->default(0),
-                TextInput::make('discount')
-                    ->label(trans("lang.discount"))
-                    ->required()
-                    ->default(0),
-                TextInput::make('total')
-                    ->label(trans("lang.total"))
-                    ->disabled()
-                    ->default(0),
-                TextInput::make('paid_amount')
-                    ->label(trans("lang.paid_amount"))
-                    ->required()
-                    ->default(0),
+                    ->live()
+                    ->preload()
             ])
-            ->model(PurchaseInvoice::class)
+            ->model(ItemTransactionInvoice::class)
             ->statePath('invoiceData')
-            ->columns(5);
+            ->columns(2);
     }
     public function mount()
     {
-        $this->currencies = Currency::all();
         $this->categories = Category::all();
         $this->items = Item::all();
         $this->invoiceForm->fill();
-        $this->invoiceForm2->fill();
 
     }
 
@@ -149,27 +105,14 @@ class ItemTransaction extends Page implements HasForms
             if (in_array($record['id'], $this->selected)) {
                 $key = array_search($record['id'], $this->selected);
                 unset($this->selected[$key]);
-                $this->invoiceData['total'] = collect($this->tableData)
-                    ->map(function($record) {
-                        return convertToCurrency(
-                            $record['currency_id'],
-                            $this->invoiceData['currency_id'],
-                            $record['price']
-                        );
-                    })
-                    ->sum();
-
                 $this->refreshTable();
                 return;
             }
             $this->selected[] = $record['id'];
         }
         else{
-            $record['price'] = $record['max_price'];
-            $record['currency_id'] = 1;
             $record['type'] = 'single';
             $record['quantity'] = 1;
-            $record['gift'] =0;
             $record['codes'] =[];
             $this->tableData[] = $record;
         }
@@ -193,7 +136,6 @@ class ItemTransaction extends Page implements HasForms
             return [
                 'id' => $record->id,
                 'name' => $record->name,
-                'price' => $record->cost,
                 'quantity' => 1,
                 "image" => $record->image,
                 "codes" => []
@@ -245,37 +187,19 @@ class ItemTransaction extends Page implements HasForms
     }
 
     public function addToCode(){
-        if (count($this->codes) > 0) {
-            if (isset($this->codes['gift'])) {
-                $this->codes['gift'] =1 ;
-            }
-            else{
-                $this->codes['gift'] =0 ;
-            }
-            $this->tableData[$this->key]['codes'][] = $this->codes;
-            $this->codes = [];
-        }
 
+        if (count($this->codes) > 0) {
+            if(Item::hasCode($this->tableData[$this->key]['id'],$this->codes,['fromable'=>$this->invoiceData['fromable_type'],'fromable_id'=>$this->invoiceData['fromable_id']])){
+                $this->tableData[$this->key]['codes'][] = $this->codes;
+                $this->codes = [];
+            }
+        }
         $this->refreshTable();
     }
 
 
     private function refreshTable(){
-        $this->invoiceData['total'] = collect($this->tableData)
-            ->map(function($record) {
-                return convertToCurrency(
-                    $record['currency_id'],
-                    $this->invoiceData['currency_id'],
-                    $record['price']
-                    *  collect($record['codes'])->where("gift", "no")->count()
-                );
-            })
-            ->sum();
 
-        $this->invoiceData['total'] = number_format(
-            $this->invoiceData['total'],
-            getCurrencyDecimal($this->invoiceData['currency_id'])
-        );
     }
 
 
@@ -284,20 +208,14 @@ class ItemTransaction extends Page implements HasForms
         DB::beginTransaction();
         try {
             unset($this->invoiceData['total']);
-            $invoice = PurchaseInvoice::create($this->invoiceData);
+            $invoice = ItemTransactionInvoice::create($this->invoiceData);
             collect($this->tableData)->each(function ($record) use ($invoice) {
                 $detail = $invoice->details()->create(
                     [
                         'item_id' => $record['id'],
-                        'quantity' => $record['quantity'],
-                        'gift' => $record['gift'],
-                        'price' => $record['price'],
-                        'currency_id' => $record['currency_id'],
                     ]
                 );
-
                 collect($record['codes'])->each(function ($code) use ( $detail, $record) {
-                    $code['item_id'] = $record['id'];
                     $detail->codes()->delete();
                     $detail->codes()->create($code);
                 });
@@ -306,7 +224,6 @@ class ItemTransaction extends Page implements HasForms
                 ->success()
                 ->title(trans("filament-actions::edit.single.notifications.saved.title"))
                 ->send();
-
             // reset arrays
             $this->selected = [];
             $this->tableData = [];
@@ -327,9 +244,6 @@ class ItemTransaction extends Page implements HasForms
         unset($this->tableData[$this->key]['codes'][$key]);
         $this->refreshTable();
     }
-    public function toggleGift($key){
-        $this->tableData[$this->key]['codes'][$key]['gift'] = $this->tableData[$this->key]['codes'][$key]['gift'] == 1? 0 : 1;
-        $this->refreshTable();
-    }
+
     protected static string $view = 'filament.pages.inventory.item-transaction';
 }

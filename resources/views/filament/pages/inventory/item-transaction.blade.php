@@ -49,20 +49,17 @@
                 class="w-full gap-3 overflow-y-scroll border-2 border-dotted rounded-md h-5/6 dark:border-gray-700 border-black/50">
                 <table class="w-full ">
                     <thead>
-                    <tr class="grid w-full grid-cols-6 text-sm font-semibold text-center bg-white dark:bg-gray-900">
+                    <tr class="grid w-full grid-cols-4 text-sm font-semibold text-center bg-white dark:bg-gray-900">
                         <td class="py-3 border-b border-e dark:border-gray-600">{{ trans('lang.image') }}</td>
                         <td class="py-3 border-b border-e dark:border-gray-600">
                             {{ trans('Inventory/lang.item.singular_label') }}</td>
                         <td class="py-3 border-b border-e dark:border-gray-600">{{ trans('lang.quantity') }}</td>
-                        <td class="py-3 border-b border-e dark:border-gray-600">{{ trans('lang.price') }}</td>
-                        <td class="py-3 border-b border-e dark:border-gray-600">{{ trans('lang.total_price') }}
-                        </td>
                         <td class="py-3 border-b dark:border-gray-600"></td>
                     </tr>
                     </thead>
                     <tbody>
                     @foreach ($tableData as $key => $data)
-                        <tr class="grid items-center w-full grid-cols-6 gap-1 even:bg-gray-200">
+                        <tr class="grid items-center w-full grid-cols-4 gap-1 even:bg-gray-200">
                             <td class="flex justify-center item-center">
                                 <div class="py-1 text-center rounded-full w-14 h-14 aspect-square">
                                     @if ($data['image'])
@@ -78,14 +75,6 @@
 
                             <td class="py-2 text-center">
                                 <p>{{ collect($data['codes'])->count() }}</p>
-                            </td>
-                            <td class="py-2 text-center"><x-filament::input.wrapper>
-                                    <x-filament::input type="number"
-                                                       wire:model.live.debounce.500ms="tableData.{{ $key }}.price" />
-                                </x-filament::input.wrapper></td>
-                            <td class="py-2 text-center">
-                                {{ number_format($data['price'] *collect($data['codes'])->where('gift', 0)->count(),getCurrencyDecimal($data['currency_id'] ?? 1)) }}
-                                {{ getCurrencySymbol($data['currency_id'] ?? 1) }}
                             </td>
                             <td class="py-2 ">
                                 <div class="grid grid-cols-3 gap-y-5">
@@ -108,12 +97,7 @@
                     </tbody>
                 </table>
             </div>
-            <div
-                class="flex w-full gap-5 p-2 border-2 border-dotted rounded-md h-maxdark:border-gray-700 border-black/50">
-                <form class="w-full ">
-                    {{ $this->invoiceForm2 }}
-                </form>
-            </div>
+
         </div>
 
         <div
@@ -145,10 +129,6 @@
                                     <p class="text-xs font-light">{{ $item->brand->name }} -
                                         {{ $item->category->name }}</p>
                                 </div>
-                                <div class="flex flex-col gap-2">
-                                    <p class="text-xs font-light">{{ number_format($item->min_price, 2) }} $</p>
-                                    <p class="text-xs font-light">{{ number_format($item->max_price, 2) }} $</p>
-                                </div>
                             </div>
                         </li>
                     @endforeach
@@ -172,11 +152,6 @@
                             <x-filament::input type="text" wire:model="codes.code"
                                                placeholder="{{ trans('lang.code') }}" />
                         </x-filament::input.wrapper>
-                    </div>
-                    <div class="flex items-center gap-3 mt-5 w-max">
-                        <label for="">{{ trans('lang.gift') }}</label>
-                        <input type="checkbox" wire:model='codes.gift' value="yes" id=""
-                               name="gift">
                     </div>
                 </div>
 

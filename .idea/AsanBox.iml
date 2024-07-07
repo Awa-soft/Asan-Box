@@ -8,6 +8,7 @@
       <sourceFolder url="file://$MODULE_DIR$/tests" isTestSource="true" packagePrefix="Tests\" />
       <sourceFolder url="file://$MODULE_DIR$/tests/Feature" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/tests/Unit" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/spec" isTestSource="true" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/anourvalar/eloquent-serialize" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/blade-ui-kit/blade-heroicons" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/blade-ui-kit/blade-icons" />
@@ -200,6 +201,7 @@
       <excludeFolder url="file://$MODULE_DIR$/vendor/codeat3/blade-vaadin-icons" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/codeat3/blade-rpg-awesome-icons" />
       <excludeFolder url="file://$MODULE_DIR$/storage/fonts" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/postare/blade-mdi" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

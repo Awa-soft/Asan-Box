@@ -22,7 +22,7 @@ class ItemTransactionInvoice extends Model
         return $this->morphTo();
     }
 
-    public function detail():HasMany
+    public function details():HasMany
     {
         return $this->hasMany(ItemTransactionDetail::class);
     }
