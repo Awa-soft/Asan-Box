@@ -37,6 +37,7 @@
         "mramadan0101/dompdf": "^0.8.3",
         "outerweb/filament-settings": "^1.2",
         "owenvoke/blade-fontawesome": "^2.6",
+        "postare/blade-mdi": "^1.0",
         "ryangjchandler/blade-tabler-icons": "^2.3",
         "saade/blade-iconsax": "^1.2",
         "spatie/laravel-pdf": "^1.5"
