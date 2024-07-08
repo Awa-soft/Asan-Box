@@ -17,7 +17,6 @@
                         class="w-full h-full duration-300 rounded-full bg-primary-500"></div>
                 </div>
             </div>
-
             <div wire:click="addToTable"
                 class="flex items-center justify-center p-2 text-white duration-300 rounded-md shadow cursor-pointer bg-primary-600 hover:bg-primary-500">
                 {{ trans('lang.add_to', ['name' => trans('lang.table')]) }}
@@ -61,7 +60,7 @@
                             <td class="py-3 border-b border-e dark:border-gray-600">{{ trans('lang.gift') }}</td>
                             <td class="py-3 border-b border-e dark:border-gray-600">{{ trans('lang.price') }}</td>
                             <td class="py-3 border-b border-e dark:border-gray-600">{{ trans('lang.total_price') }}
-                                </th>
+                                </td>
                             <td class="py-3 border-b dark:border-gray-600"></td>
                         </tr>
                     </thead>
