@@ -48,7 +48,11 @@ class Item extends Model
             $sumQuantity += $purchase->codes->count("code");
         }
         return ($sumBase / ($sumQuantity==0?1:$sumQuantity)) +  ($sumExpensesBase/($this->purchases()->get()->sum("codes_count")==0?1:$this->purchases()->get()->sum("codes_count")));
+    }
 
+    public static function scopeHasCode($itemId,$query,$code,$fromable)
+    {
+        return true;
     }
 
 

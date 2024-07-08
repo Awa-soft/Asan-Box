@@ -26,7 +26,7 @@ class AppServiceProvider extends ServiceProvider
     {
 
         Blade::directive('Package', function ($name) {
-            return "<?php if (\\App\\Models\\settings\\Package::where('name', $name)->exists()): ?>";
+            return "<?php if (\\App\\Models\\Core\\Package::where('name', $name)->exists()): ?>";
         });
 
         Blade::directive('endPackage', function () {

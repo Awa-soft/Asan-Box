@@ -130,7 +130,7 @@ return [
     "statement_phone"=>"<b>Phone:</b> :phone",
     "statement_address"=>"<b>Address:</b> :address",
     'safe_locker' => 'Safe Locker',
-    "core_reports" => "settings Reports",
+    "core_reports" => "Settings",
     "owner"=>"Owner",
     "currency_rate"=>"Rate",
     'print'=>"Print",
@@ -171,4 +171,9 @@ return [
     "base_currency" => "Base Currency",
     "send" => "Send",
     "receive" => "Receive",
+    'accepted'=>"Accepted",
+    'accept'=>"Accept",
+    'reject'=>"Reject",
+    'status_date'=>"Status Date",
+
 ];

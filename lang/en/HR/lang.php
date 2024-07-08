@@ -37,7 +37,7 @@ return [
         "singular_label"=>"Employee Salary"
     ],
     "reports"=>[
-        "label"=>"HR Reports",
+        "label"=>"Human Resources",
         "activity"=>"Employee Activity",
         "leave"=>"Employee Leaves",
         'note'=>'Employee Notes',

@@ -17,9 +17,18 @@ return [
         "plural_label"=>"Items",
         "singular_label"=>"Item",
     ],
+
     "item_loss"=>[
         "plural_label"=>"Item Losses",
         "singular_label"=>"Item Loss",
+    ],
+    "item_transaction"=>[
+        "plural_label"=>"Item Transactions",
+        "singular_label"=>"Item Transaction",
+    ],
+    'item_transaction_code'=>[
+        'plural_label'=>'Item Transaction Codes',
+       'singular_label'=>'Item Transaction Code'
     ]
 
 
