@@ -30,7 +30,7 @@ class EmployeeActivityResource extends Resource
         return $form
             ->schema([
                 static::Field()
-                ->columns(2),
+                    ->columns(2),
                 Forms\Components\Select::make('employee_id')
                     ->relationship('employee', 'name')
                     ->searchable()
@@ -60,12 +60,12 @@ class EmployeeActivityResource extends Resource
                 Tables\Columns\TextColumn::make('employee.name')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('type')->formatStateUsing(fn($state)=>static::$model::getTypes()[$state]),
+                Tables\Columns\TextColumn::make('type')->formatStateUsing(fn ($state) => static::$model::getTypes()[$state]),
                 Tables\Columns\TextColumn::make('amount')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('date')
-                    ->date()
+                    ->date('Y-m-d')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('currency.name')
                     ->numeric()
@@ -88,11 +88,9 @@ class EmployeeActivityResource extends Resource
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make()
-                ->native(0),
+                    ->native(0),
             ])
-            ->actions([
-
-            ])
+            ->actions([])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),

@@ -48,5 +48,7 @@
             </div>
             <p class="text-xs">{{ $description }}</p>
         </div>
+
+        
     </x-filament::section>
 </x-filament-widgets::widget>

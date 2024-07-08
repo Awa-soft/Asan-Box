@@ -5,6 +5,10 @@ return [
         'plural_label' => 'Purchases ',
         'singular_label' => 'Purchase '
     ],
+    'sale' => [
+        'plural_label' => 'Sales ',
+        'singular_label' => 'Sale '
+    ],
     'purchase_invoice' => [
         'plural_label' => 'Purchase Invoices',
         'singular_label' => 'Purchase Invoice'

@@ -1,7 +1,7 @@
 <x-filament-panels::page>
     <div class="grid w-full gap-5 xl:grid-cols-12">
-        <p class="text-3xl font-bold xl:col-span-8 2xl:col-span-8">{{ trans('POS/lang.purchase.plural_label') }}</p>
-        <div class="grid grid-cols-5 gap-2 text-xs xl:col-span-4 2xl:col-span-4" x-data="{
+        <p class="text-3xl font-bold xl:col-span-7 2xl:col-span-7">{{ trans('POS/lang.purchase.plural_label') }}</p>
+        <div class="grid grid-cols-5 gap-2 text-xs h-max xl:col-span-5 2xl:col-span-5" x-data="{
             active: 'single',
         }">
             <div

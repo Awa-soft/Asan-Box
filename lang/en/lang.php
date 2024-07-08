@@ -40,8 +40,10 @@ return [
     "deselect_all"=>"Deselect All",
     "please_select" => "Please Select :name",
     "payment_duration" => "Payment Duration",
-    "max_debt" => "Maximum Debt",
+    "payment" => "Payment",
     "user" => "User",
+    "max_debt" => "Maximum Debt",
+    "debit" => "Debit",
     "single_quantity" => "Single Quantity",
     "multiple_quantity" => "Multiple Quantity",
     "single_price" => "Single Price",
@@ -162,6 +164,11 @@ return [
     "code_not_found"=>"<div class='text-danger-500'> Code <b>:code</b> Not Found </div>",
     "decrease"=>"Decrease",
     "increase"=>"Increase",
-    "months" => "months"
-
+    "months" => "months",
+    "reset_form"=>"Reset Form",
+    "bourse" => "Bourse",
+    "attachment" => "Attachement",
+    "base_currency" => "Base Currency",
+    "send" => "Send",
+    "receive" => "Receive",
 ];

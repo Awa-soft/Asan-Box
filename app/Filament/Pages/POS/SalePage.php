@@ -7,6 +7,7 @@ use App\Models\Inventory\Item;
 use App\Models\POS\SaleInvoice;
 use App\Models\Settings\Currency;
 use BezhanSalleh\FilamentShield\Traits\HasPageShield;
+use Exception;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
@@ -144,7 +145,7 @@ class SalePage extends Page implements HasForms
         $this->invoiceForm2->fill();
         $this->activeTab = session()->get('sale_selected_tab');
         $var = session()->get($this->activeTab);
-        if ($var != null) {
+        if ($var != null && $this->activeTab != null) {
             $var = json_decode($var, true);
             $this->selected = $var['selected'];
             $this->key = $var['key'];
