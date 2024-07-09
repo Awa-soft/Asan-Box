@@ -18,7 +18,7 @@ class Statement extends Page
     protected static string $view = 'filament.resources.h-r.employee-resource.pages.statement';
     public function getTitle(): string|Htmlable
     {
-        return trans('lang.statement',['name' => Employee::findOrFail($this->record)->name]);
+        return "";
     }
 
     public $record,$from,$to,$activity;
@@ -73,7 +73,7 @@ class Statement extends Page
             ->layout($this->getLayout(), [
                 'livewire' => $this,
                 'maxContentWidth' => $this->getMaxContentWidth(),
-                ...$this->getLayoutData(),
+                $this->getLayoutData(),
             ])->with('employee', $employee);
     }
 }

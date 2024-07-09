@@ -28,6 +28,10 @@ class BoursePaymentResource extends Resource
     {
         return $form
             ->schema([
+                Forms\Components\TextInput::make('invoice_number')
+                ->required()
+                ->readOnly()
+                ->default(static::$model::InvoiceNumber()),
                 Forms\Components\Select::make('branch_id')
                     ->relationship('branch', 'name')
                     ->required()

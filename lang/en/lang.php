@@ -175,5 +175,7 @@ return [
     'accept'=>"Accept",
     'reject'=>"Reject",
     'status_date'=>"Status Date",
-
+    'last_salary_date'=>"Last salary ",
+    "statement_action"=>"Statement",
+    "purchase" => "Purchase",
 ];

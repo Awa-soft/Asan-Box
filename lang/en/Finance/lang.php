@@ -5,4 +5,8 @@ return [
         'plural_label' => 'Bourse Payments',
         'singular_label' => 'Purchase Payment'
     ],
+    'payment' => [
+        'plural_label' => 'Payments',
+        'singular_label' => 'Payment'
+    ],
 ];

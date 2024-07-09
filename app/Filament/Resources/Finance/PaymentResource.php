@@ -28,6 +28,10 @@ class PaymentResource extends Resource
     {
         return $form
             ->schema([
+                Forms\Components\TextInput::make('invoice_number')
+                ->required()
+                ->readOnly()
+                ->default(static::$model::InvoiceNumber()),
                 Forms\Components\Select::make('branch_id')
                 ->relationship('branch', 'name')
                 ->required()
@@ -41,7 +45,7 @@ class PaymentResource extends Resource
                 ->live()
                 ->afterStateUpdated(function (callable $set, callable $get) {
                     if ($get("contact_id")) {
-                        $set("balance", Contact::find($get("contact_id"))->balance);
+                        $set("balance", number_format(Contact::find($get("contact_id"))->balance, getBaseCurrency()->decimal));
                     }
                 }),
             Forms\Components\TextInput::make('balance')

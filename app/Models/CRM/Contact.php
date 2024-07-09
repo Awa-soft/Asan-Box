@@ -40,7 +40,19 @@ class Contact extends Model
             return convertToCurrency($receive->currency_id, getBaseCurrency()->id,
              $receive->amount, $receive->rate,  getBaseCurrency()->rate );
         })->sum();
-        
+
+        $receives += $this->sales->map(function($sale){
+            return convertToCurrency($sale->currency_id, getBaseCurrency()->id,
+             $sale->paid_amount, $sale->rate,  getBaseCurrency()->rate );
+        })->sum();
+
+        $sends += $this->purchases->map(function($purchase){
+            return convertToCurrency($purchase->currency_id, getBaseCurrency()->id,
+             $purchase->paid_amount, $purchase->rate,  getBaseCurrency()->rate );
+        })->sum();
+
+
+        return $sends - $receives;
     }
 
 

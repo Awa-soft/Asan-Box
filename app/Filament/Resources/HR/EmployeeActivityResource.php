@@ -60,15 +60,29 @@ class EmployeeActivityResource extends Resource
                 Tables\Columns\TextColumn::make('employee.name')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('type')->formatStateUsing(fn ($state) => static::$model::getTypes()[$state]),
+                Tables\Columns\TextColumn::make('type')
+                    ->formatStateUsing(fn ($state) => static::$model::getTypes()[$state])
+                    ->badge()
+                    ->color(
+                        function ($state) {
+                            switch (static::$model::getTypes()[$state]) {
+                                case 'Punishment':
+                                    return 'danger';
+                                case 'Advance':
+                                    return 'warning';
+                                case 'Bonus':
+                                    return 'primary';
+                                default:
+                                    return 'success';
+                            }
+                        }
+                    ),
                 Tables\Columns\TextColumn::make('amount')
-                    ->numeric()
+                    ->numeric(fn($record) => $record->currency->decimal, locale:"en")
+                    ->suffix(fn($record) => " ".$record->currency->symbol)
                     ->sortable(),
                 Tables\Columns\TextColumn::make('date')
                     ->date('Y-m-d')
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('currency.name')
-                    ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('user.name')
                     ->numeric()

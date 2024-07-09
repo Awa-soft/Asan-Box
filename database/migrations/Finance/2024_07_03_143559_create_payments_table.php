@@ -17,6 +17,7 @@ return new class extends Migration
     {
         Schema::create('payments', function (Blueprint $table) {
             $table->id();
+            $table->string("invoice_number");
             $table->foreignIdFor(Contact::class)->constrained()->cascadeOnDelete();
             $table->foreignIdFor(Currency::class)->constrained()->cascadeOnDelete();
             $table->foreignIdFor(Branch::class)->constrained()->cascadeOnDelete();

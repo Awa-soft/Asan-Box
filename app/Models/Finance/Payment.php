@@ -18,6 +18,19 @@ class Payment extends Model
 {
     use HasFactory, SoftDeletes, HasUser, HasCurrency;
 
+    public static function InvoiceNumber() {
+        $lastInvoice = self::orderBy('id', 'desc')->first();
+        if ($lastInvoice) {
+            $lastInvoiceNumber = $lastInvoice->invoice_number;
+            $lastInvoiceNumber = str_replace('PYM-', '', $lastInvoiceNumber);
+            $lastInvoiceNumber = (int) $lastInvoiceNumber;
+            $lastInvoiceNumber++;
+        } else {
+            $lastInvoiceNumber = 1;
+        }
+        return 'PYM-'.str_pad($lastInvoiceNumber, 4, '0', STR_PAD_LEFT);
+
+    }
     public function contact() :BelongsTo
     {
         return $this->belongsTo(Contact::class);

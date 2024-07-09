@@ -17,6 +17,19 @@ class BoursePayment extends Model
 {
     use HasFactory, SoftDeletes, HasUser, HasCurrency;
 
+    public static function InvoiceNumber() {
+        $lastInvoice = self::orderBy('id', 'desc')->first();
+        if ($lastInvoice) {
+            $lastInvoiceNumber = $lastInvoice->invoice_number;
+            $lastInvoiceNumber = str_replace('BPY-', '', $lastInvoiceNumber);
+            $lastInvoiceNumber = (int) $lastInvoiceNumber;
+            $lastInvoiceNumber++;
+        } else {
+            $lastInvoiceNumber = 1;
+        }
+        return 'BPY-'.str_pad($lastInvoiceNumber, 4, '0', STR_PAD_LEFT);
+
+    }
     public function bourse() :BelongsTo
     {
         return $this->belongsTo(Bourse::class);
