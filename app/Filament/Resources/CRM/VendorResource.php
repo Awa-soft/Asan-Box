@@ -67,7 +67,7 @@ class VendorResource extends Resource
                     ->default(1)
                     ->label(trans("lang.status"))
                     ->required(),
-                    static::Field(),
+                static::Field(),
                 Forms\Components\FileUpload::make('image')
                     ->label(trans("lang.image"))
                     ->directory("customers/image")
@@ -79,6 +79,11 @@ class VendorResource extends Resource
         return $table
             ->columns([
                 static::Column(),
+                Tables\Columns\ImageColumn::make('image')
+                    ->circular()
+                    ->label(trans("lang.image"))
+                    ->size(100),
+
                 Tables\Columns\TextColumn::make('name')
                     ->label(trans("lang.name"))
                     ->searchable(),
@@ -87,17 +92,21 @@ class VendorResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('email')
                     ->label(trans("lang.email"))
-                    ->searchable(),
+                    ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('address')
                     ->label(trans("lang.address"))
-                    ->searchable(),
+                    ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('payment_duration')
                     ->label(trans("lang.payment_duration"))
                     ->numeric()
+                    ->suffix(trans('lang.day'))
                     ->sortable(),
                 Tables\Columns\TextColumn::make('max_debt')
                     ->label(trans("lang.max_debt"))
                     ->numeric()
+                    ->suffix(fn($record) => " ".getBaseCurrency()->symbol)
                     ->sortable(),
                 Tables\Columns\ToggleColumn::make('status')
                     ->label(trans("lang.status")),
@@ -129,25 +138,25 @@ class VendorResource extends Resource
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make()
-                ->native(0),
+                    ->native(0),
             ])
             ->actions([
                 Tables\Actions\Action::make('statement')
-                ->label(trans('lang.statement_action'))
-                ->form([
-                    Forms\Components\DatePicker::make('from')
-                        ->label(trans('lang.from')),
-                    Forms\Components\DatePicker::make('to')
-                        ->label(trans('lang.to')),
+                    ->label(trans('lang.statement_action'))
+                    ->form([
+                        Forms\Components\DatePicker::make('from')
+                            ->label(trans('lang.from')),
+                        Forms\Components\DatePicker::make('to')
+                            ->label(trans('lang.to')),
 
-                ])->action(function(array $data,$record){
-                    if(!$data['from']){
-                        $data['from'] = 'all';
-                    }
-                    if(!$data['to']){
-                        $data['to'] = 'all';
-                    }
-                        redirect(static::getUrl('statement',['record' => $record->id, 'from' => $data['from'], 'to' => $data['to']]));
+                    ])->action(function (array $data, $record) {
+                        if (!$data['from']) {
+                            $data['from'] = 'all';
+                        }
+                        if (!$data['to']) {
+                            $data['to'] = 'all';
+                        }
+                        redirect(static::getUrl('statement', ['record' => $record->id, 'from' => $data['from'], 'to' => $data['to']]));
                     })->icon('tabler-report')
 
             ])
@@ -172,7 +181,7 @@ class VendorResource extends Resource
             'index' => Pages\ListVendors::route('/'),
             'create' => Pages\CreateVendor::route('/create'),
             'edit' => Pages\EditVendor::route('/{record}/edit'),
-            'statement'=>Pages\Statement::route('{record}/{from}/{to}/statement'),
+            'statement' => Pages\Statement::route('{record}/{from}/{to}/statement'),
 
         ];
     }

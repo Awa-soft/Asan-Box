@@ -29,6 +29,9 @@ class PackagePage extends Page implements HasForms, HasTable
     protected static ?string $navigationIcon = 'ri-sound-module-line';
     public ?array $packageData = [];
     public $packages;
+    protected static bool $shouldRegisterNavigation = false;
+
+
     public static function getNavigationLabel(): string
     {
         return trans('settings/lang.package.plural_label');

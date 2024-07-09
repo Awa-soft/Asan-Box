@@ -7,12 +7,13 @@ use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
+use App\Models\HR\Employee;
+use App\Traits\Core\OwnerableTrait;
 
 class MembersRelationManager extends RelationManager
 {
     protected static string $relationship = 'members';
+    use OwnerableTrait;
 
     public function form(Form $form): Form
     {
