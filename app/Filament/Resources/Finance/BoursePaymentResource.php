@@ -138,6 +138,11 @@ class BoursePaymentResource extends Resource
                 Tables\Filters\TrashedFilter::make(),
             ])
             ->actions([
+                Tables\Actions\Action::make('print')
+                    ->label(trans('lang.print'))
+                    ->action(function($record){
+                        redirect(static::getUrl('print',['record' => $record->id]));
+                    })->icon('tabler-printer')
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -161,6 +166,7 @@ class BoursePaymentResource extends Resource
             'index' => Pages\ListBoursePayments::route('/'),
             'create' => Pages\CreateBoursePayment::route('/create'),
             'edit' => Pages\EditBoursePayment::route('/{record}/edit'),
+            'print'=>Pages\Invoice::route('{record}/print')
         ];
     }
 

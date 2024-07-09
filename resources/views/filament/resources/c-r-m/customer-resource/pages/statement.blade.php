@@ -18,7 +18,7 @@
                     <tr>
                         <td>
                             <div class="p-2 mt-4 font-bold text-center text-white rounded-sm bg-primary-600">
-                                {{ trans('HR/lang.employee_activity.plural_label') }}
+                                {!!   trans('lang.statement', ['name' => $contact->name]) !!}
                             </div>
                             <table class="w-full">
                                 <thead class="text-[10pt] border">

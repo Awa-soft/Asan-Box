@@ -28,7 +28,7 @@
             </x-filament::button>
         </div>
           </div>
-    <div class="mx-auto relative text-black bg-white w-[210mm] min-h-[297mm]">
+    <div class="mx-auto relative text-black bg-white w-[210mm] @if($size == 'A5') min-h-[148mm] @else  min-h-[297mm] @endif">
         <table class="w-full">
             <thead>
                 <th class="pb-4" style="border-width: 0">

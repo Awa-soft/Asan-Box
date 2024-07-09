@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string("type")->default('purchase');
             $table->string("invoice_number");
             $table->date("date");
-            $table->decimal('months')->default(0);
+            $table->integer('months')->default(0);
             $table->decimal("paid_amount",64, 2)->default(0);
             $table->foreignIdFor(Contact::class)->constrained()->restrictOnDelete();
             $table->foreignIdFor(Currency::class)->constrained()->restrictOnDelete();

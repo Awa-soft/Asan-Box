@@ -12,7 +12,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('sale_codes', function (Blueprint $table) {
+        Schema::create('sale_detail_codes', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(SaleDetail::class)->constrained()->cascadeOnDelete();
             $table->foreignIdFor(\App\Models\Inventory\Item::class)->constrained()->cascadeOnDelete();
@@ -27,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('sale_codes');
+        Schema::dropIfExists('sale_detail_codes');
     }
 };
