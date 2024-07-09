@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Models\Inventory;
+namespace App\Models\Logistic;
 
-use App\Traits\Core\HasUser;
+use App\Models\Inventory\Item;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -24,5 +24,9 @@ class ItemTransactionDetail extends Model
     public function codes():HasMany
     {
         return $this->hasMany(ItemTransactionCode::class);
+    }
+
+    public function getCodesCountAttribute():int{
+        return $this->codes()->count();
     }
 }
