@@ -43,7 +43,8 @@ class ItemResource extends Resource
                     ->maxLength(255),
                 Forms\Components\TextInput::make('barcode')
                     ->label(trans("lang.barcode"))
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->hidden(),
                 Forms\Components\Select::make('category_id')
                     ->label(trans("lang.category"))
                     ->relationship('category', 'name')
@@ -75,6 +76,14 @@ class ItemResource extends Resource
                     ->required()
                     ->numeric()
                     ->default(0.00),
+                Forms\Components\TextInput::make('installment_min')
+                    ->required()
+                    ->numeric()
+                    ->default(0.00),
+                Forms\Components\TextInput::make('installment_max')
+                    ->required()
+                    ->numeric()
+                    ->default(0.00),
                 Forms\Components\TextInput::make('discount')
                     ->label(trans("lang.benifit_ratio"))
                     ->required()
@@ -102,6 +111,7 @@ class ItemResource extends Resource
                     ->circular(),
                 Tables\Columns\TextColumn::make('name')
                     ->label(trans("lang.name"))
+                    ->description(fn($record)=>$record->description)
                     ->searchable(),
                 Tables\Columns\TextColumn::make('description')
                     ->label(trans("lang.description"))
@@ -117,6 +127,7 @@ class ItemResource extends Resource
                 Tables\Columns\TextColumn::make('barcode')
                     ->label(trans("lang.barcode"))
                     ->searchable()
+                    ->hidden()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('category.name')
                     ->numeric()
@@ -128,7 +139,12 @@ class ItemResource extends Resource
                     ->sortable(),
                 ViewColumn::make('price')->view('tables.columns.price-column')
                     ->state(function ($record) {
-                        return $record;
+                        return "price";
+                    })
+                    ->label(trans("lang.price")),
+                ViewColumn::make('installment')->view('tables.columns.price-column')
+                    ->state(function ($record) {
+                        return "installment";
                     })
                     ->label(trans("lang.price")),
                 Tables\Columns\TextColumn::make('benifit_ratio')

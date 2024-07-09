@@ -15,8 +15,5 @@ class SaleDetailCode extends Model
     {
         return $this->belongsTo(SaleDetail::class, "sale_detail_id");
     }
-    public function item(): BelongsTo
-    {
-        return $this->belongsTo(Item::class);
-    }
+    
 }

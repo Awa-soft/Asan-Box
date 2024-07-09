@@ -78,6 +78,11 @@ class BothResource extends Resource
         return $table
             ->columns([
                 static::Column(),
+                Tables\Columns\ImageColumn::make('image')
+                    ->circular()
+                    ->label(trans("lang.image"))
+                    ->size(100),
+
                 Tables\Columns\TextColumn::make('name')
                     ->label(trans("lang.name"))
                     ->searchable(),
@@ -95,10 +100,12 @@ class BothResource extends Resource
                 Tables\Columns\TextColumn::make('payment_duration')
                     ->label(trans("lang.payment_duration"))
                     ->numeric()
+                    ->suffix(trans('lang.day'))
                     ->sortable(),
                 Tables\Columns\TextColumn::make('max_debt')
                     ->label(trans("lang.max_debt"))
                     ->numeric()
+                    ->suffix(fn($record) => " ".getBaseCurrency()->symbol)
                     ->sortable(),
                 Tables\Columns\ToggleColumn::make('status')
                     ->label(trans("lang.status")),

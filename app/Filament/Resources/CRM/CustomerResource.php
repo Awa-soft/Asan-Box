@@ -105,6 +105,7 @@ class CustomerResource extends Resource
                 Tables\Columns\TextColumn::make('max_debt')
                     ->label(trans("lang.max_debt"))
                     ->numeric()
+                    ->suffix(fn($record) => " ".getBaseCurrency()->symbol)
                     ->sortable(),
                 Tables\Columns\ToggleColumn::make('status')
                     ->label(trans("lang.status")),
