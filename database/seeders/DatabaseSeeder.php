@@ -46,19 +46,19 @@ class DatabaseSeeder extends Seeder
         User::factory()->create([
             'name' => 'Developer',
             'email' => 'developer@admin.com',
-            "password" => bcrypt("123mmmnnn")
+            "password" => null
         ]);
         User::factory()->create([
             'name' => 'Main Branch',
             'email' => 'main@branch.com',
-            "password" => bcrypt("123mmmnnn"),
+            "password" => null,
             "ownerable_id" => $branch->id,
             "ownerable_type" => get_class($branch)
         ]);
         User::factory()->create([
             'name' => 'Main Warehouse',
             'email' => 'main@warehouse.com',
-            "password" => bcrypt("123mmmnnn"),
+            "password" => null,
             "ownerable_id" => $warehouse->id,
             "ownerable_type" => get_class($warehouse)
         ]);
