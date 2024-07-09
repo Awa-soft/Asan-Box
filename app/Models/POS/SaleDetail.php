@@ -27,4 +27,8 @@ class SaleDetail extends Model
     {
         return $this->belongsTo(Currency::class);
     }
+
+    public function getCodesCountAttribute():int{
+        return $this->codes()->count();
+    }
 }

@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('item_transaction_codes', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(\App\Models\Inventory\ItemTransactionDetail::class)->constrained()->cascadeOnDelete();
+            $table->foreignIdFor(\App\Models\Logistic\ItemTransactionDetail::class)->constrained()->cascadeOnDelete();
             $table->string('code');
             $table->enum('status',['pending', 'rejected', 'accepted']);
             $table->foreignIdFor(\App\Models\User::class)->constrained()->restrictOnDelete();

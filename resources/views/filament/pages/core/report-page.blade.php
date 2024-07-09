@@ -33,6 +33,13 @@
             {{ trans('HR/lang.reports.label') }}
         </x-filament::tabs.item>
         @endPackage
+        @Package('Logistic')
+        <x-filament::tabs.item
+            :active="$activeTab === 'Logistic'"
+            wire:click="$set('activeTab', 'Logistic')">
+            {{ trans('Logistic/lang.reports.label') }}
+        </x-filament::tabs.item>
+        @endPackage
     </x-filament::tabs>
        @switch($activeTab)
            @case('Inventory')
@@ -63,7 +70,6 @@
                 {{ trans('HR/lang.reports.label') }}
             </x-slot>
             <div class="grid items-start grid-cols-1 gap-4 xl:grid-cols-4">
-
                 <x-filament::section>
                     <x-slot name="icon">
                         @svg(\App\Filament\Resources\HR\EmployeeActivityResource::getNavigationIcon(),'w-8 text-primary-500' )
@@ -197,7 +203,30 @@
                 @endPackage
             </div>
            @break
+           @case('Logistic')
+            @Package('Logistic')
+            <x-slot name="heading">
+                {{ trans('Logistic/lang.reports.label') }}
+            </x-slot>
+            <div class="grid items-start grid-cols-1 gap-4 xl:grid-cols-4">
+                <x-filament::section>
+                    <x-slot name="icon">
+                        @svg(\App\Filament\Resources\Logistic\BranchResource::getNavigationIcon(),'w-8 text-primary-500' )
+                    </x-slot>
+                    <x-slot name="heading">
+                        {{ trans('Logistic/lang.reports.branch') }}
+                    </x-slot>
+                    {{$this->logisticBranches}}
+                    <x-slot name="footerActions">
+                        <x-filament::button type="submit" wire:click="searchLogisticBranch()" class="mt-5">
+                            {{ trans('filament-actions::modal.actions.submit.label') }}
+                        </x-filament::button>
+                    </x-slot>
+                </x-filament::section>
+                @endPackage
+            </div>
+            @break
+           @break
        @endswitch
-
     </x-filament-panels::page>
 

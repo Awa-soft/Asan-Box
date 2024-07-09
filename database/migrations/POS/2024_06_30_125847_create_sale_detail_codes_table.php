@@ -1,6 +1,5 @@
 <?php
 
-use App\Models\Inventory\Item;
 use App\Models\POS\SaleDetail;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -16,7 +15,7 @@ return new class extends Migration
         Schema::create('sale_codes', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(SaleDetail::class)->constrained()->cascadeOnDelete();
-            $table->foreignIdFor(Item::class)->constrained()->cascadeOnDelete();
+            $table->foreignIdFor(\App\Models\Inventory\Item::class)->constrained()->cascadeOnDelete();
             $table->string('code');
             $table->string('gift')->default("no");
             $table->timestamps();

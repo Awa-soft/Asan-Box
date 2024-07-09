@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models\Inventory;
+namespace App\Models\Logistic;
 
 use App\Traits\Core\HasUser;
 use Illuminate\Database\Eloquent\Factories\HasFactory;

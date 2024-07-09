@@ -123,6 +123,15 @@ class DatabaseSeeder extends Seeder
             'version'=>'1.0.0',
             'image'=>1
         ]);
+        Package::create([
+            'name' => 'Logistic',
+            'description' => 'Logistic',
+            'color' => 'bg-blue-500 text-white',
+            'price'=>0,
+            'type'=>'primary',
+            'version'=>'1.0.0',
+            'image'=>1
+        ]);
 
 
     }
