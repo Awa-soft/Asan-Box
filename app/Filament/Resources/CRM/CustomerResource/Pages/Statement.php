@@ -113,9 +113,7 @@ class Statement extends Page
                 return strcmp($a['date'], $b['date']);
             });
 
-        if($data == null){
-            abort(404);
-        }
+
 
         return view($this->getView(), $this->getViewData())
             ->layout($this->getLayout(), [

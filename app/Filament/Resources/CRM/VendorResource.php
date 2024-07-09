@@ -133,6 +133,7 @@ class VendorResource extends Resource
             ])
             ->actions([
                 Tables\Actions\Action::make('statement')
+
                 ->label(trans('lang.statement_action'))
                 ->form([
                     Forms\Components\DatePicker::make('from')
@@ -172,7 +173,7 @@ class VendorResource extends Resource
             'index' => Pages\ListVendors::route('/'),
             'create' => Pages\CreateVendor::route('/create'),
             'edit' => Pages\EditVendor::route('/{record}/edit'),
-            'statement'=>Pages\Statement::route('{record}/{from}/{to}/statement'),
+            'statement'=>Pages\Statement::route('{record}/{from}/{to}/statement')
 
         ];
     }

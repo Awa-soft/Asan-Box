@@ -8,6 +8,7 @@ use Illuminate\View\Component;
 
 class ReportContent extends Component
 {
+    public $size = 'A4';
     /**
      * Create a new component instance.
      */

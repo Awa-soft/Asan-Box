@@ -8,7 +8,6 @@
       <sourceFolder url="file://$MODULE_DIR$/tests" isTestSource="true" packagePrefix="Tests\" />
       <sourceFolder url="file://$MODULE_DIR$/tests/Feature" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/tests/Unit" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/spec" isTestSource="true" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/anourvalar/eloquent-serialize" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/blade-ui-kit/blade-heroicons" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/blade-ui-kit/blade-icons" />
@@ -202,6 +201,9 @@
       <excludeFolder url="file://$MODULE_DIR$/vendor/codeat3/blade-rpg-awesome-icons" />
       <excludeFolder url="file://$MODULE_DIR$/storage/fonts" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/postare/blade-mdi" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/bezhansalleh/filament-language-switch" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/marjose123/filament-lockscreen" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/swisnl/filament-backgrounds" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

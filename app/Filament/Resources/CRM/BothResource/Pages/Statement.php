@@ -10,10 +10,12 @@ use Illuminate\Contracts\View\View;
 
 class Statement extends Page
 {
-    protected static string $resource = BothResource::class;
+
+    protected static string $view = 'filament.resources.c-r-m.both-resource.pages.statement';
+
     public $record,$from,$to;
 
-    protected static string $view = 'filament.resources.c-r-m.customer-resource.pages.statement';
+
     public function getTitle(): string|Htmlable
     {
         return "";
@@ -27,6 +29,7 @@ class Statement extends Page
     {
 
         $contact = Contact::where('id',$this->record)
+
         ->with('purchases',function ($q){
             return $q->when($this->from != 'all', function($query) {
                 return $query->whereDate('date', '>=', $this->from);
@@ -34,6 +37,7 @@ class Statement extends Page
                 return $query->whereDate('date', '<=', $this->to);
             });
         })->with('sales',function ($q){
+
                 return $q->when($this->from != 'all', function($query) {
                     return $query->whereDate('date', '>=', $this->from);
                 })->when($this->to != 'all', function($query){
@@ -52,6 +56,7 @@ class Statement extends Page
                     return $query->whereDate('date', '<=', $this->to);
                 });
             })->first();
+
 
             $data = array_merge(
                 $contact->purchases->map(function($record){

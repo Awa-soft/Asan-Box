@@ -134,6 +134,7 @@ class BothResource extends Resource
             ])
             ->actions([
                 Tables\Actions\Action::make('statement')
+
                 ->label(trans('lang.statement_action'))
                 ->form([
                     Forms\Components\DatePicker::make('from')
@@ -173,8 +174,7 @@ class BothResource extends Resource
             'index' => Pages\ListBoths::route('/'),
             'create' => Pages\CreateBoth::route('/create'),
             'edit' => Pages\EditBoth::route('/{record}/edit'),
-            'statement'=>Pages\Statement::route('{record}/{from}/{to}/statement'),
-
+            'statement'=>Pages\Statement::route('{record}/{from}/{to}/statement')
         ];
     }
 

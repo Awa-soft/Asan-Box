@@ -127,7 +127,11 @@ class PaymentResource extends Resource
                 Tables\Filters\TrashedFilter::make(),
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\Action::make('print')
+                    ->label(trans('lang.print'))
+                   ->action(function($record){
+                        redirect(static::getUrl('print',['record' => $record->id]));
+                    })->icon('tabler-printer')
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -151,6 +155,7 @@ class PaymentResource extends Resource
             'index' => Pages\ListPayments::route('/'),
             'create' => Pages\CreatePayment::route('/create'),
             'edit' => Pages\EditPayment::route('/{record}/edit'),
+            'print'=>Pages\Invoice::route('{record}/print')
         ];
     }
 
