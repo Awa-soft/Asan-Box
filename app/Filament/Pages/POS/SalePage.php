@@ -87,6 +87,7 @@ class SalePage extends Page implements HasForms
                     ->numeric(),
                 TextInput::make("months")
                     ->label(trans("lang.months"))
+                    ->default(0)
                     ->numeric(),
                 Textarea::make('note')
                     ->label(trans("lang.note"))
@@ -142,7 +143,7 @@ class SalePage extends Page implements HasForms
         $this->items = Item::all();
         $this->invoiceForm->fill();
         $this->invoiceForm2->fill();
-        $this->activeTab = session()->get('sale_selected_tab');
+        $this->activeTab = session()->get('sale_selected_tab') ?? 'sale_tab_1';
         $var = session()->get($this->activeTab);
         if ($var != null) {
             $var = json_decode($var, true);
@@ -321,10 +322,9 @@ class SalePage extends Page implements HasForms
                         'currency_id' => $record['currency_id'],
                     ]
                 );
-
+                $detail->codes()->delete();
                 collect($record['codes'])->each(function ($code) use ($detail, $record) {
                     $code['item_id'] = $record['id'];
-                    $detail->codes()->delete();
                     $detail->codes()->create($code);
                 });
             });

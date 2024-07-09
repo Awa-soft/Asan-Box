@@ -1,23 +1,15 @@
 <?php
 
-namespace App\Filament\Pages\Inventory;
+namespace App\Filament\Pages\Logistic;
 
 use App\Models\Inventory\Category;
 use App\Models\Inventory\Item;
-use App\Models\Inventory\ItemTransactionInvoice;
 use App\Models\Logistic\Branch;
+use App\Models\Logistic\ItemTransactionInvoice;
 use App\Models\Logistic\Warehouse;
-use App\Models\POS\PurchaseInvoice;
-use App\Models\Settings\Currency;
-use App\Traits\Core\OwnerableTrait;
 use BezhanSalleh\FilamentShield\Traits\HasPageShield;
 use Exception;
-use Filament\Forms\Components\DateTimePicker;
-use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\MorphToSelect;
-use Filament\Forms\Components\Select;
-use Filament\Forms\Components\Textarea;
-use Filament\Forms\Components\TextInput;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Forms\Form;
@@ -31,7 +23,7 @@ class ItemTransaction extends Page implements HasForms
     protected static ?string $navigationIcon = 'iconpark-buy';
     public static function getNavigationLabel(): string
     {
-        return trans('Inventory/lang.item_transaction.plural_label');
+        return trans('Logistic/lang.item_transaction.plural_label');
     }
     public  function getHeading(): string
     {
@@ -39,7 +31,7 @@ class ItemTransaction extends Page implements HasForms
     }
     public static function getNavigationGroup(): ?string
     {
-        return trans('Inventory/lang.group_label');
+        return trans('Logistic/lang.group_label');
     }
 
     public $currencies, $items, $tableData = [], $selected = [], $categories = [], $selectedCategories = [], $codes = [], $key, $multipleSelect = false;
@@ -215,8 +207,8 @@ class ItemTransaction extends Page implements HasForms
                         'item_id' => $record['id'],
                     ]
                 );
+                $detail->codes()->delete();
                 collect($record['codes'])->each(function ($code) use ( $detail, $record) {
-                    $detail->codes()->delete();
                     $detail->codes()->create($code);
                 });
             });

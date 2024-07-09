@@ -298,10 +298,9 @@ class PurchasePage extends Page implements HasForms
                         'currency_id' => $record['currency_id'],
                     ]
                 );
-
+                $detail->codes()->delete();
                 collect($record['codes'])->each(function ($code) use ( $detail, $record) {
                     $code['item_id'] = $record['id'];
-                    $detail->codes()->delete();
                     $detail->codes()->create($code);
                 });
             });

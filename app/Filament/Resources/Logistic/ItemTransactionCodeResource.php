@@ -1,19 +1,13 @@
 <?php
 
-namespace App\Filament\Resources\Inventory;
+namespace App\Filament\Resources\Logistic;
 
-use App\Filament\Resources\Inventory\ItemTransactionCodeResource\Pages;
-use App\Filament\Resources\Inventory\ItemTransactionCodeResource\RelationManagers;
-use App\Models\Inventory\ItemTransactionCode;
+use App\Models\Logistic\ItemTransactionCode;
 use App\Traits\Core\HasTranslatableResource;
-use Filament\Forms;
-use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Support\Colors\Color;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class ItemTransactionCodeResource extends Resource
 {
@@ -83,7 +77,7 @@ class ItemTransactionCodeResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ManageItemTransactionCodes::route('/'),
+            'index' => \App\Filament\Resources\Logistic\ItemTransactionCodeResource\Pages\ManageItemTransactionCodes::route('/'),
         ];
     }
 }

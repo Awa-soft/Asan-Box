@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('item_transaction_details', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(\App\Models\Inventory\Item::class)->constrained()->restrictOnDelete();
-            $table->foreignIdFor(\App\Models\Inventory\ItemTransactionInvoice::class)->constrained()->cascadeOnDelete();
+            $table->foreignIdFor(\App\Models\Logistic\ItemTransactionInvoice::class)->constrained()->cascadeOnDelete();
             $table->timestamps();
         });
     }

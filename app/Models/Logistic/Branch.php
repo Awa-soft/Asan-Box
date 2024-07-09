@@ -4,6 +4,9 @@ namespace App\Models\Logistic;
 
 use App\Models\CRM\Partner;
 use App\Models\Inventory\Item;
+use App\Models\POS\ItemRepair;
+use App\Models\POS\PurchaseInvoice;
+use App\Models\POS\SaleInvoice;
 use App\Models\Setting\Currency;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -32,4 +35,50 @@ class Branch extends Model
     public function partners() :BelongsToMany{
         return $this->belongsToMany(Partner::class,'branch_partners');
     }
+    public function scopeBranchHasItem($query, $branch_id, $itemId)
+    {
+        $purchaseCount = PurchaseInvoice::where('branch_id', $branch_id)
+            ->get()
+            ->reduce(function ($count, $purchase) {
+                return $count + ($purchase->type == 'purchase' ? 1 : -1) * $purchase->details()->get()->sum('codes_count');
+            }, 0);
+
+        $saleCount = SaleInvoice::where('branch_id', $branch_id)
+            ->get()
+            ->reduce(function ($count, $sale) {
+                return $count + ($sale->type == 'return' ? 1 : -1) * $sale->details()->get()->sum('codes_count');
+            }, 0);
+
+        $transactionCount = ItemTransactionInvoice::where(function($query) use ($branch_id) {
+            $query->where('fromable_id', $branch_id)->where('fromable_type', 'App\Models\Logistic\Branch');
+        })->orWhere(function($query) use ($branch_id) {
+            $query->where('toable_id', $branch_id)->where('toable_type', 'App\Models\Logistic\Branch');
+        })
+            ->get()
+            ->reduce(function ($count, $transaction) use ($branch_id) {
+                return $count + ($transaction->fromable_id == $branch_id ? -1 : 1) * $transaction->details()->get()->sum('codes_count');
+            }, 0);
+
+        $repairCounts = ItemRepair::where('ownerable_type', 'App\Models\Logistic\Branch')
+            ->where('ownerable_id', $branch_id)
+            ->where('item_id', $itemId)
+            ->get()
+            ->reduce(function ($counts, $repair) {
+                if ($repair->type == 'increase') {
+                    $counts['increase']++;
+                } else if ($repair->type == 'decrease') {
+                    $counts['decrease']++;
+                }
+                return $counts;
+            }, ['increase' => 0, 'decrease' => 0]);
+
+        $repairIncreaseCount = $repairCounts['increase'];
+        $repairDecreaseCount = $repairCounts['decrease'];
+
+        return $purchaseCount + $saleCount + $transactionCount + $repairIncreaseCount - $repairDecreaseCount;
+    }
+
+
+
+
 }
