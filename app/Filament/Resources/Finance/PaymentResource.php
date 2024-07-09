@@ -39,6 +39,7 @@ class PaymentResource extends Resource
                 ->preload(),
             Forms\Components\Select::make('contact_id')
                 ->relationship('contact', 'name')
+                ->getOptionLabelFromRecordUsing(fn($record)=> "$record->name - $record->phone" )
                 ->required()
                 ->searchable()
                 ->preload()
