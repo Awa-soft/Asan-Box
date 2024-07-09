@@ -38,7 +38,7 @@ class EmployeeNoteResource extends Resource
                 Forms\Components\DatePicker::make('date')
                     ->required()
                     ->default(now()),
-                    Forms\Components\Textarea::make('note')
+                Forms\Components\Textarea::make('note')
                     ->required()
                     ->columnSpanFull(),
             ]);
@@ -53,7 +53,7 @@ class EmployeeNoteResource extends Resource
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('date')
-                    ->date()
+                    ->date('Y-m-d')
                     ->sortable(),
 
                 Tables\Columns\TextColumn::make('user.name')
@@ -74,10 +74,9 @@ class EmployeeNoteResource extends Resource
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make()
-                ->native(0),
+                    ->native(0),
             ])
-            ->actions([
-            ])
+            ->actions([])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),

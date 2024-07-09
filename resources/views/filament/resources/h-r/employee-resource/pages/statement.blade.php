@@ -7,11 +7,12 @@
         <table class="w-full">
             <thead>
             <td>
-                @if($employee->ownerable_type == 'App\Models\Logistic\Branch')
-                    {{$employee->ownerable->name }}
-                @else
-                    {{\App\Models\Logistic\Branch::find(1)?->name}}
-                @endif
+                @if(auth()->user()->ownerable_type == 'App\Models\Logistic\Branch')
+                <img src="/storage/{{auth()->user()->ownerable->receipt_header}}" alt="">
+            @else
+            <img src="/storage/{{\App\Models\Logistic\Branch::find(1)->receipt_header}}" alt="">
+
+            @endif
             </td>
             </thead>
             <tbody>
@@ -173,10 +174,11 @@
             <tfoot>
             <tr>
                 <td>
-                    @if($employee->ownerable_type == 'App\Models\Logistic\Branch')
-                        {{$employee->ownerable->name }}
+                    @if(auth()->user()->ownerable_type == 'App\Models\Logistic\Branch')
+                        <img src="/storage/{{auth()->user()->ownerable->receipt_footer}}" alt="">
                     @else
-                        {{\App\Models\Logistic\Branch::find(1)?->name}}
+                    <img src="/storage/{{\App\Models\Logistic\Branch::find(1)->receipt_footer}}" alt="">
+
                     @endif
                 </td>
             </tr>

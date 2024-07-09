@@ -1,7 +1,7 @@
 <x-filament-panels::page>
     <div class="grid items-center w-full gap-5 xl:grid-cols-12">
-        <p class="text-3xl font-bold xl:col-span-3">{{ trans('POS/lang.purchase.plural_label') }}</p>
-        <div class="items-start col-span-5 w-max">
+        <p class="text-3xl font-bold xl:col-span-3">{{ trans('POS/lang.sale.plural_label') }}</p>
+        <div class="items-start col-span-4 w-max">
             <x-filament::tabs label="Content tabs">
                 <x-filament::tabs.item :active="$activeTab == 'sale_tab_1'" wire:click="setTab(1)">
                     Tab 1
@@ -22,7 +22,7 @@
                 </x-filament::tabs.item>
             </x-filament::tabs>
         </div>
-        <div class="grid grid-cols-5 gap-2 text-xs xl:col-span-4 2xl:col-span-4 h-max" x-data="{
+        <div class="grid grid-cols-6 gap-2 text-xs h-max xl:col-span-5 2xl:col-span-5" x-data="{
             active: 'single',
         }">
             <div
@@ -41,7 +41,7 @@
 
             <div wire:click="resetSession"
                 class="flex items-center justify-center p-2 text-white duration-300 rounded-md shadow cursor-pointer bg-primary-600 hover:bg-primary-500">
-                {{ trans('lang.reset_forms') }}
+                {{ trans('lang.reset_form') }}
             </div>
             <div wire:click="addToTable"
                 class="flex items-center justify-center p-2 text-white duration-300 rounded-md shadow cursor-pointer bg-primary-600 hover:bg-primary-500">

@@ -147,6 +147,7 @@ class EmployeeResource extends Resource
                         ->searchable(),
                     Tables\Columns\TextColumn::make('email')
                         ->copyable()
+                        ->toggleable(isToggledHiddenByDefault: true)
                         ->searchable(),
                     Tables\Columns\TextColumn::make('phone')
                         ->copyable()
@@ -167,6 +168,8 @@ class EmployeeResource extends Resource
                 Tables\Columns\TextColumn::make('salary')
                     ->suffix(fn ($record) => " ".getCurrencySymbol($record->currency_id))
                     ->numeric(fn($record)=>getCurrencyDecimal( $record->currency_id))
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('last_salary_date')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('hire_date')
                     ->date()
