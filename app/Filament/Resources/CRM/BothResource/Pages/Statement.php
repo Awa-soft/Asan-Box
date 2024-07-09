@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Filament\Resources\CRM\CustomerResource\Pages;
+namespace App\Filament\Resources\CRM\BothResource\Pages;
 
-use App\Filament\Resources\CRM\CustomerResource;
+use App\Filament\Resources\CRM\BothResource;
 use App\Models\CRM\Contact;
 use Filament\Resources\Pages\Page;
 use Illuminate\Contracts\Support\Htmlable;
@@ -10,7 +10,7 @@ use Illuminate\Contracts\View\View;
 
 class Statement extends Page
 {
-    protected static string $resource = CustomerResource::class;
+    protected static string $resource = BothResource::class;
     public $record,$from,$to;
 
     protected static string $view = 'filament.resources.c-r-m.customer-resource.pages.statement';

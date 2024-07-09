@@ -26,7 +26,7 @@ class Contact extends Model
         return $this->hasMany(Payment::class)->where('type', "send");
     }
     public function receives(){
-        return $this->hasMany(Payment::class)->where('type', "recieve");
+        return $this->hasMany(Payment::class)->where('type', "receive");
     }
 
 
