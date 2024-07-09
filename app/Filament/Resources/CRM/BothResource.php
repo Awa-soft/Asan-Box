@@ -134,20 +134,21 @@ class BothResource extends Resource
             ])
             ->actions([
                 Tables\Actions\Action::make('statement')
-                    ->label(trans('lang.statement_action'))
-                    ->form([
-                        Forms\Components\DatePicker::make('from')
-                            ->label(trans('lang.from')),
-                        Forms\Components\DatePicker::make('to')
-                            ->label(trans('lang.to')),
 
-                    ])->action(function(array $data,$record){
-                        if(!$data['from']){
-                            $data['from'] = 'all';
-                        }
-                        if(!$data['to']){
-                            $data['to'] = 'all';
-                        }
+                ->label(trans('lang.statement_action'))
+                ->form([
+                    Forms\Components\DatePicker::make('from')
+                        ->label(trans('lang.from')),
+                    Forms\Components\DatePicker::make('to')
+                        ->label(trans('lang.to')),
+
+                ])->action(function(array $data,$record){
+                    if(!$data['from']){
+                        $data['from'] = 'all';
+                    }
+                    if(!$data['to']){
+                        $data['to'] = 'all';
+                    }
                         redirect(static::getUrl('statement',['record' => $record->id, 'from' => $data['from'], 'to' => $data['to']]));
                     })->icon('tabler-report')
             ])

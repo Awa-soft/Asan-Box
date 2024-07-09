@@ -74,12 +74,11 @@ class Statement extends Page
                         'type' => $record->type,
                         'date' => $record->date,
                         'amount' => $record->amount,
-                        'paid_amount' => $record->paid_amount,
+                        'paid_amount' => $record->amount,
                         'balance' => $record->balance,
                         'note' => $record->note,
                         "currency" => $record->currency->toArray(),
                         "user" => $record->user->toArray(),
-
                     ];
                 })->toArray(),
                 $contact->sends->map(function($record){
@@ -88,16 +87,26 @@ class Statement extends Page
                         'type' => $record->type,
                         'date' => $record->date,
                         'amount' => $record->amount,
-                        'paid_amount' => $record->paid_amount,
+                        'paid_amount' => $record->amount,
                         'balance' => $record->balance,
                         'note' => $record->note,
                         "currency" => $record->currency->toArray(),
                         "user" => $record->user->toArray(),
-
-
                     ];
                 })->toArray(),
-                $contact->receives->toArray()
+                $contact->receives->map(function($record){
+                    return [
+                        'invoice_number' => $record->invoice_number,
+                        'type' => $record->type,
+                        'date' => $record->date,
+                        'amount' => $record->amount,
+                        'paid_amount' => $record->amount,
+                        'balance' => $record->balance,
+                        'note' => $record->note,
+                        "currency" => $record->currency->toArray(),
+                        "user" => $record->user->toArray(),
+                    ];
+                })->toArray()
             );
 
             usort($data, function($a, $b) {

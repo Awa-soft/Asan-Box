@@ -3,6 +3,7 @@
 
 
     <section class="sheet A4 ">
+
         <div class="mx-auto bg-white ">
             <table class="w-full">
                 <thead>
@@ -14,11 +15,18 @@
                         @endif
                     </td>
                 </thead>
-                <tbody>
-                    <tr>
-                        <td>
+                <tbody class="w-full">
+                    <tr class="w-full">
+                        <td class="w-max">
                             <div class="p-2 mt-4 font-bold text-center text-white rounded-sm bg-primary-600">
                                 {!!   trans('lang.statement', ['name' => $contact->name]) !!}
+                            </div>
+
+                            <div class="grid w-full grid-cols-1 my-2 md:grid-cols-2 lg:grid-cols-5">
+                                <p class="px-2 py-2 border border-black "><span class="font-bold text-primary-500">{{ trans('lang.branch') }}</span>: {{ $contact->ownerable->name }}</p>
+                                <p class="col-span-2 px-2 py-2 border border-black border-s-0"><span class="font-bold text-primary-500">{{ trans('lang.contact') }}</span>: {{ $contact->name  }}- {{ $contact->phone }}</p>
+                                <p class="px-2 py-2 border border-black border-s-0"><span class="font-bold text-primary-500">{{ trans('lang.date') }}</span>: {{ $from }} - {{ $to }}</p>
+                                <p class="px-2 py-2 border border-black border-s-0"><span class="font-bold text-primary-500">{{ trans('lang.balance') }}</span>: {{ number_format($contact->balance, getBaseCurrency()->decimal) }} {{ getBaseCurrency()->symbol }}</p>
                             </div>
                             <table class="w-full">
                                 <thead class="text-[10pt] border">
