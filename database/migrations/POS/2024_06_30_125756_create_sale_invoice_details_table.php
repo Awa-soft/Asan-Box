@@ -15,7 +15,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('sale_invoice_details', function (Blueprint $table) {
+        Schema::create('sale_details', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(SaleInvoice::class)->constrained()->restrictOnDelete();
             $table->foreignIdFor(Item::class)->constrained()->restrictOnDelete();
