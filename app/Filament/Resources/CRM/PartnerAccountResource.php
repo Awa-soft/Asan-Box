@@ -20,6 +20,7 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class PartnerAccountResource extends Resource
 {
+    use \App\Traits\Core\HasSoftDeletes;
     use HasCreateAnother;
     use HasTranslatableResource;
     protected static ?string $model = PartnerAccount::class;

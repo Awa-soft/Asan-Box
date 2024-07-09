@@ -21,6 +21,7 @@ use Malzariey\FilamentDaterangepickerFilter\Filters\DateRangeFilter;
 
 class EmployeeSalaryResource extends Resource
 {
+    use \App\Traits\Core\HasSoftDeletes;
     use HasTranslatableResource,OwnerableTrait;
     protected static ?string $model = EmployeeSalary::class;
 

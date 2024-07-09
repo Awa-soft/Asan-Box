@@ -36,7 +36,7 @@ class NotesRelationManager extends RelationManager
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('date')
-                    ->date()
+                    ->date('Y-m-d')
                     ->sortable(),
 
                 Tables\Columns\TextColumn::make('user.name')

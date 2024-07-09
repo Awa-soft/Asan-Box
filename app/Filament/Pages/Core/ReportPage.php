@@ -9,6 +9,7 @@ use App\Filament\Pages\Reports\HR\EmployeeSummary;
 use App\Filament\Pages\Reports\HR\IdentityTypeReport;
 use App\Filament\Pages\Reports\HR\PositionReport;
 use App\Filament\Pages\Reports\HR\TeamReport;
+use App\Filament\Pages\Reports\Logistic\Branch;
 use App\Traits\Core\TranslatableForm;
 use Filament\Forms\Components\DatePicker;
 use App\Filament\Pages\Reports\HR\EmployeeActivityReport;
@@ -26,9 +27,11 @@ class ReportPage extends Page implements HasForms
 {
     use InteractsWithForms;
     protected static ?string $navigationIcon = 'heroicon-o-document-text';
+    public $activeTab='Logistic';
 
     public ?array $SafeData = [];
     public $hrEmployeeActivity,$hrEmployeeLeave,$hrEmployeeNote,$hrIdentityType,$hrTeam,$hrPosition,$hrEmployee,$hrEmployeeSalary,$hrEmployeeSummary;
+    public $logisticBranch;
     protected function getForms(): array
     {
         return [
@@ -41,7 +44,8 @@ class ReportPage extends Page implements HasForms
             'hrEmployeesForm',
             'hrEmployeesSalaryForm',
             'hrEmployeesSummaryForm',
-            'SafeForm'
+            'SafeForm',
+            'logisticBranches'
         ];
     }
 //    Employee Activity
@@ -448,6 +452,35 @@ class ReportPage extends Page implements HasForms
             return $form->statePath('hrEmployeeSalary');
         }
     }
+
+
+//    Logistics
+    public function logisticBranches(Form $form):Form{
+        return $form->schema([
+                Select::make('branches')
+                    ->multiple()
+                    ->label(trans('lang.branches'))
+                    ->options(\App\Models\Logistic\Branch::all()->pluck('name','id')),
+                Select::make('attr')
+                    ->label(trans('lang.attributes'))
+                    ->required()
+                    ->native(0)
+                    ->multiple()
+                ->options([
+                    'details'=>trans('lang.details'),
+                    'warehouses'=>trans('lang.warehouses'),
+                    'items'=>trans('Inventory/lang.item.plural_label'),
+                ])
+            ->live()
+        ])->statePath('logisticBranch');
+    }
+    public function searchLogisticBranch()
+    {
+      $data =  $this->logisticBranches->getState();
+        $attr = json_encode($data['attr']??[]);
+        $branches = json_encode($data['branches']??[]);
+        return $this->redirect(Branch::getUrl(['attr' => $attr,'branches'=>$branches]));
+    }
     public function mount(){
 
         $this->hrEmployeeActivityForm->fill();
@@ -460,6 +493,7 @@ class ReportPage extends Page implements HasForms
         $this->hrEmployeesSalaryForm->fill();
         $this->hrEmployeesSummaryForm->fill();
         $this->SafeForm->fill();
+        $this->logisticBranches->fill();
 
 
     }

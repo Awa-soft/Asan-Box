@@ -17,6 +17,7 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class PartnershipResource extends Resource
 {
+    use \App\Traits\Core\HasSoftDeletes;
 
     use HasTranslatableResource;
 

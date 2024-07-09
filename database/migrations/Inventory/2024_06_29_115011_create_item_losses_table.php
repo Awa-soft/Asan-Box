@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('code');
             $table->decimal('cost',64,2)->default(0);
             $table->foreignIdFor(\App\Models\Settings\Currency::class)->constrained()->restrictOnDelete();
-            $table->decimal('currency_rate',64,4);
+            $table->decimal('rate',64,4);
             $table->string('note')->nullable();
             $table->date('date')->nullable();
             $table->foreignIdFor(\App\Models\User::class)->constrained()->restrictOnDelete();

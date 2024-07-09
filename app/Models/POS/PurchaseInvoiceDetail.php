@@ -28,4 +28,8 @@ class PurchaseInvoiceDetail extends Model
     public function currency():BelongsTo{
         return $this->belongsTo(Currency::class);
     }
+
+    public function getCodesCountAttribute():int{
+        return $this->codes()->count();
+    }
 }

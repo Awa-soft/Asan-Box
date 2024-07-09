@@ -17,6 +17,7 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class EmployeeActivityResource extends Resource
 {
+    use \App\Traits\Core\HasSoftDeletes;
     use OwnerableTrait;
     use HasTranslatableResource;
 
@@ -29,7 +30,7 @@ class EmployeeActivityResource extends Resource
         return $form
             ->schema([
                 static::Field()
-                ->columns(2),
+                    ->columns(2),
                 Forms\Components\Select::make('employee_id')
                     ->relationship('employee', 'name')
                     ->searchable()
@@ -59,15 +60,29 @@ class EmployeeActivityResource extends Resource
                 Tables\Columns\TextColumn::make('employee.name')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('type')->formatStateUsing(fn($state)=>static::$model::getTypes()[$state]),
+                Tables\Columns\TextColumn::make('type')
+                    ->formatStateUsing(fn ($state) => static::$model::getTypes()[$state])
+                    ->badge()
+                    ->color(
+                        function ($state) {
+                            switch (static::$model::getTypes()[$state]) {
+                                case 'Punishment':
+                                    return 'danger';
+                                case 'Advance':
+                                    return 'warning';
+                                case 'Bonus':
+                                    return 'primary';
+                                default:
+                                    return 'success';
+                            }
+                        }
+                    ),
                 Tables\Columns\TextColumn::make('amount')
-                    ->numeric()
+                    ->numeric(fn($record) => $record->currency->decimal, locale:"en")
+                    ->suffix(fn($record) => " ".$record->currency->symbol)
                     ->sortable(),
                 Tables\Columns\TextColumn::make('date')
-                    ->date()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('currency.name')
-                    ->numeric()
+                    ->date('Y-m-d')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('user.name')
                     ->numeric()
@@ -87,11 +102,9 @@ class EmployeeActivityResource extends Resource
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make()
-                ->native(0),
+                    ->native(0),
             ])
-            ->actions([
-
-            ])
+            ->actions([])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),

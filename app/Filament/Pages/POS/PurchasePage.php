@@ -270,7 +270,7 @@ class PurchasePage extends Page implements HasForms
                 $record['currency_id'],
                 $this->invoiceData['currency_id'],
                 $record['price']
-                *  collect($record['codes'])->where("gift", "no")->count()
+                *  collect($record['codes'])->where("gift", 0)->count()
             );
         })
         ->sum();
@@ -298,10 +298,10 @@ class PurchasePage extends Page implements HasForms
                         'currency_id' => $record['currency_id'],
                     ]
                 );
+                $detail->codes()->delete();
 
                 collect($record['codes'])->each(function ($code) use ( $detail, $record) {
                     $code['item_id'] = $record['id'];
-                    $detail->codes()->delete();
                     $detail->codes()->create($code);
                 });
             });

@@ -107,7 +107,7 @@ class BranchItemPage extends Page implements HasForms
             ->success()
             ->send();
             }
-            Branch::find($id)->items()->sync(collect($this->transfered['data'])->pluck('id')->toArray());
+            Branch::find($this->selectedBranch)->items()->sync(collect($this->transfered['data'])->pluck('id')->toArray());
             $this->selected = [];
         }
         else{

@@ -46,19 +46,19 @@ class DatabaseSeeder extends Seeder
         User::factory()->create([
             'name' => 'Developer',
             'email' => 'developer@admin.com',
-            "password" => bcrypt("123mmmnnn")
+            "password" => null
         ]);
         User::factory()->create([
             'name' => 'Main Branch',
             'email' => 'main@branch.com',
-            "password" => bcrypt("123mmmnnn"),
+            "password" => null,
             "ownerable_id" => $branch->id,
             "ownerable_type" => get_class($branch)
         ]);
         User::factory()->create([
             'name' => 'Main Warehouse',
             'email' => 'main@warehouse.com',
-            "password" => bcrypt("123mmmnnn"),
+            "password" => null,
             "ownerable_id" => $warehouse->id,
             "ownerable_type" => get_class($warehouse)
         ]);
@@ -117,6 +117,15 @@ class DatabaseSeeder extends Seeder
         Package::create([
             'name' => 'Inventory',
             'description' => 'Inventory',
+            'color' => 'bg-blue-500 text-white',
+            'price'=>0,
+            'type'=>'primary',
+            'version'=>'1.0.0',
+            'image'=>1
+        ]);
+        Package::create([
+            'name' => 'Logistic',
+            'description' => 'Logistic',
             'color' => 'bg-blue-500 text-white',
             'price'=>0,
             'type'=>'primary',

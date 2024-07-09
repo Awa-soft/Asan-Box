@@ -25,6 +25,7 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class PurchaseInvoiceResource extends Resource
 {
+    use \App\Traits\Core\HasSoftDeletes;
     use HasTranslatableResource;
 
     protected static ?string $model = PurchaseInvoice::class;

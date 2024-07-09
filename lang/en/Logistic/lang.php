@@ -16,5 +16,17 @@ return [
     'branch_item'=>[
         'plural_label'=>'Branch Items',
         'singular_label'=>'Branch Item'
+    ],
+    "item_transaction"=>[
+        "plural_label"=>"Item Transactions",
+        "singular_label"=>"Item Transaction",
+    ],
+    'item_transaction_code'=>[
+        'plural_label'=>'Item Transaction Codes',
+        'singular_label'=>'Item Transaction Code'
+    ],
+    'reports'=>[
+        'label'=>"Logistics",
+        "branch"=>"Branches Report"
     ]
 ];
