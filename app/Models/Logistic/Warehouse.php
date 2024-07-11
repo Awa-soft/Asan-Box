@@ -3,6 +3,7 @@
 namespace App\Models\Logistic;
 
 use App\Models\Inventory\Item;
+use App\Models\POS\ItemRepair;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -20,8 +21,34 @@ class Warehouse extends Model
     public function items() :BelongsToMany{
         return $this->belongsToMany(Item::class,'warehouse_items');
     }
-    public function hasItem($itemsId,$WarehouseId):float
+    public static function hasItem($itemId,$WarehouseId):float
     {
-        return 0;
+        $transactionCount = ItemTransactionInvoice::where(function($query) use ($WarehouseId) {
+            $query->where('fromable_id', $WarehouseId)->where('fromable_type', 'App\Models\Logistic\Warehouse');
+        })->orWhere(function($query) use ($WarehouseId) {
+            $query->where('toable_id', $WarehouseId)->where('toable_type', 'App\Models\Logistic\Warehouse');
+        })
+            ->get()
+            ->reduce(function ($count, $transaction) use ($WarehouseId,$itemId) {
+                return $count + ((($transaction->fromable_id ==  $WarehouseId && $transaction->fromable_type ==  'App\Models\Logistic\Warehouse') ? -1 : 1) * $transaction->details()->where('item_id', $itemId)->get()->sum('codes_count'));
+            }, 0);
+
+        $repairCounts = ItemRepair::where('ownerable_type', 'App\Models\Logistic\Warehouse')
+            ->where('ownerable_id', $WarehouseId)
+            ->where('item_id', $itemId)
+            ->get()
+            ->reduce(function ($counts, $repair) {
+                if ($repair->type == 'increase') {
+                    $counts['increase']++;
+                } else if ($repair->type == 'decrease') {
+                    $counts['decrease']++;
+                }
+                return $counts;
+            }, ['increase' => 0, 'decrease' => 0]);
+
+        $repairIncreaseCount = $repairCounts['increase'];
+        $repairDecreaseCount = $repairCounts['decrease'];
+
+        return  $transactionCount + $repairIncreaseCount - $repairDecreaseCount;
     }
 }
