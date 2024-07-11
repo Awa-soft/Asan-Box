@@ -2,6 +2,8 @@
 
 namespace App\Models\POS;
 
+use App\Models\Inventory\Item;
+use App\Models\Settings\Currency;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;

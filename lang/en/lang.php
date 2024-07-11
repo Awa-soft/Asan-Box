@@ -178,6 +178,9 @@ return [
     'last_salary_date'=>"Last salary ",
     "statement_action"=>"Statement",
     "purchase" => "Purchase",
+    "item" => "Item",
+    "sale" => "Sale",
+    "sale_invoice" => "Sale Invoice"
     "expenseType"=>"Type",
     "expense_type"=>"Type"
 ];

@@ -37,13 +37,23 @@ class ItemsRelationManager extends RelationManager
                 ->circular(),
             Tables\Columns\TextColumn::make('name')
                 ->label(trans("lang.name"))
+                ->description(fn($record)=>$record->description)
                 ->searchable(),
             Tables\Columns\TextColumn::make('description')
                 ->label(trans("lang.description"))
-                ->searchable(),
+                ->searchable()
+                ->toggleable(isToggledHiddenByDefault: true),
+            Tables\Columns\TextColumn::make('cost')
+                ->label(trans("lang.cost"))
+                ->searchable()
+                ->numeric(getBaseCurrency()->decimal)
+                ->suffix(
+                    " ".getBaseCurrency()->symbol
+                ),
             Tables\Columns\TextColumn::make('barcode')
                 ->label(trans("lang.barcode"))
                 ->searchable()
+                ->hidden()
                 ->toggleable(isToggledHiddenByDefault: true),
             Tables\Columns\TextColumn::make('category.name')
                 ->numeric()
@@ -53,19 +63,11 @@ class ItemsRelationManager extends RelationManager
                 ->numeric()
                 ->label(trans("lang.brand"))
                 ->sortable(),
-
             ViewColumn::make('price')->view('tables.columns.price-column')
                 ->state(function ($record) {
                     return $record;
                 })
                 ->label(trans("lang.price")),
-
-            Tables\Columns\TextColumn::make('multi_quantity')
-                ->label(trans("lang.multi_quantity"))
-                ->suffix(fn ($record) => " " . $record->singleUnit->name)
-                ->description(fn ($record) => $record->multiUnit->name)
-                ->numeric()
-                ->sortable(),
             Tables\Columns\TextColumn::make('benifit_ratio')
                 ->numeric()
                 ->label(trans("lang.benifit_ratio"))
