@@ -1,6 +1,4 @@
-
 <?php
-
 namespace App\Filament\Resources\CRM;
 
 use App\Filament\Resources\CRM\VendorResource\Pages;
