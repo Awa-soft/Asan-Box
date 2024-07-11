@@ -180,7 +180,7 @@ return [
     "purchase" => "Purchase",
     "item" => "Item",
     "sale" => "Sale",
-    "sale_invoice" => "Sale Invoice"
+    "sale_invoice" => "Sale Invoice",
     "expenseType"=>"Type",
     "expense_type"=>"Type"
 ];
