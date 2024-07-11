@@ -21,8 +21,17 @@
         @slot('tableContent')
             @foreach($data as $key=>$dt)
                 @if($key > 0)
-                        <td class="bg-primary-500" colspan="2""></td>
+                    <tr>
+                        <td  colspan="2" style="padding-bottom: 60px; background: white;border: none"></td>
                     </tr>
+                        <tr>
+                            <th class="bg-primary-500 text-white">
+                                {{trans('lang.name')}}
+                            </th>
+                            <th class="bg-primary-500 text-white">
+                                {{trans('phone')}}
+                            </th>
+                        </tr>
                 @endif
                 <tr>
                     <th>

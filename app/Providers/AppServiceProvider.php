@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use BezhanSalleh\FilamentLanguageSwitch\Enums\Placement;
+use BezhanSalleh\FilamentLanguageSwitch\LanguageSwitch;
 use Filament\Support\Facades\FilamentView;
 use Filament\View\PanelsRenderHook;
 use Illuminate\Contracts\View\View;
@@ -24,6 +26,15 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        LanguageSwitch::configureUsing(function (LanguageSwitch $switch) {
+            $switch
+                ->locales(['en','ckb','ar'])
+            ->circular()
+                ->visible(outsidePanels: true)
+
+            ; // also accepts a closure
+        });
+
 
         Blade::directive('Package', function ($name) {
             return "<?php if (\\App\\Models\\Core\\Package::where('name', $name)->exists()): ?>";

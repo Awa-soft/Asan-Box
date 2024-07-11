@@ -19,7 +19,7 @@
                     <tr class="w-full">
                         <td class="w-max">
                             <div class="p-2 mt-4 font-bold text-center text-white rounded-sm bg-primary-600">
-                                {{ trans('HR/lang.employee_activity.plural_label') }}
+                                {!!   trans('lang.statement', ['name' => $contact->name]) !!}
                             </div>
 
                             <div class="grid w-full grid-cols-1 my-2 md:grid-cols-2 lg:grid-cols-5">

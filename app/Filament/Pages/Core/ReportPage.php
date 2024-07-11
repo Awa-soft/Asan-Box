@@ -10,6 +10,7 @@ use App\Filament\Pages\Reports\HR\IdentityTypeReport;
 use App\Filament\Pages\Reports\HR\PositionReport;
 use App\Filament\Pages\Reports\HR\TeamReport;
 use App\Filament\Pages\Reports\Logistic\Branch;
+use App\Filament\Pages\Reports\Logistic\WareHouse;
 use App\Traits\Core\TranslatableForm;
 use Filament\Forms\Components\DatePicker;
 use App\Filament\Pages\Reports\HR\EmployeeActivityReport;
@@ -31,7 +32,7 @@ class ReportPage extends Page implements HasForms
 
     public ?array $SafeData = [];
     public $hrEmployeeActivity,$hrEmployeeLeave,$hrEmployeeNote,$hrIdentityType,$hrTeam,$hrPosition,$hrEmployee,$hrEmployeeSalary,$hrEmployeeSummary;
-    public $logisticBranch;
+    public $logisticBranch,$logisticWarehouseData;
     protected function getForms(): array
     {
         return [
@@ -45,7 +46,8 @@ class ReportPage extends Page implements HasForms
             'hrEmployeesSalaryForm',
             'hrEmployeesSummaryForm',
             'SafeForm',
-            'logisticBranches'
+            'logisticBranches',
+            'logisticWarehouse'
         ];
     }
 //    Employee Activity
@@ -455,6 +457,7 @@ class ReportPage extends Page implements HasForms
 
 
 //    Logistics
+//     Branches
     public function logisticBranches(Form $form):Form{
         return $form->schema([
                 Select::make('branches')
@@ -481,6 +484,33 @@ class ReportPage extends Page implements HasForms
         $branches = json_encode($data['branches']??[]);
         return $this->redirect(Branch::getUrl(['attr' => $attr,'branches'=>$branches]));
     }
+
+//    Warehouses
+    public function logisticWarehouse(Form $form):Form{
+        return $form->schema([
+            Select::make('warehouse')
+                ->multiple()
+                ->label(trans('lang.warehouses'))
+                ->options(\App\Models\Logistic\Warehouse::all()->pluck('name','id')),
+            Select::make('attr')
+                ->label(trans('lang.attributes'))
+                ->required()
+                ->native(0)
+                ->multiple()
+                ->options([
+                    'details'=>trans('lang.details'),
+                    'items'=>trans('Inventory/lang.item.plural_label'),
+                ])
+                ->live()
+        ])->statePath('logisticWarehouseData');
+    }
+    public function searchLogisticeWareHouse()
+    {
+        $data =  $this->logisticBranches->getState();
+        $attr = json_encode($data['attr']??[]);
+        $warehouses = json_encode($data['warehouse']??[]);
+        return $this->redirect(WareHouse::getUrl(['attr' => $attr,'warehouses'=>$warehouses]));
+    }
     public function mount(){
 
         $this->hrEmployeeActivityForm->fill();
@@ -494,6 +524,7 @@ class ReportPage extends Page implements HasForms
         $this->hrEmployeesSummaryForm->fill();
         $this->SafeForm->fill();
         $this->logisticBranches->fill();
+        $this->logisticWarehouse->fill();
 
 
     }
