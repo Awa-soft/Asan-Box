@@ -1,6 +1,6 @@
 <x-filament-panels::page>
     <div class="grid items-center w-full gap-5 xl:grid-cols-12">
-        <p class="text-3xl font-bold xl:col-span-3">{{ trans('POS/lang.sale.plural_label') }}</p>
+        <p class="text-3xl font-bold xl:col-span-1">{{ trans('POS/lang.sale.plural_label') }}</p>
         <div class="items-start col-span-4 w-max">
             <x-filament::tabs label="Content tabs">
                 <x-filament::tabs.item :active="$activeTab == 'sale_tab_1'" wire:click="setTab(1)">
@@ -22,23 +22,9 @@
                 </x-filament::tabs.item>
             </x-filament::tabs>
         </div>
-        <div class="grid grid-cols-6 gap-2 text-xs h-max xl:col-span-5 2xl:col-span-5" x-data="{
+        <div class="grid grid-cols-6 gap-2 text-xs h-max xl:col-span-7" x-data="{
             active: 'single',
         }">
-            <div
-                class="relative grid items-center grid-cols-2 text-center border-2 border-gray-400 rounded-full dark:border-gray-900">
-                <div class="absolute grid items-center justify-center w-full h-full grid-cols-2 text-center">
-                    <p wire:click="$set('multipleSelect', false)" @click="active='single'"
-                        class="top-0 z-10 cursor-pointer">{{ trans('lang.single') }}</p>
-                    <p wire:click="$set('multipleSelect', true)" @click="active='multiple'" class="z-10 cursor-pointer">
-                        {{ trans('lang.multiple') }} </p>
-                </div>
-                <div class="absolute top-0 grid w-full h-full grid-cols-2">
-                    <div :class="active == 'single' ? 'translate-x-0' : 'translate-x-full'"
-                        class="w-full h-full duration-300 rounded-full bg-primary-500"></div>
-                </div>
-            </div>
-
             <div wire:click="resetSession"
                 class="flex items-center justify-center p-2 text-white duration-300 rounded-md shadow cursor-pointer bg-primary-600 hover:bg-primary-500">
                 {{ trans('lang.reset_form') }}
@@ -76,7 +62,6 @@
                 <table class="w-full ">
                     <thead>
                         <tr class="grid w-full grid-cols-9 text-sm font-semibold text-center bg-white dark:bg-gray-900">
-                            <td class="py-3 border-b border-e dark:border-gray-600">{{ trans('lang.type') }}</td>
                             <td class="py-3 border-b border-e dark:border-gray-600">{{ trans('lang.image') }}</td>
                             <td class="py-3 border-b border-e dark:border-gray-600">
                                 {{ trans('Inventory/lang.item.singular_label') }}</td>
@@ -93,14 +78,6 @@
                     <tbody>
                         @foreach ($tableData as $key => $data)
                             <tr class="grid items-center w-full grid-cols-9 gap-1 even:bg-gray-200">
-                                <td class="py-2 text-center ps-2">
-                                    <x-filament::input.wrapper>
-                                        <x-filament::input.select wire:model.live="tableData.{{ $key }}.type">
-                                            <option value="single">{{ trans('lang.single') }}</option>
-                                            <option value="multiple">{{ trans('lang.multiple') }}</option>
-                                        </x-filament::input.select>
-                                    </x-filament::input.wrapper>
-                                </td>
                                 <td class="flex justify-center item-center">
                                     <div class="py-1 text-center rounded-full w-14 h-14 aspect-square">
                                         @if ($data['image'])

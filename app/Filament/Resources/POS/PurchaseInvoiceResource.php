@@ -193,8 +193,8 @@ class PurchaseInvoiceResource extends Resource
     public static function getRelations(): array
     {
         return [
-            ExpensesRelationManager::class,
-            DetailsRelationManager::class
+            DetailsRelationManager::class,
+            ExpensesRelationManager::class
         ];
     }
 
