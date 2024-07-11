@@ -28,6 +28,8 @@ return new class extends Migration
             $table->integer("discount")->default(0);
             $table->date('expire_date')->nullable();
             $table->string("image")->nullable();
+            $table->decimal('installment_min');
+            $table->decimal('installment_max');
             $table->softDeletes();
             $table->timestamps();
         });

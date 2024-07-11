@@ -10,6 +10,7 @@ use Illuminate\Contracts\View\View;
 
 class Statement extends Page
 {
+    protected static string $resource = BothResource::class;
 
     protected static string $view = 'filament.resources.c-r-m.both-resource.pages.statement';
 
