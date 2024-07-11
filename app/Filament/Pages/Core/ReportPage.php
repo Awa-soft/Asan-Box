@@ -504,15 +504,14 @@ class ReportPage extends Page implements HasForms
                 ->live()
         ])->statePath('logisticWarehouseData');
     }
-    public function searchLogisticeWareHouse()
+    public function searchLogisticWarehouse()
     {
-        $data =  $this->logisticBranches->getState();
+        $data =  $this->logisticWarehouse->getState();
         $attr = json_encode($data['attr']??[]);
         $warehouses = json_encode($data['warehouse']??[]);
         return $this->redirect(WareHouse::getUrl(['attr' => $attr,'warehouses'=>$warehouses]));
     }
     public function mount(){
-
         $this->hrEmployeeActivityForm->fill();
         $this->hrEmployeeLeaveForm->fill();
         $this->hrEmployeeNoteForm->fill();
@@ -525,8 +524,6 @@ class ReportPage extends Page implements HasForms
         $this->SafeForm->fill();
         $this->logisticBranches->fill();
         $this->logisticWarehouse->fill();
-
-
     }
 
 

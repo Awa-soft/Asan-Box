@@ -20,4 +20,8 @@ class Warehouse extends Model
     public function items() :BelongsToMany{
         return $this->belongsToMany(Item::class,'warehouse_items');
     }
+    public function hasItem($itemsId,$WarehouseId):float
+    {
+        return 0;
+    }
 }
