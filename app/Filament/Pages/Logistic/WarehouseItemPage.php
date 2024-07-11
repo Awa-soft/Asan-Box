@@ -124,6 +124,7 @@ class WarehouseItemPage extends Page implements HasForms
                 ->warning()
                 ->send();
         }
+        $this->updated();
     }
 
 
@@ -144,6 +145,8 @@ class WarehouseItemPage extends Page implements HasForms
 
             $this->selectedTransfered = [];
         }
+        $this->updated();
+        
     }
 
 
