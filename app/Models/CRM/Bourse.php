@@ -7,6 +7,7 @@ use App\Traits\Core\HasUser;
 use App\Traits\Core\Ownerable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Bourse extends Model
@@ -18,6 +19,10 @@ class Bourse extends Model
     }
     public function debits(){
         return $this->hasMany(BoursePayment::class)->where('type','debit');
+    }
+
+    public function boursePayment():HasMany{
+        return  $this->hasMany(BoursePayment::class);
     }
 
     public function getBalanceAttribute(){

@@ -223,8 +223,22 @@
                         </x-filament::button>
                     </x-slot>
                 </x-filament::section>
-                @endPackage
+                <x-filament::section>
+                    <x-slot name="icon">
+                        @svg(\App\Filament\Resources\Logistic\WarehouseResource::getNavigationIcon(),'w-8 text-primary-500' )
+                    </x-slot>
+                    <x-slot name="heading">
+                        {{ trans('Logistic/lang.reports.warehouse') }}
+                    </x-slot>
+                    {{$this->logisticWarehouse}}
+                    <x-slot name="footerActions">
+                        <x-filament::button type="submit" wire:click="searchLogisticWarehouse()" class="mt-5">
+                            {{ trans('filament-actions::modal.actions.submit.label') }}
+                        </x-filament::button>
+                    </x-slot>
+                </x-filament::section>
             </div>
+            @endPackage
             @break
            @break
        @endswitch

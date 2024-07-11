@@ -207,6 +207,9 @@
       <path value="$PROJECT_DIR$/vendor/sebastian/version" />
       <path value="$PROJECT_DIR$/vendor/nikic/php-parser" />
       <path value="$PROJECT_DIR$/vendor/laravel/sail" />
+      <path value="$PROJECT_DIR$/vendor/bezhansalleh/filament-language-switch" />
+      <path value="$PROJECT_DIR$/vendor/marjose123/filament-lockscreen" />
+      <path value="$PROJECT_DIR$/vendor/swisnl/filament-backgrounds" />
     </include_path>
   </component>
   <component name="PhpProjectSharedConfiguration" php_language_level="8.2" />

@@ -167,7 +167,7 @@ return [
     "months" => "months",
     "reset_form"=>"Reset Form",
     "bourse" => "Bourse",
-    "attachment" => "Attachement",
+    "attachment" => "Attachment",
     "base_currency" => "Base Currency",
     "send" => "Send",
     "receive" => "Receive",
@@ -181,4 +181,6 @@ return [
     "item" => "Item",
     "sale" => "Sale",
     "sale_invoice" => "Sale Invoice"
+    "expenseType"=>"Type",
+    "expense_type"=>"Type"
 ];
