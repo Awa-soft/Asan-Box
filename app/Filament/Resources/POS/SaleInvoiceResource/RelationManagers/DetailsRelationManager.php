@@ -50,7 +50,7 @@ class DetailsRelationManager extends RelationManager
             ->columns([
                 Tables\Columns\TextColumn::make('invoice.name')
                     ->label(trans('lang.invoice')),
-                Tables\Columns\TextColumn::make('item.name')
+                Tables\Columns\TextColumn::make('item.name_'.\Illuminate\Support\Facades\App::getLocale())
                     ->label(trans('Inventory/lang.item.singular_label')),
                 Tables\Columns\TextColumn::make('quantity')
                     ->state(function ($record) {

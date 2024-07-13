@@ -105,7 +105,7 @@ class SaleInvoiceResource extends Resource
                     ->numeric(fn($record)=>$record->currency->decimal)
                     ->sortable()
                     ->suffix(fn($record)=>" ".$record->currency->symbol),
-                Tables\Columns\TextColumn::make('contact.name')
+                Tables\Columns\TextColumn::make('contact.name_'.\Illuminate\Support\Facades\App::getLocale())
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('rate')
@@ -146,7 +146,7 @@ class SaleInvoiceResource extends Resource
                 ->url(fn($record)=>static::getUrl('receipt', [
                     'record' => $record->id
                 ]))
-                
+
                 ->label(trans("lang.receipt"))
             ])
             ->bulkActions([

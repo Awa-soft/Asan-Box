@@ -79,7 +79,7 @@ class ItemRepairResource extends Resource
         return $table
             ->columns([
                 static::Column(),
-                Tables\Columns\TextColumn::make('item.name')
+                Tables\Columns\TextColumn::make('item.name_'.\Illuminate\Support\Facades\App::getLocale())
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('code')

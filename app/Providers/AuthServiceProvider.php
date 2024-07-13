@@ -2,52 +2,46 @@
 
 namespace App\Providers;
 
-use App\Models\CRM\Bourse;
-use App\Models\CRM\Contact;
-use App\Models\CRM\Partner;
-use App\Models\HR\IdentityType;
-use App\Models\Inventory\Brand;
-use App\Models\Inventory\Category;
-use App\Models\Inventory\Item;
-use App\Models\Inventory\Unit;
-use App\Models\Logistic\Branch;
-use App\Models\Logistic\Warehouse;
-use App\Models\POS\PurchaseInvoice;
-use App\Models\Setting\Currency;
-use App\Models\User;
-use App\Policies\CRM\BoursePolicy;
-use App\Policies\CRM\ContactPolicy;
-use App\Policies\CRM\PartnerPolicy;
-use App\Policies\HR\IdentityTypePolicy;
-use App\Policies\Inventory\BrandPolicy;
-use App\Policies\Inventory\CategoryPolicy;
-use App\Policies\Inventory\ItemPolicy;
-use App\Policies\Inventory\UnitPolicy;
-use App\Policies\Logistic\BranchPolicy;
-use App\Policies\Logistic\WarehousePolicy;
-use App\Policies\Setting\CurrencyPolicy;
-use App\Policies\UserPolicy;
+
+use App\Models;
+use App\Policies;
+use Closure;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ProvidersAuthServiceProvider;
-
-class AuthServiceProvider extends ProvidersAuthServiceProvider
+use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Str;
+class AuthServiceProvider  extends ProvidersAuthServiceProvider
 {
-    /**
-     * Register services.
-     */
 
-     protected $policies = [
-        User::class=>UserPolicy::class,
-        Bourse::class=>BoursePolicy::class,
-        Contact::class=>ContactPolicy::class,
-        Partner::class=> PartnerPolicy::class,
-        Unit::class => UnitPolicy::class,
-        Item::class => ItemPolicy::class,
-        Currency::class=> CurrencyPolicy::class,
-        Warehouse::class=>WarehousePolicy::class,
-        Branch::class => BranchPolicy::class,
-        Brand::class => BrandPolicy::class,
-        Category::class => CategoryPolicy::class,
-         IdentityType::class=>IdentityTypePolicy::class
+    public function generatePolicyArray(): array
+    {
+        $modelsDirectory = app_path('Models');
+        $array = [];
+            $files = File::allFiles($modelsDirectory);
+            foreach ($files as $file) {
+                if ($file->isFile() && $file->getExtension() === 'php') {
+                    $relativePath = str_replace([$modelsDirectory, '.php', DIRECTORY_SEPARATOR], ['', '', '\\'], $file->getPathname());
+                    $className = Str::beforeLast($file->getFilename(), '.php');
+                    $namespace = rtrim(str_replace('/', '\\', $relativePath), '\\');
+                    $policyClassName = "App\\Policies{$namespace}Policy";
+                    if (class_exists($policyClassName)) {
+                        $array["App\\Models$namespace"] = "$policyClassName";
+                    }
+                }
+            }
+        return $array;
+    }
 
-     ];
+
+    public function register()
+    {
+        $this->booting(function () {
+            $this->policies = $this->generatePolicyArray();
+            $this->registerPolicies();
+        });
+    }
+
+
+
 }

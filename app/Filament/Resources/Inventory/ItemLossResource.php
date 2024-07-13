@@ -18,6 +18,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\HtmlString;
 
 class ItemLossResource extends Resource
@@ -36,7 +37,7 @@ class ItemLossResource extends Resource
             ->schema([
                 static::Field()->columnSpanFull(),
                 Forms\Components\Select::make('item_id')
-                    ->relationship('item', 'name')
+                    ->relationship('item', 'name_'.App::getLocale())
                     ->afterStateUpdated(function (Forms\Set $set,$state){
                         $set('code',null);
                         $set('cost',null);
@@ -90,7 +91,7 @@ class ItemLossResource extends Resource
         return $table
             ->columns([
                 static::Column(),
-                Tables\Columns\TextColumn::make('item.name')
+                Tables\Columns\TextColumn::make('item.name_'.App::getLocale())
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('code')

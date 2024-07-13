@@ -113,7 +113,7 @@ class PurchaseInvoiceResource extends Resource
                     ->numeric(fn($record)=>$record->currency->decimal)
                     ->sortable()
                     ->suffix(fn($record)=>" ".$record->currency->symbol),
-                Tables\Columns\TextColumn::make('contact.name')
+                Tables\Columns\TextColumn::make('contact.name_'.\Illuminate\Support\Facades\App::getLocale())
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('rate')

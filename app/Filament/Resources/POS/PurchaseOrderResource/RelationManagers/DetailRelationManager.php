@@ -51,7 +51,7 @@ class DetailRelationManager extends RelationManager
         return $table
             ->recordTitleAttribute('purchase_order_id')
             ->columns([
-                Tables\Columns\TextColumn::make('item.name')
+                Tables\Columns\TextColumn::make('item.name_'.\Illuminate\Support\Facades\App::getLocale())
                     ->searchable(),
                 Tables\Columns\TextColumn::make('quantity')
                     ->suffix(fn($record)=>' '.$record->unit->name)

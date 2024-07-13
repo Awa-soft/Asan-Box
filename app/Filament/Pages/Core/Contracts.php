@@ -4,6 +4,7 @@ namespace App\Filament\Pages\Core;
 
 use AmidEsfahani\FilamentTinyEditor\TinyEditor;
 use App\Traits\Core\OwnerableTrait;
+use BezhanSalleh\FilamentShield\Traits\HasPageShield;
 use Filament\Actions\Action;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
@@ -17,6 +18,7 @@ use Illuminate\Support\Facades\Session;
 class Contracts extends Page implements HasForms
 {
     use InteractsWithForms;
+    use HasPageShield;
     use OwnerableTrait;
     protected static ?string $navigationIcon = 'heroicon-o-document-text';
     public $activeTab = 'installment_contract';
@@ -60,6 +62,8 @@ class Contracts extends Page implements HasForms
                     ->direction('auto|ltr|rtl'),
             ])->statePath('data');
     }
+
+
     public function mount(){
         $this->form->fill();
     }

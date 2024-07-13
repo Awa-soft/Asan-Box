@@ -83,7 +83,7 @@
                     </tr>
                 <tr>
                     <td>
-                        {{$detail->item->name}}
+                        {{$detail->item->{'name_'.\Illuminate\Support\Facades\App::getLocale()}}}
                     </td>
                     <td>
                         {{$detail->item->barcode}}

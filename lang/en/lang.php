@@ -182,5 +182,6 @@ return [
     "sale" => "Sale",
     "sale_invoice" => "Sale Invoice",
     "expenseType"=>"Type",
-    "expense_type"=>"Type"
+    "expense_type"=>"Type",
+    'total_cost'=>"Total Cost",
 ];

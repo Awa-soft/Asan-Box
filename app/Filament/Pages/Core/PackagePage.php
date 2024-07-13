@@ -6,6 +6,7 @@ use App\Filament\Widgets\Core\PackageOverview;
 use App\Models\Core\Package;
 use App\Traits\Core\TranslatableForm;
 use App\Traits\Core\TranslatableTable;
+use BezhanSalleh\FilamentShield\Traits\HasPageShield;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Concerns\InteractsWithForms;
@@ -30,6 +31,8 @@ class PackagePage extends Page implements HasForms, HasTable
     public ?array $packageData = [];
     public $packages;
     protected static bool $shouldRegisterNavigation = false;
+    use HasPageShield;
+
 
 
     public static function getNavigationLabel(): string

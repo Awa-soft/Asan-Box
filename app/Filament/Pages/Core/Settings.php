@@ -3,6 +3,7 @@
 namespace App\Filament\Pages\Core;
 
 use AmidEsfahani\FilamentTinyEditor\TinyEditor;
+use BezhanSalleh\FilamentShield\Traits\HasPageShield;
 use Closure;
 use Filament\Forms\Components\Placeholder;
 use Filament\Forms\Components\Tabs;
@@ -11,6 +12,8 @@ use Filament\Forms\Get;
 
 class Settings extends \Outerweb\FilamentSettings\Filament\Pages\Settings
 {
+    use HasPageShield;
+
     public static function getNavigationLabel(): string
     {
         return trans('Settings/lang.settings.plural_label');

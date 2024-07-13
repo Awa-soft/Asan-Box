@@ -45,7 +45,7 @@
                 @endif
             </div>
             <div class="flex justify-between w-full items-center">
-                <p class="text-xl font-normal">{{ $item->name }}</p>
+                <p class="text-xl font-normal">{{ $item->{'name_'.\Illuminate\Support\Facades\App::getLocale()} }}</p>
                 <div>
                     <p class="text-sm font-light">{{ $item->category->name }}</p>
                     <p class="text-sm font-light"><span>{{ trans('lang.cost') }}: </span>{{ number_format($item->cost, 2) }} $</p>
@@ -87,7 +87,7 @@
                 @endif
             </div>
             <div class="flex justify-between w-full items-center">
-                <p class="text-xl font-normal">{{ $item->name }}</p>
+                <p class="text-xl font-normal">{{ $item->{'name_'.\Illuminate\Support\Facades\App::getLocale()} }}</p>
                 <div>
                     <p class="text-sm font-light">{{ $item->category->name }}</p>
                     <p class="text-sm font-light"><span>{{ trans('lang.cost') }}: </span>{{ number_format($item->cost, 2) }} $</p>

@@ -40,13 +40,17 @@
             {{ trans('Logistic/lang.reports.label') }}
         </x-filament::tabs.item>
         @endPackage
+        @Package('POS')
+        <x-filament::tabs.item
+            :active="$activeTab === 'POS'"
+            wire:click="$set('activeTab', 'POS')">
+            {{ trans('POS/lang.group_label') }}
+        </x-filament::tabs.item>
+        @endPackage
     </x-filament::tabs>
        @switch($activeTab)
            @case('Inventory')
             @Package('Inventory')
-            <x-slot name="heading">
-                {{ trans('lang.core_reports') }}
-            </x-slot>
             <div class="grid items-start grid-cols-1 gap-4 xl:grid-cols-4">
                 <x-filament::section>
                     <x-slot name="heading">
@@ -66,191 +70,18 @@
            @break
            @case('HR')
             @Package('HR')
-            <x-slot name="heading">
-                {{ trans('HR/lang.reports.label') }}
-            </x-slot>
-            <div class="grid items-start grid-cols-1 gap-4 xl:grid-cols-4">
-                <x-filament::section>
-                    <x-slot name="icon">
-                        @svg(\App\Filament\Resources\HR\EmployeeActivityResource::getNavigationIcon(),'w-8 text-primary-500' )
-                    </x-slot>
-                    <x-slot name="heading">
-                        {{ trans('HR/lang.reports.activity') }}
-                    </x-slot>
-                    {{$this->hrEmployeeActivityForm}}
-                    <x-slot name="footerActions">
-                        <x-filament::button type="submit" wire:click="searchEmployeeActivity()" class="mt-5">
-                            {{ trans('filament-actions::modal.actions.submit.label') }}
-                        </x-filament::button>
-                    </x-slot>
-                </x-filament::section>
-                <x-filament::section>
-                    <x-slot name="icon">
-                        @svg(\App\Filament\Resources\HR\EmployeeLeaveResource::getNavigationIcon(),'w-8 text-primary-500' )
-                    </x-slot>
-                    <x-slot name="heading">
-                        {{ trans('HR/lang.reports.leave') }}
-                    </x-slot>
-                    {{$this->hrEmployeeLeaveForm}}
-                    <x-slot name="footerActions">
-                        <x-filament::button type="submit" wire:click="searchEmployeeLeave()" class="mt-5">
-                            {{ trans('filament-actions::modal.actions.submit.label') }}
-                        </x-filament::button>
-                    </x-slot>
-                </x-filament::section>
-                <x-filament::section>
-                    <x-slot name="icon">
-                        @svg(\App\Filament\Resources\HR\EmployeeNoteResource::getNavigationIcon(),'w-8 text-primary-500' )
-                    </x-slot>
-                    <x-slot name="heading">
-                        {{ trans('HR/lang.reports.note') }}
-                    </x-slot>
-                    {{$this->hrEmployeeNoteForm}}
-                    <x-slot name="footerActions">
-                        <x-filament::button type="submit" wire:click="searchEmployeeNote()" class="mt-5">
-                            {{ trans('filament-actions::modal.actions.submit.label') }}
-                        </x-filament::button>
-                    </x-slot>
-                </x-filament::section>
-                <x-filament::section>
-                    <x-slot name="icon">
-                        @svg(\App\Filament\Resources\HR\EmployeeResource::getNavigationIcon(),'w-8 text-primary-500' )
-                    </x-slot>
-                    <x-slot name="heading">
-                        {{ trans('HR/lang.reports.employees') }}
-                    </x-slot>
-                    {{$this->hrEmployeesForm}}
-                    <x-slot name="footerActions">
-                        <x-filament::button type="submit" wire:click="searchEmployees()" class="mt-5">
-                            {{ trans('filament-actions::modal.actions.submit.label') }}
-                        </x-filament::button>
-                    </x-slot>
-                </x-filament::section>
-                <div class="grid grid-col-1 xl:grid-cols-2 col-span-full gap-4">
-                    <x-filament::section>
-                        <x-slot name="icon">
-                            @svg(\App\Filament\Resources\HR\EmployeeResource::getNavigationIcon(),'w-8 text-primary-500' )
-                        </x-slot>
-                        <x-slot name="heading">
-                            {{ trans('HR/lang.reports.employees_summary') }}
-                        </x-slot>
-                        {{$this->hrEmployeesSummaryForm}}
-                        <x-slot name="footerActions">
-                            <x-filament::button type="submit" wire:click="searchEmployeesSummary()" class="mt-5">
-                                {{ trans('filament-actions::modal.actions.submit.label') }}
-                            </x-filament::button>
-                        </x-slot>
-                    </x-filament::section>
-                    <x-filament::section>
-                        <x-slot name="icon">
-                            @svg(\App\Filament\Resources\HR\EmployeeSalaryResource::getNavigationIcon(),'w-8 text-primary-500' )
-                        </x-slot>
-                        <x-slot name="heading">
-                            {{ trans('HR/lang.reports.employees_salary') }}
-                        </x-slot>
-                        {{$this->hrEmployeesSalaryForm}}
-                        <x-slot name="footerActions">
-                            <x-filament::button type="submit" wire:click="searchEmployeesSalary()" class="mt-5">
-                                {{ trans('filament-actions::modal.actions.submit.label') }}
-                            </x-filament::button>
-                        </x-slot>
-                    </x-filament::section>
-                </div>
-                <div class="grid grid-col-1 xl:grid-cols-3 col-span-full gap-4">
-                    <x-filament::section>
-                        <x-slot name="icon">
-                            @svg(\App\Filament\Resources\HR\IdentityTypeResource::getNavigationIcon(),'w-8 text-primary-500' )
-                        </x-slot>
-                        <x-slot name="heading">
-                            {{ trans('HR/lang.reports.identity_types') }}
-                        </x-slot>
-                        {{$this->hrIdentityTypesForm}}
-                        <x-slot name="footerActions">
-                            <x-filament::button type="submit" wire:click="searchIdentityTypes()" class="mt-5">
-                                {{ trans('filament-actions::modal.actions.submit.label') }}
-                            </x-filament::button>
-                        </x-slot>
-                    </x-filament::section>
-                    <x-filament::section>
-                        <x-slot name="icon">
-                            @svg(\App\Filament\Resources\HR\PositionResource::getNavigationIcon(),'w-8 text-primary-500' )
-                        </x-slot>
-                        <x-slot name="heading">
-                            {{ trans('HR/lang.reports.positions') }}
-                        </x-slot>
-                        {{$this->hrPositionsForm}}
-                        <x-slot name="footerActions">
-                            <x-filament::button type="submit" wire:click="searchPositions()" class="mt-5">
-                                {{ trans('filament-actions::modal.actions.submit.label') }}
-                            </x-filament::button>
-                        </x-slot>
-                    </x-filament::section>
-                    <x-filament::section>
-                        <x-slot name="icon">
-                            @svg(\App\Filament\Resources\HR\TeamResource::getNavigationIcon(),'w-8 text-primary-500' )
-                        </x-slot>
-                        <x-slot name="heading">
-                            {{ trans('HR/lang.reports.team') }}
-                        </x-slot>
-                        {{$this->hrTeamsForm}}
-                        <x-slot name="footerActions">
-                            <x-filament::button type="submit" wire:click="searchTeams()" class="mt-5">
-                                {{ trans('filament-actions::modal.actions.submit.label') }}
-                            </x-filament::button>
-                        </x-slot>
-                    </x-filament::section>
-                </div>
-                @endPackage
-            </div>
-           @break
+                 <livewire:reports.h-r-reports/>
+            @endPackage
+            @break
            @case('Logistic')
             @Package('Logistic')
-            <x-slot name="heading">
-                {{ trans('Logistic/lang.reports.label') }}
-            </x-slot>
+                <livewire:reports.logistic/>
+            @endPackage
+            @break
+        @case('POS')
+            @Package('POS')
             <div class="grid items-start grid-cols-1 gap-4 xl:grid-cols-4">
-                <x-filament::section>
-                    <x-slot name="icon">
-                        @svg(\App\Filament\Resources\Logistic\BranchResource::getNavigationIcon(),'w-8 text-primary-500' )
-                    </x-slot>
-                    <x-slot name="heading">
-                        {{ trans('Logistic/lang.reports.branch') }}
-                    </x-slot>
-                    {{$this->logisticBranches}}
-                    <x-slot name="footerActions">
-                        <x-filament::button type="submit" wire:click="searchLogisticBranch()" class="mt-5">
-                            {{ trans('filament-actions::modal.actions.submit.label') }}
-                        </x-filament::button>
-                    </x-slot>
-                </x-filament::section>
-                <x-filament::section>
-                    <x-slot name="icon">
-                        @svg(\App\Filament\Resources\Logistic\WarehouseResource::getNavigationIcon(),'w-8 text-primary-500' )
-                    </x-slot>
-                    <x-slot name="heading">
-                        {{ trans('Logistic/lang.reports.warehouse') }}
-                    </x-slot>
-                    {{$this->logisticWarehouse}}
-                    <x-slot name="footerActions">
-                        <x-filament::button type="submit" wire:click="searchLogisticWarehouse()" class="mt-5">
-                            {{ trans('filament-actions::modal.actions.submit.label') }}
-                        </x-filament::button>
-                    </x-slot>
-                </x-filament::section>
-                <x-filament::section>
-                    <x-slot name="icon">
-                        @svg(\App\Filament\Resources\Logistic\ItemTransactionCodeResource::getNavigationIcon(),'w-8 text-primary-500' )
-                    </x-slot>
-                    <x-slot name="heading">
-                        {{ trans('Logistic/lang.reports.itemTransactions') }}
-                    </x-slot>
-                    {{$this->logisticItemTransactions}}
-                    <x-slot name="footerActions">
-                        <x-filament::button type="submit" wire:click="searchLogisticItemTransactions()" class="mt-5">
-                            {{ trans('filament-actions::modal.actions.submit.label') }}
-                        </x-filament::button>
-                    </x-slot>
-                </x-filament::section>
+
             </div>
             @endPackage
             @break
