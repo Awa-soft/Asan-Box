@@ -16,6 +16,7 @@ use Filament\Tables\Columns\ViewColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Facades\App;
 
 class ItemResource extends Resource
 {
@@ -34,8 +35,16 @@ class ItemResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('name')
-                    ->label(trans("lang.name"))
+                Forms\Components\TextInput::make('name_en')
+                    ->label(trans("lang.name_en"))
+                    ->required()
+                    ->maxLength(255),
+                Forms\Components\TextInput::make('name_ar')
+                    ->label(trans("lang.name_ar"))
+                    ->required()
+                    ->maxLength(255),
+                Forms\Components\TextInput::make('name_ckb')
+                    ->label(trans("lang.name_ckb"))
                     ->required()
                     ->maxLength(255),
                 Forms\Components\TextInput::make('description')
@@ -96,7 +105,6 @@ class ItemResource extends Resource
                     ->label(trans("lang.image"))
                     ->image()
                     ->directory("inventory/items"),
-
             ]);
     }
 
@@ -109,7 +117,7 @@ class ItemResource extends Resource
                     ->label(trans("lang.image"))
                     ->size(80)
                     ->circular(),
-                Tables\Columns\TextColumn::make('name')
+                Tables\Columns\TextColumn::make('name_'.App::getLocale())
                     ->label(trans("lang.name"))
                     ->description(fn($record)=>$record->description)
                     ->searchable(),

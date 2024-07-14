@@ -58,8 +58,8 @@
                                 {{ trans('settings/lang.currency.singular_label') }}</td>
                             <td class="py-3 border-b border-e dark:border-gray-600">{{ trans('lang.quantity') }}</td>
                             <td class="py-3 border-b border-e dark:border-gray-600">{{ trans('lang.gift') }}</td>
-                            <td class="py-3 border-b border-e dark:border-gray-600">{{ trans('lang.price') }}</td>
-                            <td class="py-3 border-b border-e dark:border-gray-600">{{ trans('lang.total_price') }}
+                            <td class="py-3 border-b border-e dark:border-gray-600">{{ trans('lang.cost') }}</td>
+                            <td class="py-3 border-b border-e dark:border-gray-600">{{ trans('lang.total_cost') }}
                                 </td>
                             <td class="py-3 border-b dark:border-gray-600"></td>
                         </tr>
@@ -86,7 +86,7 @@
                                         @endif
                                     </div>
                                 </td>
-                                <td class="py-2 text-center">{{ $data['name'] }}</td>
+                                <td class="py-2 text-center">{{ $data['name_'.\Illuminate\Support\Facades\App::getLocale()] }}</td>
                                 <td class="py-2 text-center">
                                     <x-filament::input.wrapper>
                                         <x-filament::input.select
@@ -166,7 +166,7 @@
                             </div>
                             <div class="flex items-center justify-between w-full">
                                 <div class="flex flex-col ">
-                                    <p class="text-base font-bold">{{ $item->name }} </p>
+                                    <p class="text-base font-bold">{{ $item->{'name_'.\Illuminate\Support\Facades\App::getLocale()} }} </p>
                                     <p class="text-xs font-light">{{ $item->brand->name }} -
                                         {{ $item->category->name }}</p>
                                 </div>

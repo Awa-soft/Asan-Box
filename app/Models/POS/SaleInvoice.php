@@ -54,7 +54,14 @@ class SaleInvoice extends Model
         return $this->belongsTo(User::class);
     }
 
-
+    public function getItemsCountAttribute():int
+    {
+        return $this->details->count();
+    }
+    public function getCodesCountAttribute():int
+    {
+        return $this->details()->get()->sum('codes_count');
+    }
     public function getTotalAttribute()
     {
         $total = 0;
@@ -62,5 +69,11 @@ class SaleInvoice extends Model
             $total += $detail->price * $detail->codes()->where("gift", 0)->count();
         }
         return $total;
+    }
+
+
+    public function getProfitAttribute():float
+    {
+        return $this->details()->get()->sum('profit');
     }
 }

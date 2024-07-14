@@ -54,7 +54,9 @@ class WarehouseItemPage extends Page implements HasForms
     public function updated()
     {
         if ($this->selectedWarehouse) {
-            $this->transfered['data'] = Branch::find($this->selectedWarehouse)->items;
+            $this->transfered['data'] = Warehouse::find($this->selectedWarehouse)->items;
+        }else{
+            $this->transfered['data']= [];
         }
     }
 
@@ -102,51 +104,41 @@ class WarehouseItemPage extends Page implements HasForms
         }
     }
 
-    public function transfer()
-    {
-        // transfer selected to transfered array if not exists using Item::find()
-        if ($this->selectedWarehouse != null) {
-            foreach ($this->selected as $id) {
-                if (!in_array($id, collect($this->transfered['data'])->pluck('id')->toArray())) {
-                    $this->transfered['data'][] = Item::find($id);
-                }
-                Notification::make()
-                    ->title(trans("filament-actions::edit.single.notifications.saved.title"))
-                    ->success()
-                    ->send();
+    public function transfer(){
+        $items = [];
+        if($this->selectedWarehouse != null){
+            foreach($this->selected as $id){
+                $items[] = [
+                    'item_id'=>$id,
+                    'warehouse_id'=>$this->selectedWarehouse,
+                ];
             }
-            Warehouse::find($this->selectedWarehouse)->items()->sync(collect($this->transfered['data'])->pluck('id')->toArray());
-
+            WarehouseItem::where('warehouse_id',$this->selectedWarehouse)->whereIn('item_id',$this->selected)->delete();
+            WarehouseItem::insert($items);
             $this->selected = [];
-        } else {
             Notification::make()
-                ->title(trans("lang.please_select", ["name" => trans("lang.warehouse")]))
+                ->title(trans("filament-actions::edit.single.notifications.saved.title"))
+                ->success()
+                ->send();
+        }
+        else{
+            Notification::make()
+                ->title(trans("lang.please_select",["name" => trans("lang.warehouse")]))
                 ->warning()
                 ->send();
         }
         $this->updated();
     }
 
-
     public function transferBack()
     {
-        if ($this->selectedTransfered != null) {
-            foreach ($this->selectedTransfered as $id) {
-                if (in_array($id, collect($this->transfered['data'])->pluck('id')->toArray())) {
-                    $key = array_search($id, collect($this->transfered['data'])->pluck('id')->toArray());
-                    unset($this->transfered['data'][$key]);
-                    Warehouse::find($this->selectedWarehouse)->items()->sync(collect($this->transfered['data'])->pluck('id')->toArray());
-                }
-                Notification::make()
-                    ->title(trans("filament-actions::edit.single.notifications.saved.title"))
-                    ->success()
-                    ->send();
-            }
-
-            $this->selectedTransfered = [];
-        }
+        WarehouseItem::where('warehouse_id',$this->selectedWarehouse)->whereIn('item_id',$this->selectedTransfered)->delete();
+        Notification::make()
+            ->title(trans("filament-actions::edit.single.notifications.saved.title"))
+            ->success()
+            ->send();
+        $this->selectedTransfered = [];
         $this->updated();
-        
     }
 
 

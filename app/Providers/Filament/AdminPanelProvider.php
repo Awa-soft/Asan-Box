@@ -3,6 +3,7 @@
 namespace App\Providers\Filament;
 
 use App\Filament\Pages\Core\Settings;
+use App\Filament\Widgets\PageRedirects;
 use App\Providers\ImageProviderServiceProvider;
 use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
 use DutchCodingCompany\FilamentDeveloperLogins\FilamentDeveloperLoginsPlugin;
@@ -52,8 +53,7 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
             ->widgets([
-                Widgets\AccountWidget::class,
-                Widgets\FilamentInfoWidget::class,
+               PageRedirects::class
             ])
             ->middleware([
                 \Hasnayeen\Themes\Http\Middleware\SetTheme::class,
