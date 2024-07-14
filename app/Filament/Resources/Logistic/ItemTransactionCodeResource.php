@@ -8,6 +8,7 @@ use Filament\Resources\Resource;
 use Filament\Support\Colors\Color;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Support\Facades\App;
 
 class ItemTransactionCodeResource extends Resource
 {
@@ -21,7 +22,7 @@ class ItemTransactionCodeResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('itemTransactionDetail.item.name')
+                Tables\Columns\TextColumn::make('itemTransactionDetail.item.name_'.App::getLocale())
                     ->label(trans('Inventory/lang.item.singular_label'))
                     ->numeric()
                     ->sortable(),

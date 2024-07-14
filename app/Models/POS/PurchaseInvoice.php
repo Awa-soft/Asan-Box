@@ -53,6 +53,15 @@ class PurchaseInvoice extends Model
         return $this->hasMany(PurchaseExpense::class);
     }
 
+    public function getItemsCountAttribute():int
+    {
+        return $this->details->count();
+    }
+    public function getCodesCountAttribute():int
+    {
+        return $this->details()->get()->sum('codes_count');
+    }
+
     public function getTotalAttribute(){
         $total = 0;
         foreach ($this->details as $detail) {

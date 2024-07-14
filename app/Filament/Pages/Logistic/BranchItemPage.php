@@ -51,6 +51,8 @@ class BranchItemPage extends Page implements HasForms
     public function updated(){
         if($this->selectedBranch){
             $this->transfered['data'] = Branch::find($this->selectedBranch)->items;
+        }else{
+            $this->transfered['data']= [];
         }
     }
 
@@ -95,20 +97,21 @@ class BranchItemPage extends Page implements HasForms
     }
 
     public function transfer(){
-        // transfer selected to transfered array if not exists using Item::find()
+        $items = [];
         if($this->selectedBranch != null){
             foreach($this->selected as $id){
-                if(!in_array($id, collect($this->transfered['data'])->pluck('id')->toArray())){
-                    $this->transfered['data'][] = Item::find($id);
-                }
-
-            Notification::make()
-            ->title(trans("filament-actions::edit.single.notifications.saved.title"))
-            ->success()
-            ->send();
+                $items[] = [
+                    'item_id'=>$id,
+                    'branch_id'=>$this->selectedBranch,
+                ];
             }
-            Branch::find($this->selectedBranch)->items()->sync(collect($this->transfered['data'])->pluck('id')->toArray());
+            BranchItem::where('branch_id',$this->selectedBranch)->whereIn('item_id',$this->selected)->delete();
+            BranchItem::insert($items);
             $this->selected = [];
+            Notification::make()
+                ->title(trans("filament-actions::edit.single.notifications.saved.title"))
+                ->success()
+                ->send();
         }
         else{
             Notification::make()
@@ -116,24 +119,18 @@ class BranchItemPage extends Page implements HasForms
             ->warning()
             ->send();
         }
+        $this->updated();
     }
 
     public function transferBack()
     {
-        if ($this->selectedTransfered != null) {
-            foreach ($this->selectedTransfered as $id) {
-                if (in_array($id, collect($this->transfered['data'])->pluck('id')->toArray())) {
-                    $key = array_search($id, collect($this->transfered['data'])->pluck('id')->toArray());
-                    unset($this->transfered['data'][$key]);
-                }
-                Notification::make()
-                    ->title(trans("filament-actions::edit.single.notifications.saved.title"))
-                    ->success()
-                    ->send();
-            }
-            Branch::find($this->selectedBranch)->items()->sync(collect($this->transfered['data'])->pluck('id')->toArray());
+            BranchItem::where('branch_id',$this->selectedBranch)->whereIn('item_id',$this->selectedTransfered)->delete();
+            Notification::make()
+                ->title(trans("filament-actions::edit.single.notifications.saved.title"))
+                ->success()
+                ->send();
             $this->selectedTransfered = [];
-        }
+            $this->updated();
     }
 
     protected static string $view = 'filament.pages.logistic.branch-item-page';

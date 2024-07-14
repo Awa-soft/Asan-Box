@@ -79,7 +79,7 @@ class SalePage extends Page implements HasForms
                     ->searchable(),
                 Select::make('contact_id')
                     ->label(trans("CRM/lang.vendor.singular_label"))
-                    ->relationship("contact", "name")
+                    ->relationship("contact", "name_".\Illuminate\Support\Facades\App::getLocale())
                     ->preload()
                     ->searchable()
                     ->required(),
@@ -212,7 +212,7 @@ class SalePage extends Page implements HasForms
         $records = $this->items->whereIn('id', $this->selected)->map(function ($record) {
             return [
                 'id' => $record->id,
-                'name' => $record->name,
+                'name' => $record->{'name_'.\Illuminate\Support\Facades\App::getLocale()},
                 'price' => $record->price,
                 'quantity' => 1,
                 "type" => 'single',

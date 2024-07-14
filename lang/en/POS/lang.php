@@ -49,4 +49,8 @@ return [
         'plural_label' => 'Purchase Orders',
         'singular_label' => 'Purchase Order'
     ],
+    'reports'=>[
+        'sale'=>"Sales Report",
+        'purchase'=>"Purchases Report",
+    ]
 ];

@@ -127,7 +127,7 @@ class ItemTransaction extends Page implements HasForms
         $records = $this->items->whereIn('id', $this->selected)->map(function ($record) {
             return [
                 'id' => $record->id,
-                'name' => $record->name,
+                'name' => $record->{'name_'.\Illuminate\Support\Facades\App::getLocale()},
                 'quantity' => 1,
                 "image" => $record->image,
                 "codes" => []

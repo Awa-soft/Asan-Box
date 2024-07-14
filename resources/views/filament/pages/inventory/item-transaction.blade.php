@@ -125,7 +125,7 @@
                             </div>
                             <div class="flex items-center justify-between w-full">
                                 <div class="flex flex-col ">
-                                    <p class="text-base font-bold">{{ $item->name }} </p>
+                                    <p class="text-base font-bold">{{ $item->{'name_'.\Illuminate\Support\Facades\App::getLocale()} }} </p>
                                     <p class="text-xs font-light">{{ $item->brand->name }} -
                                         {{ $item->category->name }}</p>
                                 </div>

@@ -5,7 +5,7 @@
             <div class="flex justify-between">
                 <div class="flex flex-col">
                     <p class="text-xl font-bold"> <span class="text-primary-600">No.</span> {{ $record->invoice_number }}</p>
-                    <p class="text-xl font-bold"> <span class="text-primary-600">{{ trans('lang.contact') }}</span>: {{ $record->contact->name }}</p>
+                    <p class="text-xl font-bold"> <span class="text-primary-600">{{ trans('lang.contact') }}</span>: {{ $record->contact->{'name_'.\Illuminate\Support\Facades\App::getLocale()} }}</p>
                 </div>
                 <div class="flex flex-col">
                     <p class="text-xl font-bold"> <span class="text-primary-600">{{ trans('lang.date') }}</span>: {{ $record->date }}</p>
@@ -35,7 +35,7 @@
            @foreach ($record->details as $detail)
                 <tr>
                     <td>
-                        {{$detail->item->name}}
+                        {{$detail->item->{'name_'.\Illuminate\Support\Facades\App::getLocale()}}}
                     </td>
                     <td>
                         {{ $detail->codes->map(function($record){
@@ -57,7 +57,7 @@
 
         @endslot
         @slot('pageFooter')
-              
+
         @endslot
     </x-core.report-content>
 

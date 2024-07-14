@@ -6,6 +6,7 @@ use App\Filament\Widgets\Core\PackageOverview;
 use App\Models\Core\Package;
 use App\Traits\Core\TranslatableForm;
 use App\Traits\Core\TranslatableTable;
+use BezhanSalleh\FilamentShield\Traits\HasPageShield;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Concerns\InteractsWithForms;
@@ -30,11 +31,13 @@ class PackagePage extends Page implements HasForms, HasTable
     public ?array $packageData = [];
     public $packages;
     protected static bool $shouldRegisterNavigation = false;
+    use HasPageShield;
+
 
 
     public static function getNavigationLabel(): string
     {
-        return trans('settings/lang.package.plural_label');
+        return trans('Settings/lang.package.plural_label');
     }
     public  function getHeading(): string
     {
@@ -42,7 +45,7 @@ class PackagePage extends Page implements HasForms, HasTable
     }
     public static function getNavigationGroup(): ?string
     {
-        return trans('settings/lang.group_label');
+        return trans('Settings/lang.group_label');
     }
     protected function getForms(): array
     {

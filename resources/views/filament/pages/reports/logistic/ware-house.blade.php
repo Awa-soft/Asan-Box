@@ -77,7 +77,7 @@
                                     @foreach($dt->items as $item)
                                         <tr>
                                             <td>
-                                                {{$item->name}}
+                                                {{$item->{'name_'.\Illuminate\Support\Facades\App::getLocale()}}}
                                             </td>
                                             <td>
                                                 {{$item->brand->name}}

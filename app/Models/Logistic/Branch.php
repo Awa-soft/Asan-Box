@@ -35,18 +35,18 @@ class Branch extends Model
     public function partners() :BelongsToMany{
         return $this->belongsToMany(Partner::class,'branch_partners');
     }
-    public function scopeBranchHasItem($query, $branch_id, $itemId)
+    public function scopeBranchHasItem($query, $itemId,$branch_id)
     {
         $purchaseCount = PurchaseInvoice::where('branch_id', $branch_id)
             ->get()
-            ->reduce(function ($count, $purchase) {
-                return $count + ($purchase->type == 'purchase' ? 1 : -1) * $purchase->details()->get()->sum('codes_count');
+            ->reduce(function ($count, $purchase)use($itemId) {
+                return $count + ($purchase->type == 'purchase' ? 1 : -1) * $purchase->details()->where('item_id', $itemId)->get()->sum('codes_count');
             }, 0);
 
         $saleCount = SaleInvoice::where('branch_id', $branch_id)
             ->get()
-            ->reduce(function ($count, $sale) {
-                return $count + ($sale->type == 'return' ? 1 : -1) * $sale->details()->get()->sum('codes_count');
+            ->reduce(function ($count, $sale)use ($itemId) {
+                return $count + ($sale->type == 'return' ? 1 : -1) * $sale->details()->where('item_id', $itemId)->get()->sum('codes_count');
             }, 0);
 
         $transactionCount = ItemTransactionInvoice::where(function($query) use ($branch_id) {
@@ -55,8 +55,8 @@ class Branch extends Model
             $query->where('toable_id', $branch_id)->where('toable_type', 'App\Models\Logistic\Branch');
         })
             ->get()
-            ->reduce(function ($count, $transaction) use ($branch_id) {
-                return $count + ($transaction->fromable_id == $branch_id ? -1 : 1) * $transaction->details()->get()->sum('codes_count');
+            ->reduce(function ($count, $transaction) use ($branch_id,$itemId) {
+                return $count + ((($transaction->fromable_id ==  $branch_id && $transaction->fromable_type ==  'App\Models\Logistic\Branch') ? -1 : 1) * $transaction->details()->where('item_id', $itemId)->get()->sum('codes_count'));
             }, 0);
 
         $repairCounts = ItemRepair::where('ownerable_type', 'App\Models\Logistic\Branch')

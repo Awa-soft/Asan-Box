@@ -10,6 +10,7 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Facades\App;
 
 class DetailRelationManager extends RelationManager
 {
@@ -29,7 +30,7 @@ class DetailRelationManager extends RelationManager
         return $form
             ->schema([
                 Forms\Components\Select::make('item_id')
-                    ->relationship('item','name')
+                    ->relationship('item', 'name_'.App::getLocale())
                 ->searchable()
                 ->preload()
                 ->required(),
@@ -51,7 +52,7 @@ class DetailRelationManager extends RelationManager
         return $table
             ->recordTitleAttribute('purchase_order_id')
             ->columns([
-                Tables\Columns\TextColumn::make('item.name')
+                Tables\Columns\TextColumn::make('item.name_'.\Illuminate\Support\Facades\App::getLocale())
                     ->searchable(),
                 Tables\Columns\TextColumn::make('quantity')
                     ->suffix(fn($record)=>' '.$record->unit->name)

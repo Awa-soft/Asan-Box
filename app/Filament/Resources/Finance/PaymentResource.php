@@ -15,6 +15,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Facades\App;
 
 class PaymentResource extends Resource
 {
@@ -38,8 +39,8 @@ class PaymentResource extends Resource
                 ->searchable()
                 ->preload(),
             Forms\Components\Select::make('contact_id')
-                ->relationship('contact', 'name')
-                ->getOptionLabelFromRecordUsing(fn($record)=> "$record->name - $record->phone" )
+                ->relationship('contact', 'name_'.App::getLocale())
+                ->getOptionLabelFromRecordUsing(fn($record)=> "$record->{'name_'.\Illuminate\Support\Facades\App::getLocale()} - $record->phone" )
                 ->required()
                 ->searchable()
                 ->preload()
@@ -82,7 +83,7 @@ class PaymentResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('contact.name')
+                Tables\Columns\TextColumn::make('contact.name_'.\Illuminate\Support\Facades\App::getLocale())
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('currency.name')

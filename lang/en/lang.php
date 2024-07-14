@@ -182,5 +182,13 @@ return [
     "sale" => "Sale",
     "sale_invoice" => "Sale Invoice",
     "expenseType"=>"Type",
-    "expense_type"=>"Type"
+    "expense_type"=>"Type",
+    'total_cost'=>"Total Cost",
+    'name_en'=>'English Name',
+    'name_ar'=>"Arabic Name",
+    'name_ckb'=>"Kurdish Name",
+    'installment_max'=>"Installment Max",
+    'installment_min'=>"Installment Min",
+    'codes'=>"Codes"
+
 ];

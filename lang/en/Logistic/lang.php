@@ -27,6 +27,8 @@ return [
     ],
     'reports'=>[
         'label'=>"Logistics",
-        "branch"=>"Branches Report"
+        "branch"=>"Branches Report",
+        'warehouse'=>"Warehouses Report",
+        "itemTransactions"=>"Item Transaction Report"
     ]
 ];
