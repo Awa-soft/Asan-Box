@@ -17,6 +17,7 @@ use Filament\Tables\Actions\Action;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Facades\App;
 
 class DetailsRelationManager extends RelationManager
 {
@@ -27,7 +28,7 @@ class DetailsRelationManager extends RelationManager
         return $form
             ->schema([
                 Forms\Components\Select::make('item_id')
-                    ->relationship('item', 'name')
+                    ->relationship('item', 'name_'.App::getLocale())
                     ->preload()
                     ->searchable()
                     ->required(),

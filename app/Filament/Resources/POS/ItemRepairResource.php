@@ -17,6 +17,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\HtmlString;
 
 class ItemRepairResource extends Resource
@@ -34,7 +35,7 @@ class ItemRepairResource extends Resource
             ->schema([
                 static::Field()->columnSpanFull(),
                 Forms\Components\Select::make('item_id')
-                    ->relationship('item', 'name')
+                    ->relationship('item', 'name_'.App::getLocale())
                     ->afterStateUpdated(function (Forms\Set $set,$state){
                         $set('code',null);
                         $set('cost',null);

@@ -12,6 +12,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Facades\App;
 
 class VendorResource extends Resource
 {
@@ -38,8 +39,13 @@ class VendorResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('name')
-                    ->label(trans("lang.name"))
+                Forms\Components\TextInput::make('name_en')
+                    ->required()
+                    ->maxLength(255),
+                Forms\Components\TextInput::make('name_ar')
+                    ->required()
+                    ->maxLength(255),
+                Forms\Components\TextInput::make('name_ckb')
                     ->required()
                     ->maxLength(255),
                 Forms\Components\TextInput::make('phone')
@@ -78,10 +84,9 @@ class VendorResource extends Resource
         return $table
             ->columns([
                 static::Column(),
-                Tables\Columns\ImageColumn::make('image')
-                    ->circular()
-                    ->label(trans("lang.image"))
-                    ->size(100),
+                Tables\Columns\TextColumn::make('name_'.App::getLocale())
+                    ->label(trans("lang.name"))
+                    ->searchable(),
 
                 Tables\Columns\TextColumn::make('name')
                     ->label(trans("lang.name"))

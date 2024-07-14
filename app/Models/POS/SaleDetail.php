@@ -33,4 +33,9 @@ class SaleDetail extends Model
     public function getCodesCountAttribute():int{
         return $this->codes()->count();
     }
+
+    public function getProfitAttribute():float
+    {
+        return $this->codes()->get()->sum('profit');
+    }
 }

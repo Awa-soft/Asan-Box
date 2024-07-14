@@ -132,6 +132,15 @@ class DatabaseSeeder extends Seeder
             'version'=>'1.0.0',
             'image'=>1
         ]);
+        Package::create([
+            'name' => 'POS',
+            'description' => 'POS',
+            'color' => 'bg-blue-500 text-white',
+            'price'=>0,
+            'type'=>'primary',
+            'version'=>'1.0.0',
+            'image'=>1
+        ]);
 
 
     }

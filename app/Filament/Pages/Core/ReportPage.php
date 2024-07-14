@@ -50,9 +50,6 @@ class ReportPage extends Page implements HasForms
 
     }
 
-
-
-
     public function SafeForm(Form $form): Form
     {
         return $form->schema(

@@ -46,7 +46,7 @@ class SaleInvoiceResource extends Resource
                     ->numeric()
                     ->default(0.00),
                 Forms\Components\Select::make('contact_id')
-                    ->relationship('contact', 'name')
+                    ->relationship("contact", "name_".\Illuminate\Support\Facades\App::getLocale())
                     ->required(),
                 Forms\Components\Select::make('currency_id')
                     ->relationship('currency', 'name')

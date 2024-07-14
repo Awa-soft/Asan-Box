@@ -80,9 +80,7 @@
             @break
         @case('POS')
             @Package('POS')
-            <div class="grid items-start grid-cols-1 gap-4 xl:grid-cols-4">
-
-            </div>
+            <livewire:reports.p-o-s/>
             @endPackage
             @break
            @break
