@@ -40,7 +40,7 @@ class PaymentResource extends Resource
                 ->preload(),
             Forms\Components\Select::make('contact_id')
                 ->relationship('contact', 'name_'.App::getLocale())
-                ->getOptionLabelFromRecordUsing(fn($record)=> "$record->{'name_'.\Illuminate\Support\Facades\App::getLocale()} - $record->phone" )
+                ->getOptionLabelFromRecordUsing(fn($record)=> "$record->name_ckb - $record->phone" )
                 ->required()
                 ->searchable()
                 ->preload()
