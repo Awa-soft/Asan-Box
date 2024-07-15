@@ -38,4 +38,7 @@ class SaleDetail extends Model
     {
         return $this->codes()->get()->sum('profit');
     }
+    public function getTotalAttribute(){
+        return $this->price * $this->codes()->where("gift", 0)->count();
+    }
 }

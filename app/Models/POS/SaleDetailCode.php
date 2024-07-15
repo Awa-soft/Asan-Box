@@ -41,4 +41,6 @@ class SaleDetailCode extends Model
         return $this->detail->price - $this->cost;
     }
 
+
+
 }

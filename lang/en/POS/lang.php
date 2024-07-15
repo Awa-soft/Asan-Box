@@ -50,7 +50,19 @@ return [
         'singular_label' => 'Purchase Order'
     ],
     'reports'=>[
-        'sale'=>"Sales Report",
         'purchase'=>"Purchases Report",
+        'purchase_items'=>'Purchase Items Report',
+        'purchase_codes'=>'Purchase Codes Report',
+        'purchase_expenses'=>'Purchase Expenses Report',
+        'purchase_return'=>"Purchases Return Report",
+        'purchase_return_items'=>'Purchase Return Items Report',
+        'purchase_return_codes'=>'Purchase Return Codes Report',
+        'purchase_return_expenses'=>'Purchase Return Expenses Report',
+        'sale'=>"Sales Report",
+        'sale_items'=>'Sale Items Report',
+        'sale_codes'=>'Sale Codes Report',
+        'sale_return'=>"Sales Return Report",
+        'sale_return_items'=>'Sale Return Items Report',
+        'sale_return_codes'=>'Sale Return Codes Report',
     ]
 ];
