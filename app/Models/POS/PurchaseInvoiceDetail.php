@@ -32,4 +32,8 @@ class PurchaseInvoiceDetail extends Model
     public function getCodesCountAttribute():int{
         return $this->codes()->count();
     }
+
+    public function getTotalAttribute(){
+            return $this->price * $this->codes()->where("gift", 0)->count();
+    }
 }

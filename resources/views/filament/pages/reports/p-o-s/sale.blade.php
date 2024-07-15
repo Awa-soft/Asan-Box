@@ -7,7 +7,12 @@
                     <b>{{trans('lang.from')}}:</b> {{$from}}
                 </div>
                 <div class="font-bold text-center">
-                    {{trans('POS/lang.reports.sale')}}
+                    @if($type == 'sale')
+                        {{trans('POS/lang.reports.sale')}}
+                    @else
+                        {{trans('POS/lang.reports.sale_return')}}
+                    @endif
+
                 </div>
                 <div class="text-end">
                     <b>{{trans('lang.to')}}:</b> {{$to}}
@@ -40,7 +45,9 @@
                 <th>
                     {{trans('lang.discount')}}
                 </th>
-
+                <th>
+                    {{trans('lang.date')}}
+                </th>
             </tr>
         @endslot
         @slot('tableContent')
@@ -70,7 +77,9 @@
                     <td>
                         {{number_format($dt->discount)}} %
                     </td>
-
+                    <td>
+                        {{($dt->date)}}
+                    </td>
 
                 </tr>
             @endforeach
@@ -93,6 +102,7 @@
                 <th>
                     {{number_format($data->avg('discount'),2)}} %
                 </th>
+                <th></th>
             </tr>
             @foreach($currencies as $currency)
                 <tr class="bg-primary-200">
@@ -109,7 +119,7 @@
                     <th>
                         {{number_format($data->where('currency_id',$currency->id)->sum('paid_amount'),$currency->decimal)}} {{$currency->symbol}}
                     </th>
-                    <th>
+                    <th colspan="2">
 
                     </th>
 
