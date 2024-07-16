@@ -10,11 +10,16 @@ class SaleItems extends Page
     protected static ?string $navigationIcon = 'heroicon-o-document-text';
     protected static ?string $slug = 'reports/pos/saleItems/{from}/{to}/{contact}/{branch}/{item}/{type}';
     protected static bool $shouldRegisterNavigation = false;
+    protected static ?string $title = '';
     public  $data;
     public $from,$to,$currencies,$type;
     public function mount($from,$to,$branch,$contact,$item,$type):void{
         $this->type = $type;
-        $branches = json_decode($branch,0);
+        if(!userHasBranch()) {
+            $branches = json_decode($branch, 0);
+        }else{
+            $branches = [getBranchId()];
+        }
         $contacts = json_decode($contact,0);
         $item = json_decode($item,0);
         $this->from = $from;

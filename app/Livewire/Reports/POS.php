@@ -7,6 +7,7 @@ use App\Filament\Pages\Reports\POS\Purchase;
 use App\Filament\Pages\Reports\POS\PurchaseCodes;
 use App\Filament\Pages\Reports\POS\PurchaseExpenses;
 use App\Filament\Pages\Reports\POS\PurchaseItems;
+use App\Filament\Pages\Reports\POS\Sale;
 use App\Filament\Pages\Reports\POS\SaleCodes;
 use App\Filament\Pages\Reports\POS\SaleItems;
 use App\Models\Inventory\Item;
@@ -26,6 +27,7 @@ class POS extends Component  implements HasForms
     public $purchaseReturn=[],$purchaseReturnItems = [],$purchaseReturnCodes=[],$purchaseReturnExpenses;
     public$saleItems = [],$saleCodes=[];
     public $saleReturn  =[],$saleReturnItems = [],$saleReturnCodes=[];
+    public $saleInstallment  =[],$saleInstallmentItems = [],$saleInstallmentCodes=[];
 
     protected function getForms(): array
     {
@@ -44,6 +46,9 @@ class POS extends Component  implements HasForms
             'saleReturnForm',
             'saleReturnItemsForm',
             'saleReturnCodesForm',
+            'saleInstallmentForm',
+            'saleInstallmentItemsForm',
+            'saleInstallmentCodesForm',
         ];
     }
 
@@ -70,7 +75,8 @@ class POS extends Component  implements HasForms
                         ->label(trans('lang.from')),
                     DatePicker::make('to')
                         ->label(trans('lang.to')),
-                    Select::make('branch_id')
+                     Select::make('branch_id')
+                        ->hidden(userHasBranch())
                         ->relationship('branch','name')
                         ->multiple()
                         ->live()
@@ -113,7 +119,8 @@ class POS extends Component  implements HasForms
                         ->label(trans('lang.from')),
                     DatePicker::make('to')
                         ->label(trans('lang.to')),
-                    Select::make('branch_id')
+                     Select::make('branch_id')
+                        ->hidden(userHasBranch())
                         ->relationship('branch','name')
                         ->multiple()
                         ->live()
@@ -128,7 +135,7 @@ class POS extends Component  implements HasForms
                         ->relationship("contact", "name_".\Illuminate\Support\Facades\App::getLocale()),
                     Select::make('item_id')
                         ->label(trans('Inventory/lang.item.plural_label'))
-                        ->columnSpanFull()
+                        ->columnSpan(userHasBranch() ? 1:'full')
                         ->searchable()
                         ->preload()
                         ->multiple()
@@ -161,7 +168,8 @@ class POS extends Component  implements HasForms
                         ->label(trans('lang.from')),
                     DatePicker::make('to')
                         ->label(trans('lang.to')),
-                    Select::make('branch_id')
+                     Select::make('branch_id')
+                        ->hidden(userHasBranch())
                         ->relationship('branch','name')
                         ->multiple()
                         ->live()
@@ -176,7 +184,7 @@ class POS extends Component  implements HasForms
                         ->relationship("contact", "name_".\Illuminate\Support\Facades\App::getLocale()),
                     Select::make('item_id')
                         ->label(trans('Inventory/lang.item.plural_label'))
-                        ->columnSpanFull()
+                        ->columnSpan(userHasBranch() ? 1:'full')
                         ->searchable()
                         ->preload()
                         ->multiple()
@@ -209,7 +217,8 @@ class POS extends Component  implements HasForms
                         ->label(trans('lang.from')),
                     DatePicker::make('to')
                         ->label(trans('lang.to')),
-                    Select::make('branch_id')
+                     Select::make('branch_id')
+                        ->hidden(userHasBranch())
                         ->relationship('branch','name')
                         ->multiple()
                         ->live()
@@ -254,7 +263,8 @@ class POS extends Component  implements HasForms
                         ->label(trans('lang.from')),
                     DatePicker::make('to')
                         ->label(trans('lang.to')),
-                    Select::make('branch_id')
+                     Select::make('branch_id')
+                        ->hidden(userHasBranch())
                         ->relationship('branch','name')
                         ->multiple()
                         ->live()
@@ -297,7 +307,8 @@ class POS extends Component  implements HasForms
                         ->label(trans('lang.from')),
                     DatePicker::make('to')
                         ->label(trans('lang.to')),
-                    Select::make('branch_id')
+                     Select::make('branch_id')
+                        ->hidden(userHasBranch())
                         ->relationship('branch','name')
                         ->multiple()
                         ->live()
@@ -312,7 +323,7 @@ class POS extends Component  implements HasForms
                         ->relationship("contact", "name_".\Illuminate\Support\Facades\App::getLocale()),
                     Select::make('item_id')
                         ->label(trans('Inventory/lang.item.plural_label'))
-                        ->columnSpanFull()
+                        ->columnSpan(userHasBranch() ? 1:'full')
                         ->searchable()
                         ->preload()
                         ->multiple()
@@ -345,7 +356,8 @@ class POS extends Component  implements HasForms
                         ->label(trans('lang.from')),
                     DatePicker::make('to')
                         ->label(trans('lang.to')),
-                    Select::make('branch_id')
+                     Select::make('branch_id')
+                        ->hidden(userHasBranch())
                         ->relationship('branch','name')
                         ->multiple()
                         ->live()
@@ -360,7 +372,7 @@ class POS extends Component  implements HasForms
                         ->relationship("contact", "name_".\Illuminate\Support\Facades\App::getLocale()),
                     Select::make('item_id')
                         ->label(trans('Inventory/lang.item.plural_label'))
-                        ->columnSpanFull()
+                        ->columnSpan(userHasBranch() ? 1:'full')
                         ->searchable()
                         ->preload()
                         ->multiple()
@@ -393,7 +405,8 @@ class POS extends Component  implements HasForms
                         ->label(trans('lang.from')),
                     DatePicker::make('to')
                         ->label(trans('lang.to')),
-                    Select::make('branch_id')
+                     Select::make('branch_id')
+                        ->hidden(userHasBranch())
                         ->relationship('branch','name')
                         ->multiple()
                         ->live()
@@ -423,7 +436,7 @@ class POS extends Component  implements HasForms
             $to = $data['to']?? 'all';
             $contact = json_encode($data['contact_id']??[]);
             $branch = json_encode($data['branch_id']??[]);
-            return $this->redirect(Purchase::getUrl(['branch'=>$branch,'contact'=>$contact,'from'=>$from,'to'=>$to,'type'=>'sale']));
+            return $this->redirect(Sale::getUrl(['branch'=>$branch,'contact'=>$contact,'from'=>$from,'to'=>$to,'type'=>'sale']));
         }else{
             return '';
         }
@@ -437,7 +450,8 @@ class POS extends Component  implements HasForms
                         ->label(trans('lang.from')),
                     DatePicker::make('to')
                         ->label(trans('lang.to')),
-                    Select::make('branch_id')
+                     Select::make('branch_id')
+                        ->hidden(userHasBranch())
                         ->relationship('branch','name')
                         ->multiple()
                         ->searchable()
@@ -480,7 +494,8 @@ class POS extends Component  implements HasForms
                         ->label(trans('lang.from')),
                     DatePicker::make('to')
                         ->label(trans('lang.to')),
-                    Select::make('branch_id')
+                     Select::make('branch_id')
+                        ->hidden(userHasBranch())
                         ->relationship('branch','name')
                         ->multiple()
                         ->live()
@@ -495,7 +510,7 @@ class POS extends Component  implements HasForms
                         ->relationship("contact", "name_".\Illuminate\Support\Facades\App::getLocale()),
                     Select::make('item_id')
                         ->label(trans('Inventory/lang.item.plural_label'))
-                        ->columnSpanFull()
+                        ->columnSpan(userHasBranch() ? 1:'full')
                         ->searchable()
                         ->preload()
                         ->multiple()
@@ -528,7 +543,8 @@ class POS extends Component  implements HasForms
                         ->label(trans('lang.from')),
                     DatePicker::make('to')
                         ->label(trans('lang.to')),
-                    Select::make('branch_id')
+                     Select::make('branch_id')
+                        ->hidden(userHasBranch())
                         ->relationship('branch','name')
                         ->multiple()
                         ->live()
@@ -543,7 +559,7 @@ class POS extends Component  implements HasForms
                         ->relationship("contact", "name_".\Illuminate\Support\Facades\App::getLocale()),
                     Select::make('item_id')
                         ->label(trans('Inventory/lang.item.plural_label'))
-                        ->columnSpanFull()
+                        ->columnSpan(userHasBranch() ? 1:'full')
                         ->searchable()
                         ->preload()
                         ->multiple()
@@ -563,7 +579,7 @@ class POS extends Component  implements HasForms
             $to = $data['to']?? 'all';
             $contact = json_encode($data['contact_id']??[]);
             $branch = json_encode($data['branch_id']??[]);
-            return $this->redirect(Purchase::getUrl(['branch'=>$branch,'contact'=>$contact,'from'=>$from,'to'=>$to,'type'=>'return']));
+            return $this->redirect(Sale::getUrl(['branch'=>$branch,'contact'=>$contact,'from'=>$from,'to'=>$to,'type'=>'return']));
         }else{
             return '';
         }
@@ -577,7 +593,8 @@ class POS extends Component  implements HasForms
                         ->label(trans('lang.from')),
                     DatePicker::make('to')
                         ->label(trans('lang.to')),
-                    Select::make('branch_id')
+                     Select::make('branch_id')
+                        ->hidden(userHasBranch())
                         ->relationship('branch','name')
                         ->multiple()
                         ->searchable()
@@ -620,7 +637,8 @@ class POS extends Component  implements HasForms
                         ->label(trans('lang.from')),
                     DatePicker::make('to')
                         ->label(trans('lang.to')),
-                    Select::make('branch_id')
+                     Select::make('branch_id')
+                        ->hidden(userHasBranch())
                         ->relationship('branch','name')
                         ->multiple()
                         ->live()
@@ -635,7 +653,7 @@ class POS extends Component  implements HasForms
                         ->relationship("contact", "name_".\Illuminate\Support\Facades\App::getLocale()),
                     Select::make('item_id')
                         ->label(trans('Inventory/lang.item.plural_label'))
-                        ->columnSpanFull()
+                        ->columnSpan(userHasBranch() ? 1:'full')
                         ->searchable()
                         ->preload()
                         ->multiple()
@@ -668,7 +686,8 @@ class POS extends Component  implements HasForms
                         ->label(trans('lang.from')),
                     DatePicker::make('to')
                         ->label(trans('lang.to')),
-                    Select::make('branch_id')
+                     Select::make('branch_id')
+                        ->hidden(userHasBranch())
                         ->relationship('branch','name')
                         ->multiple()
                         ->live()
@@ -683,7 +702,7 @@ class POS extends Component  implements HasForms
                         ->relationship("contact", "name_".\Illuminate\Support\Facades\App::getLocale()),
                     Select::make('item_id')
                         ->label(trans('Inventory/lang.item.plural_label'))
-                        ->columnSpanFull()
+                        ->columnSpan(userHasBranch() ? 1:'full')
                         ->searchable()
                         ->preload()
                         ->multiple()
@@ -695,27 +714,192 @@ class POS extends Component  implements HasForms
     }
 
     // installment
+    public function searchSaleInstallment(){
+        if(checkPackage('HR')){
+            $this->saleInstallmentForm->getState();
+            $data = $this->saleInstallment;
+            $from = $data['from']?? 'all';
+            $to = $data['to']?? 'all';
+            $contact = json_encode($data['contact_id']??[]);
+            $branch = json_encode($data['branch_id']??[]);
+            return $this->redirect(Sale::getUrl(['branch'=>$branch,'contact'=>$contact,'from'=>$from,'to'=>$to,'type'=>'installment']));
+        }else{
+            return '';
+        }
+    }
+    public function saleInstallmentForm(Form $form): Form
+    {
+        if(checkPackage('POS')){
+            return $form->columns(2)->model(\App\Models\POS\SaleInvoice::class)
+                ->schema([
+                    DatePicker::make('from')
+                        ->label(trans('lang.from')),
+                    DatePicker::make('to')
+                        ->label(trans('lang.to')),
+                     Select::make('branch_id')
+                        ->hidden(userHasBranch())
+                        ->relationship('branch','name')
+                        ->multiple()
+                        ->searchable()
+                        ->live()
+                        ->columnSpanFull()
+                        ->preload(),
+                    Select::make('contact_id')
+                        ->columnSpanFull()
+                        ->label(trans('lang.contact'))
+                        ->searchable()
+                        ->live()
+                        ->preload()
+                        ->multiple()
+                        ->relationship("contact", "name_".\Illuminate\Support\Facades\App::getLocale()),
+                ])->statePath('saleInstallment');
+        }else{
+            return $form->statePath('saleInstallment');
+        }
+    }
+    public function searchSaleInstallmentItems(){
+        if(checkPackage('HR')){
+            $this->saleInstallmentItemsForm->getState();
+            $data = $this->saleInstallmentItems;
+            $from = $data['from']?? 'all';
+            $to = $data['to']?? 'all';
+            $contact = json_encode($data['contact_id']??[]);
+            $branch = json_encode($data['branch_id']??[]);
+            $item = json_encode($data['item_id']??[]);
+            return $this->redirect(SaleItems::getUrl(['branch'=>$branch,'contact'=>$contact,'from'=>$from,'to'=>$to,'item'=>$item,'type'=>'installment']));
+        }else{
+            return '';
+        }
+    }
+    public function saleInstallmentItemsForm(Form $form): Form
+    {
+        if(checkPackage('POS')){
+            return $form->columns(2)->model(\App\Models\POS\SaleInvoice::class)
+                ->schema([
+                    DatePicker::make('from')
+                        ->label(trans('lang.from')),
+                    DatePicker::make('to')
+                        ->label(trans('lang.to')),
+                     Select::make('branch_id')
+                        ->hidden(userHasBranch())
+                        ->relationship('branch','name')
+                        ->multiple()
+                        ->live()
+                        ->searchable()
+                        ->preload(),
+                    Select::make('contact_id')
+                        ->label(trans('lang.contact'))
+                        ->searchable()
+                        ->live()
+                        ->preload()
+                        ->multiple()
+                        ->relationship("contact", "name_".\Illuminate\Support\Facades\App::getLocale()),
+                    Select::make('item_id')
+                        ->label(trans('Inventory/lang.item.plural_label'))
+                        ->columnSpan(userHasBranch() ? 1:'full')
+                        ->searchable()
+                        ->preload()
+                        ->multiple()
+                        ->options(Item::all()->pluck('name_'.App::getLocale(),'id'))
+                ])->statePath('saleInstallmentItems');
+        }else{
+            return $form->statePath('saleInstallmentItems');
+        }
+    }
+    public function searchSaleInstallmentCodes(){
+        if(checkPackage('HR')){
+            $this->saleInstallmentCodesForm->getState();
+            $data = $this->saleInstallmentCodes;
+            $from = $data['from']?? 'all';
+            $to = $data['to']?? 'all';
+            $contact = json_encode($data['contact_id']??[]);
+            $branch = json_encode($data['branch_id']??[]);
+            $item = json_encode($data['item_id']??[]);
+            return $this->redirect(SaleCodes::getUrl(['branch'=>$branch,'contact'=>$contact,'from'=>$from,'to'=>$to,'item'=>$item,'type'=>'installment']));
+        }else{
+            return '';
+        }
+    }
+    public function saleInstallmentCodesForm(Form $form): Form
+    {
+        if(checkPackage('POS')){
+            return $form->columns(2)->model(\App\Models\POS\SaleInvoice::class)
+                ->schema([
+                    DatePicker::make('from')
+                        ->label(trans('lang.from')),
+                    DatePicker::make('to')
+                        ->label(trans('lang.to')),
+                     Select::make('branch_id')
+                        ->hidden(userHasBranch())
+                        ->relationship('branch','name')
+                        ->multiple()
+                        ->live()
+                        ->searchable()
+                        ->preload(),
+                    Select::make('contact_id')
+                        ->label(trans('lang.contact'))
+                        ->searchable()
+                        ->live()
+                        ->preload()
+                        ->multiple()
+                        ->relationship("contact", "name_".\Illuminate\Support\Facades\App::getLocale()),
+                    Select::make('item_id')
+                        ->label(trans('Inventory/lang.item.plural_label'))
+                        ->columnSpan(userHasBranch() ? 1:'full')
+                        ->searchable()
+                        ->preload()
+                        ->multiple()
+                        ->options(Item::all()->pluck('name_'.App::getLocale(),'id'))
+                ])->statePath('saleInstallmentCodes');
+        }else{
+            return $form->statePath('saleInstallmentCodes');
+        }
+    }
 
 
     public function mount():void
     {
-        $this->purchaseForm->fill();
-        $this->purchaseItemsForm->fill();
-        $this->purchaseCodesForm->fill();
-        $this->purchaseExpensesForm->fill();
+        if(!userHasBranch()){
+            $this->purchaseForm->fill();
+            $this->purchaseItemsForm->fill();
+            $this->purchaseCodesForm->fill();
+            $this->purchaseExpensesForm->fill();
+            $this->purchaseReturnForm->fill();
+            $this->purchaseReturnItemsForm->fill();
+            $this->purchaseReturnCodesForm->fill();
+            $this->purchaseReturnExpensesForm->fill();
+            $this->saleForm->fill();
+            $this->saleItemsForm->fill();
+            $this->saleCodesForm->fill();
+            $this->saleReturnForm->fill();
+            $this->saleReturnItemsForm->fill();
+            $this->saleReturnCodesForm->fill();
+            $this->saleInstallmentForm->fill();
+            $this->saleInstallmentItemsForm->fill();
+            $this->saleInstallmentCodesForm->fill();
+        }else{
+            $data = ['branch_id'=>[
+                getBranchId()
+            ]];
+            $this->purchaseForm->fill($data);
+            $this->purchaseItemsForm->fill($data);
+            $this->purchaseCodesForm->fill($data);
+            $this->purchaseExpensesForm->fill($data);
+            $this->purchaseReturnForm->fill($data);
+            $this->purchaseReturnItemsForm->fill($data);
+            $this->purchaseReturnCodesForm->fill($data);
+            $this->purchaseReturnExpensesForm->fill($data);
+            $this->saleForm->fill($data);
+            $this->saleItemsForm->fill($data);
+            $this->saleCodesForm->fill($data);
+            $this->saleReturnForm->fill($data);
+            $this->saleReturnItemsForm->fill($data);
+            $this->saleReturnCodesForm->fill($data);
+            $this->saleInstallmentForm->fill($data);
+            $this->saleInstallmentItemsForm->fill($data);
+            $this->saleInstallmentCodesForm->fill($data);
+        }
 
-        $this->purchaseReturnForm->fill();
-        $this->purchaseReturnItemsForm->fill();
-        $this->purchaseReturnCodesForm->fill();
-        $this->purchaseReturnExpensesForm->fill();
-
-        $this->saleForm->fill();
-        $this->saleItemsForm->fill();
-        $this->saleCodesForm->fill();
-
-        $this->saleReturnForm->fill();
-        $this->saleReturnItemsForm->fill();
-        $this->saleReturnCodesForm->fill();
     }
     public function render():View
     {

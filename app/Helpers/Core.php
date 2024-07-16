@@ -96,5 +96,18 @@ function getSidebar(){
 }
 
 
+function userHasBranch():float{
+    if(auth()->user()->ownerable_type == 'App\Models\Logistic\Branch'){
+        return true;
+    }
+    return false;
+}
+function getBranchId():int{
+    if(userHasBranch()){
+        return auth()->user()->ownerable_id;
+    }
+    return 0;
+}
+
 
 

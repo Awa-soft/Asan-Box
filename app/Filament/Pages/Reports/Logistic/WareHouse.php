@@ -9,6 +9,7 @@ class WareHouse extends Page
 {
     protected static ?string $navigationIcon = 'heroicon-o-document-text';
     use WithPagination;
+    protected static ?string $title = '';
     protected static ?string $slug = 'reports/logistic/warehouse/{attr}/{warehouses}';
     protected static bool $shouldRegisterNavigation = false;
     public $attr,$data;

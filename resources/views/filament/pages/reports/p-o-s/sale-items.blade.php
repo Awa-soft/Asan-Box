@@ -10,7 +10,7 @@
                     @if($type == 'sale')
                         {{trans('POS/lang.reports.sale_items')}}
                     @else
-                        {{trans('POS/lang.reports.sale_return_items')}}
+                        {{trans('POS/lang.reports.sale_'.$type.'_items')}}
                     @endif                </div>
                 <div class="text-end">
                     <b>{{trans('lang.to')}}:</b> {{$to}}
