@@ -116,7 +116,6 @@
                 </x-filament::button>
             </x-slot>
         </x-filament::section>
-
 {{--        Sale--}}
         <div class="col-span-full gap-6 grid grid-cols-1 xl:grid-cols-3">
         <x-filament::section>
@@ -249,5 +248,22 @@
 
 
     </div>
+        <div class="col-span-full">
+            <x-filament::section>
+                <x-slot name="icon">
+                    @svg(\App\Filament\Resources\POS\ItemRepairResource::getNavigationIcon(),'w-8 text-primary-500' )
+                </x-slot>
+                <x-slot name="heading">
+                    {{ trans('POS/lang.reports.itemRepairs') }}
+                </x-slot>
+                {{$this->itemRepairsForm}}
+                <x-slot name="footerActions">
+                    <x-filament::button type="submit" wire:click="searchItemRepairs()" class="mt-5">
+                        {{ trans('filament-actions::modal.actions.submit.label') }}
+                    </x-filament::button>
+                </x-slot>
+            </x-filament::section>
+        </div>
+
     </div>
     </div>

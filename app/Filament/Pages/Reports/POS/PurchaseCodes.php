@@ -37,6 +37,8 @@ class PurchaseCodes extends Page
                 return $query->whereDate('date', '>=', Carbon::parse($from));
             })->when($to != 'all', function ($query)use($to) {
                 return $query->whereDate('date', '<=', Carbon::parse($to));
+            })->when(!auth()->user()->can('view_any_p::o::s::purchase::invoice'),function ($query){
+                return $query->where('user_id',auth()->id);
             });
         })->when($item != [],function ($q)use($item){
             return $q->whereIn('item_id', $item);

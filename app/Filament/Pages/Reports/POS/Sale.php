@@ -31,6 +31,8 @@ class Sale extends Page
             return $query->whereDate('date', '>=', Carbon::parse($from));
         })->when($to != 'all', function ($query)use($to) {
             return $query->whereDate('date', '<=', Carbon::parse($to));
+        })->when(!auth()->user()->can('view_any_p::o::s::sale::invoice'),function ($query){
+            return $query->where('user_id',auth()->id);
         })->where('type',$type)->get();
         $this->currencies = \App\Models\Settings\Currency::all();
     }

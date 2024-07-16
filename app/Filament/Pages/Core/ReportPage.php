@@ -33,7 +33,7 @@ class ReportPage extends Page implements HasForms
     use HasPageShield;
 
     protected static ?string $navigationIcon = 'heroicon-o-document-text';
-    public $activeTab='POS';
+    public $activeTab='Inventory';
 
     public ?array $SafeData = [];
     protected function getForms(): array

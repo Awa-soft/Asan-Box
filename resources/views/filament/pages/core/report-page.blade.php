@@ -12,20 +12,12 @@
             justify-content: space-between !important;
             height: -webkit-text-available !important;
         }
-
         .fi-section-header-icon{
             margin-left: 10px !important;
             margin-right: 10px !important;
         }
     </style>
     <x-filament::tabs label="Content tabs">
-        @Package('Inventory')
-        <x-filament::tabs.item
-            :active="$activeTab === 'Inventory'"
-            wire:click="$set('activeTab', 'Inventory')">
-            {{ trans('lang.core_reports') }}
-        </x-filament::tabs.item>
-        @endPackage
         @Package('HR')
         <x-filament::tabs.item
             :active="$activeTab === 'HR'"
@@ -47,25 +39,18 @@
             {{ trans('POS/lang.group_label') }}
         </x-filament::tabs.item>
         @endPackage
+        @Package('Inventory')
+        <x-filament::tabs.item
+            :active="$activeTab === 'Inventory'"
+            wire:click="$set('activeTab', 'Inventory')">
+            {{ trans('Inventory/lang.group_label') }}
+        </x-filament::tabs.item>
+        @endPackage
     </x-filament::tabs>
        @switch($activeTab)
            @case('Inventory')
             @Package('Inventory')
-            <div class="grid items-start grid-cols-1 gap-4 xl:grid-cols-4">
-                <x-filament::section>
-                    <x-slot name="heading">
-                        {{ trans('lang.safe_locker') }}
-                    </x-slot>
-
-                    <form wire:submit='navigateToReport("safe")'>
-                        {{ $this->SafeForm }}
-
-                        <x-filament::button type='submit' class="my-2">
-                            {{ trans('filament-actions::modal.actions.submit.label') }}
-                        </x-filament::button>
-                    </form>
-                </x-filament::section>
-            </div>
+                <livewire:reports.inventory/>
             @endPackage
            @break
            @case('HR')
@@ -85,5 +70,6 @@
             @break
            @break
        @endswitch
+
     </x-filament-panels::page>
 

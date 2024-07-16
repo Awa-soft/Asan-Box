@@ -64,9 +64,9 @@ return [
         'sale_return'=>"Sales Return Report",
         'sale_return_items'=>'Sale Return Items Report',
         'sale_return_codes'=>'Sale Return Codes Report',
-
         'sale_installment'=>"Sales Installment Report",
         'sale_installment_items'=>'Sale Installment Items Report',
         'sale_installment_codes'=>'Sale Installment Codes Report',
+        'itemRepairs'=>"Item Repairs Report"
     ]
 ];

@@ -110,4 +110,18 @@ function getBranchId():int{
 }
 
 
+function userHasWarehouse():float{
+    if(auth()->user()->ownerable_type == 'App\Models\Logistic\Warehouse'){
+        return true;
+    }
+    return false;
+}
+function getWarehouseId():int{
+    if(userHasWarehouse()){
+        return auth()->user()->ownerable_id;
+    }
+    return 0;
+}
+
+
 

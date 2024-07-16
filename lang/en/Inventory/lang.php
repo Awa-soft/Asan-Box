@@ -22,6 +22,13 @@ return [
         "plural_label"=>"Item Losses",
         "singular_label"=>"Item Loss",
     ],
+    'reports'=>[
+        'itemLoss'=>'Item Losses Report',
+        'items'=>'Items Report',
+        'brands'=>'Brands Report',
+        'categories'=>'Categories Report',
+        'units'=>'Units Report',
+    ]
 
 
 
