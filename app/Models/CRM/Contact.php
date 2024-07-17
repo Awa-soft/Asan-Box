@@ -43,20 +43,48 @@ class Contact extends Model
 
         $receives += $this->sales->map(function($sale){
             return convertToCurrency($sale->currency_id, getBaseCurrency()->id,
-             $sale->paid_amount, $sale->rate,  getBaseCurrency()->rate );
+             $sale->due_amount, $sale->rate,  getBaseCurrency()->rate );
         })->sum();
 
         $sends += $this->purchases->map(function($purchase){
             return convertToCurrency($purchase->currency_id, getBaseCurrency()->id,
-             $purchase->paid_amount, $purchase->rate,  getBaseCurrency()->rate );
+             $purchase->due_amount, $purchase->rate,  getBaseCurrency()->rate );
         })->sum();
-
-
         return $sends - $receives;
     }
 
 
 
+    public function scopeDebt($query,$debt)
+    {
+        $ids = [];
+        foreach (self::all() as $contact){
+            if($contact->balance != 0){
+                $ids[] = $contact->id;
+            }
+        }
+        if($debt == 'only_debt'){
+            return $query->whereIn('id', $ids);
+        }elseif($debt == 'without_debt'){
+            return $query->whereNotIn('id', $ids);
+        }
+        return $query;
+    }
+    public function scopeMaxDebt($query,$maximumDebt)
+    {
+        $ids = [];
+        foreach (self::all() as $contact){
+            if($contact->balance >= $contact->max_debt || $contact->balance <= (-1* $contact->max_debt)){
+                $ids[] = $contact->id;
+            }
+        }
+        if($maximumDebt == 'reached'){
+            return $query->whereIn('id', $ids);
+        }elseif($maximumDebt == 'not_reached'){
+            return $query->whereNotIn('id', $ids);
+        }
+        return $query;
+    }
 
     public function scopeVendor($query){
         return  $query->where('type', "Vendor");

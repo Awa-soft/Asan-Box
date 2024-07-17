@@ -11,6 +11,14 @@ use App\Filament\Pages\Reports\HR\EmployeeSummary;
 use App\Filament\Pages\Reports\HR\IdentityTypeReport;
 use App\Filament\Pages\Reports\HR\PositionReport;
 use App\Filament\Pages\Reports\HR\TeamReport;
+use App\Filament\Resources\HR\EmployeeActivityResource;
+use App\Filament\Resources\HR\EmployeeLeaveResource;
+use App\Filament\Resources\HR\EmployeeNoteResource;
+use App\Filament\Resources\HR\EmployeeResource;
+use App\Filament\Resources\HR\EmployeeSalaryResource;
+use App\Filament\Resources\HR\IdentityTypeResource;
+use App\Filament\Resources\HR\PositionResource;
+use App\Filament\Resources\HR\TeamResource;
 use App\Models\HR\EmployeeLeave;
 use App\Models\HR\EmployeeNote;
 use App\Models\HR\IdentityType;
@@ -25,22 +33,40 @@ class HRReports extends Component implements HasForms
 {
     use InteractsWithForms;
     public $hrEmployeeActivity,$hrEmployeeLeave,$hrEmployeeNote,$hrIdentityType,$hrTeam,$hrPosition,$hrEmployee,$hrEmployeeSalary,$hrEmployeeSummary;
+
+
+    public $localizationFolder = 'HR';
+    public $formNames = [
+        'hrEmployeeActivity'=>EmployeeActivityResource::class,
+        'hrEmployeeLeave'=>EmployeeLeaveResource::class,
+        'hrEmployeeNote'=>EmployeeNoteResource::class,
+        'hrEmployees'=>EmployeeResource::class,
+        'hrEmployeesSalary'=>EmployeeSalaryResource::class,
+        'hrEmployeesSummary'=>EmployeeResource::class,
+        'hrIdentityTypes'=>IdentityTypeResource::class,
+        'hrTeams'=>TeamResource::class,
+        'hrPositions'=>PositionResource::class,
+
+    ];
+    public function mount()
+    {
+
+        foreach($this->formNames as $key => $form){
+            $this->{$key.'Form'}->fill();
+        }
+
+    }
+
     protected function getForms(): array
     {
-        return [
-            'hrEmployeeActivityForm',
-            'hrEmployeeLeaveForm',
-            'hrEmployeeNoteForm',
-            'hrIdentityTypesForm',
-            'hrTeamsForm',
-            'hrPositionsForm',
-            'hrEmployeesForm',
-            'hrEmployeesSalaryForm',
-            'hrEmployeesSummaryForm',
-        ];
+        $forms = [];
+        foreach($this->formNames as $key => $form){
+            $forms[] = $key.'Form';
+        }
+        return $forms;
     }
 //    Employee Activity
-    public function searchEmployeeActivity(){
+    public function hrEmployeeActivitySearvh(){
         if(checkPackage('HR')){
             $data = $this->hrEmployeeActivityForm->getState();
             $from = $data['from']?? 'all';
@@ -99,7 +125,7 @@ class HRReports extends Component implements HasForms
     }
 
 //  Employee Leave
-    public function searchEmployeeLeave(){
+    public function hrEmployeeLeaveSearch(){
         if(checkPackage('HR')){
             $data = $this->hrEmployeeLeaveForm->getState();
             $from = $data['from']?? 'all';
@@ -156,7 +182,7 @@ class HRReports extends Component implements HasForms
     }
 
 //  Employee Leave
-    public function searchEmployeeNote(){
+    public function hrEmployeeNoteSearch(){
         if(checkPackage('HR')){
             $data = $this->hrEmployeeNoteForm->getState();
             $from = $data['from']?? 'all';
@@ -202,7 +228,7 @@ class HRReports extends Component implements HasForms
     }
 
     //  Identity Types
-    public function searchIdentityTypes(){
+    public function hrIdentityTypesSearch(){
         if(checkPackage('HR')){
             $data = $this->hrIdentityTypesForm->getState();
             $attr = json_encode($data['attr']??[]);
@@ -228,7 +254,7 @@ class HRReports extends Component implements HasForms
     }
 
     //  Positions
-    public function searchPositions(){
+    public function hrPositionsSearch(){
         if(checkPackage('HR')){
             $data = $this->hrPositionsForm->getState();
             $attr = json_encode($data['attr']??[]);
@@ -259,7 +285,7 @@ class HRReports extends Component implements HasForms
     }
 
 //  Positions
-    public function searchTeams(){
+    public function hrTeamsSearch(){
         if(checkPackage('HR')){
             $data = $this->hrTeamsForm->getState();
             $attr = json_encode($data['attr']??[]);
@@ -289,7 +315,7 @@ class HRReports extends Component implements HasForms
         }
     }
     //  Employees
-    public function searchEmployees(){
+    public function hrEmployeesSearch(){
         if(checkPackage('HR')){
             $data = $this->hrEmployeesForm->getState();
             $hireDateFrom = $data['hire_date_from']?? 'all';
@@ -350,7 +376,7 @@ class HRReports extends Component implements HasForms
     }
 
     //  Employees
-    public function searchEmployeesSummary(){
+    public function hrEmployeesSummarySearch(){
         if(checkPackage('HR')){
             $data = $this->hrEmployeesSummaryForm->getState();
             $attr = json_encode($data['attr']??[]);
@@ -367,8 +393,10 @@ class HRReports extends Component implements HasForms
             return $form->columns(2)->model(\App\Models\HR\Employee::class)
                 ->schema([
                     DatePicker::make('from')
+                        ->columnSpanFull()
                         ->label(trans('lang.from')),
                     DatePicker::make('to')
+                        ->columnSpanFull()
                         ->label(trans('lang.to')),
                     Select::make('attr')
                         ->label(trans('lang.attributes'))
@@ -392,7 +420,7 @@ class HRReports extends Component implements HasForms
     }
 
 //    Employee Salary
-    public function searchEmployeesSalary(){
+    public function hrEmployeesSalarySearch(){
         if(checkPackage('HR')){
             $data = $this->hrEmployeesSalaryForm->getState();
             $attr = json_encode($data['attr']??[]);
@@ -417,10 +445,12 @@ class HRReports extends Component implements HasForms
                         ->label(trans('lang.employee'))
                         ->searchable()
                         ->preload()
+                        ->columnSpanFull()
                         ->relationship('employee', 'name'),
                     Select::make('attr')
                         ->label(trans('lang.attributes'))
                         ->required()
+                        ->columnSpanFull()
                         ->maxItems(6)
                         ->options([
                             'owner' => trans('lang.owner'),
@@ -445,20 +475,9 @@ class HRReports extends Component implements HasForms
     }
 
 
-    public function mount()
-    {
-        $this->hrEmployeeActivityForm->fill();
-        $this->hrEmployeeLeaveForm->fill();
-        $this->hrEmployeeNoteForm->fill();
-        $this->hrIdentityTypesForm->fill();
-        $this->hrTeamsForm->fill();
-        $this->hrPositionsForm->fill();
-        $this->hrEmployeesForm->fill();
-        $this->hrEmployeesSalaryForm->fill();
-        $this->hrEmployeesSummaryForm->fill();
-    }
+
     public function render()
     {
-        return view('livewire.reports.h-r-reports');
+        return view('livewire.reports.reports-content');
     }
 }

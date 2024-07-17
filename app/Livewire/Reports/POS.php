@@ -2,6 +2,9 @@
 
 namespace App\Livewire\Reports;
 
+use App\Filament\Pages\Logistic\ItemTransaction;
+use App\Filament\Pages\POS\PurchasePage;
+use App\Filament\Pages\POS\SalePage;
 use App\Filament\Pages\Reports\HR\EmployeeSalary;
 use App\Filament\Pages\Reports\POS\ItemRepairs;
 use App\Filament\Pages\Reports\POS\Purchase;
@@ -11,6 +14,12 @@ use App\Filament\Pages\Reports\POS\PurchaseItems;
 use App\Filament\Pages\Reports\POS\Sale;
 use App\Filament\Pages\Reports\POS\SaleCodes;
 use App\Filament\Pages\Reports\POS\SaleItems;
+use App\Filament\Resources\Logistic\BranchResource;
+use App\Filament\Resources\Logistic\WarehouseResource;
+use App\Filament\Resources\POS\ItemRepairResource;
+use App\Filament\Resources\POS\PurchaseExpenseResource;
+use App\Filament\Resources\POS\PurchaseInvoiceResource;
+use App\Filament\Resources\POS\SaleInvoiceResource;
 use App\Models\Inventory\Item;
 use App\Models\Logistic\Branch;
 use App\Models\Logistic\Warehouse;
@@ -32,32 +41,58 @@ class POS extends Component  implements HasForms
     public $saleReturn  =[],$saleReturnItems = [],$saleReturnCodes=[];
     public $saleInstallment  =[],$saleInstallmentItems = [],$saleInstallmentCodes=[];
     public $itemRepairs = [];
-    protected function getForms(): array
+    public $localizationFolder = 'POS';
+    public $formNames = [
+        'purchase'=>PurchasePage::class,
+        'purchaseItems'=>PurchaseInvoiceResource::class,
+        'purchaseCodes'=>PurchaseInvoiceResource::class,
+        'purchaseExpenses'=>PurchaseExpenseResource::class,
+        'purchaseReturn'=>PurchasePage::class,
+        'purchaseReturnItems'=>PurchaseInvoiceResource::class,
+        'purchaseReturnCodes'=>PurchaseInvoiceResource::class,
+        'purchaseReturnExpenses'=>PurchaseExpenseResource::class,
+        'sale'=>SalePage::class,
+        'saleItems'=>SaleInvoiceResource::class,
+        'saleCodes'=>SaleInvoiceResource::class,
+        'saleReturn'=>SaleInvoiceResource::class,
+        'saleReturnItems'=>SaleInvoiceResource::class,
+        'saleReturnCodes'=>SaleInvoiceResource::class,
+        'saleInstallment'=>SaleInvoiceResource::class,
+        'saleInstallmentItems'=>SaleInvoiceResource::class,
+        'saleInstallmentCodes'=>SaleInvoiceResource::class,
+        'itemRepairs'=>ItemRepairResource::class
+    ];
+    public function mount()
     {
-        return [
-            'purchaseForm',
-            'purchaseItemsForm',
-            'purchaseCodesForm',
-            'purchaseExpensesForm',
-            'purchaseReturnForm',
-            'purchaseReturnItemsForm',
-            'purchaseReturnCodesForm',
-            'purchaseReturnExpensesForm',
-            'saleForm',
-            'saleItemsForm',
-            'saleCodesForm',
-            'saleReturnForm',
-            'saleReturnItemsForm',
-            'saleReturnCodesForm',
-            'saleInstallmentForm',
-            'saleInstallmentItemsForm',
-            'saleInstallmentCodesForm',
-            'itemRepairsForm'
-        ];
+        $data = [];
+        if(userHasBranch()){
+            $data = ['branch_id'=>[
+                getBranchId()
+            ]];
+        }
+        if(userHasWarehouse()){
+            $data['warehouse_id'] = [
+                getWarehouseId()
+            ];
+        }
+        foreach($this->formNames as $key => $form){
+            $this->{$key.'Form'}->fill($data);
+        }
+
     }
 
+    protected function getForms(): array
+    {
+        $forms = [];
+        foreach($this->formNames as $key => $form){
+            $forms[] = $key.'Form';
+        }
+        return $forms;
+    }
+
+
     //repair items
-    public function searchItemRepairs(){
+    public function itemRepairsSearch(){
         if(checkPackage('POS')){
             $this->itemRepairsForm->getState();
             $data = $this->itemRepairs;
@@ -114,7 +149,7 @@ class POS extends Component  implements HasForms
         }
     }
     //purchase
-    public function searchPurchase(){
+    public function purchaseSearch(){
         if(checkPackage('POS')){
             $this->purchaseForm->getState();
             $data = $this->purchase;
@@ -157,7 +192,7 @@ class POS extends Component  implements HasForms
             return $form->statePath('purchase');
         }
     }
-    public function searchPurchaseItems(){
+    public function purchaseItemsSearch(){
         if(checkPackage('POS')){
             $this->purchaseItemsForm->getState();
             $data = $this->purchaseItems;
@@ -206,7 +241,7 @@ class POS extends Component  implements HasForms
             return $form->statePath('purchaseItems');
         }
     }
-    public function searchPurchaseCodes(){
+    public function purchaseCodesSearch(){
         if(checkPackage('POS')){
             $this->purchaseCodesForm->getState();
             $data = $this->purchaseCodes;
@@ -256,7 +291,7 @@ class POS extends Component  implements HasForms
         }
     }
 
-    public function searchPurchaseExpenses(){
+    public function purchaseExpensesSearch(){
         if(checkPackage('POS')){
             $this->purchaseExpensesForm->getState();
             $data = $this->purchaseExpenses;
@@ -302,7 +337,7 @@ class POS extends Component  implements HasForms
     }
 
 //    purchase Return
-    public function searchPurchaseReturn(){
+    public function purchaseReturnSearch(){
         if(checkPackage('POS')){
             $this->purchaseReturnForm->getState();
             $data = $this->purchaseReturn;
@@ -345,7 +380,7 @@ class POS extends Component  implements HasForms
             return $form->statePath('purchaseReturn');
         }
     }
-    public function searchPurchaseReturnItems(){
+    public function purchaseReturnItemsSearch(){
         if(checkPackage('POS')){
             $this->purchaseReturnItemsForm->getState();
             $data = $this->purchaseReturnItems;
@@ -394,7 +429,7 @@ class POS extends Component  implements HasForms
             return $form->statePath('purchaseReturnItems');
         }
     }
-    public function searchPurchaseReturnCodes(){
+    public function purchaseReturnCodesSearch(){
         if(checkPackage('POS')){
             $this->purchaseReturnCodesForm->getState();
             $data = $this->purchaseReturnCodes;
@@ -444,7 +479,7 @@ class POS extends Component  implements HasForms
         }
     }
 
-    public function searchPurchaseReturnExpenses(){
+    public function purchaseReturnExpensesSearch(){
         if(checkPackage('POS')){
             $this->purchaseReturnExpensesForm->getState();
             $data = $this->purchaseReturnCodes;
@@ -489,7 +524,7 @@ class POS extends Component  implements HasForms
         }
     }
 // sale
-    public function searchSale(){
+    public function saleSearch(){
         if(checkPackage('POS')){
             $this->saleForm->getState();
             $data = $this->sale;
@@ -532,7 +567,7 @@ class POS extends Component  implements HasForms
             return $form->statePath('sale');
         }
     }
-    public function searchSaleItems(){
+    public function saleItemsSearch(){
         if(checkPackage('POS')){
             $this->saleItemsForm->getState();
             $data = $this->saleItems;
@@ -581,7 +616,7 @@ class POS extends Component  implements HasForms
             return $form->statePath('saleItems');
         }
     }
-    public function searchSaleCodes(){
+    public function saleCodesSearch(){
         if(checkPackage('POS')){
             $this->saleCodesForm->getState();
             $data = $this->saleCodes;
@@ -632,7 +667,7 @@ class POS extends Component  implements HasForms
     }
 
 //    sale return
-    public function searchSaleReturn(){
+    public function saleReturnSearch(){
         if(checkPackage('POS')){
             $this->saleReturnForm->getState();
             $data = $this->saleReturn;
@@ -675,7 +710,7 @@ class POS extends Component  implements HasForms
             return $form->statePath('saleReturn');
         }
     }
-    public function searchSaleReturnItems(){
+    public function saleReturnItemsSearch(){
         if(checkPackage('POS')){
             $this->saleReturnItemsForm->getState();
             $data = $this->saleReturnItems;
@@ -724,7 +759,7 @@ class POS extends Component  implements HasForms
             return $form->statePath('saleReturnItems');
         }
     }
-    public function searchSaleReturnCodes(){
+    public function saleReturnCodesSearch(){
         if(checkPackage('POS')){
             $this->saleReturnCodesForm->getState();
             $data = $this->saleReturnCodes;
@@ -775,7 +810,7 @@ class POS extends Component  implements HasForms
     }
 
     // installment
-    public function searchSaleInstallment(){
+    public function saleInstallmentSearch(){
         if(checkPackage('POS')){
             $this->saleInstallmentForm->getState();
             $data = $this->saleInstallment;
@@ -818,7 +853,7 @@ class POS extends Component  implements HasForms
             return $form->statePath('saleInstallment');
         }
     }
-    public function searchSaleInstallmentItems(){
+    public function saleInstallmentItemsSearch(){
         if(checkPackage('POS')){
             $this->saleInstallmentItemsForm->getState();
             $data = $this->saleInstallmentItems;
@@ -867,7 +902,7 @@ class POS extends Component  implements HasForms
             return $form->statePath('saleInstallmentItems');
         }
     }
-    public function searchSaleInstallmentCodes(){
+    public function saleInstallmentCodesSearch(){
         if(checkPackage('POS')){
             $this->saleInstallmentCodesForm->getState();
             $data = $this->saleInstallmentCodes;
@@ -918,64 +953,9 @@ class POS extends Component  implements HasForms
     }
 
 
-    public function mount():void
-    {
-        if(!userHasBranch()){
-            $this->purchaseForm->fill();
-            $this->purchaseItemsForm->fill();
-            $this->purchaseCodesForm->fill();
-            $this->purchaseExpensesForm->fill();
-            $this->purchaseReturnForm->fill();
-            $this->purchaseReturnItemsForm->fill();
-            $this->purchaseReturnCodesForm->fill();
-            $this->purchaseReturnExpensesForm->fill();
-            $this->saleForm->fill();
-            $this->saleItemsForm->fill();
-            $this->saleCodesForm->fill();
-            $this->saleReturnForm->fill();
-            $this->saleReturnItemsForm->fill();
-            $this->saleReturnCodesForm->fill();
-            $this->saleInstallmentForm->fill();
-            $this->saleInstallmentItemsForm->fill();
-            $this->saleInstallmentCodesForm->fill();
-        }else{
-            $data = ['branch_id'=>[
-                getBranchId()
-            ]];
-            $this->purchaseForm->fill($data);
-            $this->purchaseItemsForm->fill($data);
-            $this->purchaseCodesForm->fill($data);
-            $this->purchaseExpensesForm->fill($data);
-            $this->purchaseReturnForm->fill($data);
-            $this->purchaseReturnItemsForm->fill($data);
-            $this->purchaseReturnCodesForm->fill($data);
-            $this->purchaseReturnExpensesForm->fill($data);
-            $this->saleForm->fill($data);
-            $this->saleItemsForm->fill($data);
-            $this->saleCodesForm->fill($data);
-            $this->saleReturnForm->fill($data);
-            $this->saleReturnItemsForm->fill($data);
-            $this->saleReturnCodesForm->fill($data);
-            $this->saleInstallmentForm->fill($data);
-            $this->saleInstallmentItemsForm->fill($data);
-            $this->saleInstallmentCodesForm->fill($data);
-        }
-        $data = [];
-        if(userHasBranch()){
-            $data = ['branch_id'=>[
-                getBranchId()
-            ]];
-        }
-        if(userHasWarehouse()){
-            $data['warehouse_id'] = [
-                getWarehouseId()
-            ];
-        }
-        $this->itemRepairsForm->fill($data);
 
-    }
     public function render():View
     {
-        return view('livewire.reports.p-o-s');
+        return view('livewire.reports.reports-content');
     }
 }

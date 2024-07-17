@@ -33,45 +33,10 @@ class ReportPage extends Page implements HasForms
     use HasPageShield;
 
     protected static ?string $navigationIcon = 'heroicon-o-document-text';
-    public $activeTab='Inventory';
+    public $activeTab;
 
-    public ?array $SafeData = [];
-    protected function getForms(): array
-    {
-        return [
-            'SafeForm',
-        ];
-    }
+    protected $queryString = ['activeTab'];
 
 
-    public function mount(){
-
-        $this->SafeForm->fill();
-
-    }
-
-    public function SafeForm(Form $form): Form
-    {
-        return $form->schema(
-            [
-                DatePicker::make('from'),
-                DatePicker::make('to'),
-            ]
-        )
-        ->statePath('SafeData');
-    }
-
-    public function navigateToReport($report)
-    {
-        switch ($report) {
-            case 'safe':
-                $this->redirect(route("filament.admin.pages.reports.core.safe.{from}.{to}", [$this->SafeData['from'] ?? 'all', $this->SafeData['to'] ?? 'all']), true);
-                break;
-
-            default:
-                # code...
-                break;
-        }
-    }
     protected static string $view = 'filament.pages.core.report-page';
 }

@@ -1,21 +1,21 @@
 <?php
 
-namespace App\Filament\Pages\Reports\POS;
+namespace App\Filament\Pages\Reports\Inventory;
 
 use App\Models\POS\ItemRepair;
 use Carbon\Carbon;
 use Filament\Pages\Page;
 
-class ItemRepairs extends Page
+class ItemLoss extends Page
 {
     protected static ?string $navigationIcon = 'heroicon-o-document-text';
-    protected static ?string $slug = 'reports/pos/itemRepairs/{from}/{to}/{warehouse}/{branch}/{type}/{item}';
+    protected static ?string $slug = 'reports/inventory/itemLoss/{from}/{to}/{warehouse}/{branch}/{item}';
     protected static bool $shouldRegisterNavigation = false;
     protected static ?string $title = '';
 
-    public $from,$to,$type,$item,$data,$currencies;
+    public $from,$to,$item,$data,$currencies;
 
-    public function mount($from,$to,$warehouse,$branch,$type,$item): void{
+    public function mount($from,$to,$warehouse,$branch,$item): void{
         if(!userHasBranch()) {
             $branches = json_decode($branch, 0);
         }else{
@@ -29,15 +29,12 @@ class ItemRepairs extends Page
         $items = json_decode($item, 0);
         $this->from = $from;
         $this->to = $to;
-        $this->type = $type;
-        $this->data = ItemRepair::
-        when(!empty($branches) || !empty($warehouses), function ($q) use ($branches, $warehouses) {
+        $this->data = \App\Models\Inventory\ItemLoss::when(!empty($branches) || !empty($warehouses), function ($q) use ($branches, $warehouses) {
             $q->where(function ($query) use ($branches, $warehouses) {
                 if (!empty($branches)) {
                     $query->where('ownerable_type', 'App\Models\Logistic\Branch')
                         ->whereIn('ownerable_id', $branches);
                 }
-
                 if (!empty($warehouses)) {
                     $query->orWhere(function ($query) use ($warehouses) {
                         $query->where('ownerable_type', 'App\Models\Logistic\Warehouse')
@@ -51,11 +48,9 @@ class ItemRepairs extends Page
             return $query->whereDate('date', '>=', Carbon::parse($from));
         })->when($to != 'all', function ($query)use($to) {
             return $query->whereDate('date', '<=', Carbon::parse($to));
-        })->when($type != 'all', function ($query)use($type) {
-            return $query->where('type', $type);
         })->get();
         $this->currencies = \App\Models\Settings\Currency::all();
 
     }
-    protected static string $view = 'filament.pages.reports.p-o-s.item-repairs';
+    protected static string $view = 'filament.pages.reports.inventory.item-loss';
 }

@@ -3,6 +3,11 @@
 namespace App\Livewire\Reports;
 
 use App\Filament\Pages\Reports\POS\ItemRepairs;
+use App\Filament\Resources\Inventory\BrandResource;
+use App\Filament\Resources\Inventory\CategoryResource;
+use App\Filament\Resources\Inventory\ItemLossResource;
+use App\Filament\Resources\Inventory\ItemResource;
+use App\Filament\Resources\Inventory\UnitResource;
 use App\Models\Inventory\Item;
 use App\Models\Inventory\ItemLoss;
 use App\Models\Logistic\Branch;
@@ -21,12 +26,14 @@ class Inventory extends Component  implements HasForms
 {
     use InteractsWithForms;
     public $itemLoss = [],$items= [],$brands=[],$categories=[],$units=[];
+    public $localizationFolder = 'Inventory';
+
     public $formNames = [
-        'itemLoss',
-        'items',
-        'brands',
-        'categories',
-        'units'
+        'itemLoss' => ItemLossResource::class,
+        'items' => ItemResource::class,
+        'brands' =>BrandResource::class,
+        'categories'=>CategoryResource::class,
+        'units'=>UnitResource::class
     ];
     protected function getForms(): array
     {
@@ -39,6 +46,24 @@ class Inventory extends Component  implements HasForms
         ];
     }
 
+    public function mount()
+    {
+        $data = [];
+        if(userHasBranch()){
+            $data = ['branch_id'=>[
+                getBranchId()
+            ]];
+        }
+        if(userHasWarehouse()){
+            $data['warehouse_id'] = [
+                getWarehouseId()
+            ];
+        }
+        foreach($this->formNames as $key => $form){
+            $this->{$key.'Form'}->fill($data);
+        }
+
+    }
     public function itemLossForm(Form $form): Form
     {
         return $form
@@ -87,7 +112,7 @@ class Inventory extends Component  implements HasForms
         $branch = json_encode($data['branch_id']??[]);
         $warehouse = json_encode($data['warehouse_id']??[]);
         $item = json_encode($data['item_id']??[]);
-        return $this->redirect(ItemRepairs::getUrl(['branch'=>$branch,'warehouse'=>$warehouse,'item'=>$item,'from'=>$from,'to'=>$to,'type'=>$data['type']??'all']));
+        return $this->redirect(\App\Filament\Pages\Reports\Inventory\ItemLoss::getUrl(['from'=>$from,'to'=>$to,'branch'=>$branch,'warehouse'=>$warehouse,'item'=>$item]));
     }
     public function itemsForm(Form $form): Form{
         return $form
@@ -126,6 +151,12 @@ class Inventory extends Component  implements HasForms
     public function itemsSearch(){
         $this->itemsForm->getState();
         $data = $this->items;
+        $from = $data['from']?? 'all';
+        $to = $data['to']?? 'all';
+        $categories = json_encode($data['category_id']??[]);
+        $units = json_encode($data['unit_id']??[]);
+        $brands = json_encode($data['brand_id']??[]);
+        return $this->redirect(\App\Filament\Pages\Reports\Inventory\Item::getUrl(['from'=>$from,'to'=>$to,'categories'=>$categories,'units'=>$units,'brands'=>$brands]));
     }
     public function brandsForm(Form $form): Form{
         return $form->schema([
@@ -159,6 +190,10 @@ class Inventory extends Component  implements HasForms
     public function brandsSearch(){
         $this->brandsForm->getState();
         $data = $this->brands;
+        $branch = json_encode($data['branch_id']??[]);
+        $warehouse = json_encode($data['warehouse_id']??[]);
+        $status = $data['status'] ?? 'all';
+        return $this->redirect(\App\Filament\Pages\Reports\Inventory\Details::getUrl(['status'=>$status,'branch'=>$branch,'warehouse'=>$warehouse,'type'=>'brands']));
     }
     public function categoriesForm(Form $form): Form{
         return $form->schema([
@@ -192,6 +227,10 @@ class Inventory extends Component  implements HasForms
     public function categoriesSearch(){
         $this->categoriesForm->getState();
         $data = $this->categories;
+        $branch = json_encode($data['branch_id']??[]);
+        $warehouse = json_encode($data['warehouse_id']??[]);
+        $status = $data['status'] ?? 'all';
+        return $this->redirect(\App\Filament\Pages\Reports\Inventory\Details::getUrl(['status'=>$status,'branch'=>$branch,'warehouse'=>$warehouse,'type'=>'categories']));
     }
     public function unitsForm(Form $form): Form{
         return $form->schema([
@@ -225,19 +264,16 @@ class Inventory extends Component  implements HasForms
     public function unitsSearch(){
         $this->unitsForm->getState();
         $data = $this->units;
+        $branch = json_encode($data['branch_id']??[]);
+        $warehouse = json_encode($data['warehouse_id']??[]);
+        $status = $data['status'] ?? 'all';
+        return $this->redirect(\App\Filament\Pages\Reports\Inventory\Details::getUrl(['status'=>$status,'branch'=>$branch,'warehouse'=>$warehouse,'type'=>'units']));
     }
 
 
-    public function mount()
-    {
-        $this->itemLossForm->fill();
-        $this->itemsForm->fill();
-        $this->brandsForm->fill();
-        $this->categoriesForm->fill();
-        $this->unitsForm->fill();
-    }
+
     public function render()
     {
-        return view('livewire.reports.inventory');
+        return view('livewire.reports.reports-content');
     }
 }

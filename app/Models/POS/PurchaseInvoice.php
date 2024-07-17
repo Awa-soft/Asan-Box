@@ -83,6 +83,10 @@ class PurchaseInvoice extends Model
 
     return $sumBaseExpenses;
 }
+public function getDueAmountAttribute():float
+{
+    return ($this->getTotalAttribute() + $this->getTotalExpensesAttribute()) - $this->paid_amount;
+}
 
 public function getNetTotalAttribute(){
     return $this->total - $this->total_expenses;

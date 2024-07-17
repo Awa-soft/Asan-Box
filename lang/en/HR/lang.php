@@ -38,15 +38,15 @@ return [
     ],
     "reports"=>[
         "label"=>"Human Resources",
-        "activity"=>"Employee Activity",
-        "leave"=>"Employee Leaves",
-        'note'=>'Employee Notes',
-        "identity_types"=>"Identity Types",
-        "positions"=>"Positions",
-        "team"=>"Teams",
-        "employees"=>"Employees",
-        'employees_summary'=>"Employees Summary",
-        'employees_salary'=>"Employees Salary"
+        "hrEmployeeActivity"=>"Employee Activity Report",
+        "hrEmployeeLeave"=>"Employee Leaves Report",
+        'hrEmployeeNote'=>'Employee Notes Report',
+        "hrIdentityTypes"=>"Identity Types Report",
+        "hrPositions"=>"Positions Report",
+        "hrTeams"=>"Teams Report",
+        "hrEmployees"=>"Employees Report",
+        'hrEmployeesSummary'=>"Employees Summary Report",
+        'hrEmployeesSalary'=>"Employees Salary Report"
     ]
 
 

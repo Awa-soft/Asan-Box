@@ -2,9 +2,12 @@
 
 namespace App\Livewire\Reports;
 
+use App\Filament\Pages\Logistic\ItemTransaction;
 use App\Filament\Pages\Reports\Logistic\Branch;
 use App\Filament\Pages\Reports\Logistic\ItemTransactions;
 use App\Filament\Pages\Reports\Logistic\WareHouse;
+use App\Filament\Resources\Logistic\BranchResource;
+use App\Filament\Resources\Logistic\WarehouseResource;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Concerns\InteractsWithForms;
@@ -15,28 +18,34 @@ use Livewire\Component;
 class Logistic extends Component implements HasForms
 {
     use InteractsWithForms;
+    public $logisticBranch,$logisticWarehouseData,$logisticItemTransaction;
 
-
+    public $localizationFolder = 'Logistic';
+    public $formNames = [
+        'logisticBranches' => BranchResource::class,
+        'logisticWarehouse' => WarehouseResource::class,
+        'logisticItemTransactions' =>ItemTransaction::class,
+    ];
     public function mount()
     {
-        $this->logisticBranches->fill();
-        $this->logisticWarehouse->fill();
-        $this->logisticItemTransactions->fill();
+        foreach($this->formNames as $key => $form){
+            $this->{$key.'Form'}->fill();
+        }
+
     }
 
-    public $logisticBranch,$logisticWarehouseData;
     protected function getForms(): array
     {
-        return [
-            'logisticBranches',
-            'logisticWarehouse',
-            'logisticItemTransactions'
-        ];
+        $forms = [];
+        foreach($this->formNames as $key => $form){
+            $forms[] = $key.'Form';
+        }
+        return $forms;
     }
 
 //    Logistics
 //     Branches
-    public function logisticBranches(Form $form):Form{
+    public function logisticBranchesForm(Form $form):Form{
         return $form->schema([
             Select::make('branches')
                 ->multiple()
@@ -55,16 +64,16 @@ class Logistic extends Component implements HasForms
                 ->live()
         ])->statePath('logisticBranch');
     }
-    public function searchLogisticBranch()
+    public function logisticBranchesSearch()
     {
-        $data =  $this->logisticBranches->getState();
+        $data =  $this->logisticBranchesForm->getState();
         $attr = json_encode($data['attr']??[]);
         $branches = json_encode($data['branches']??[]);
         return $this->redirect(Branch::getUrl(['attr' => $attr,'branches'=>$branches]));
     }
 
 //    Warehouses
-    public function logisticWarehouse(Form $form):Form{
+    public function logisticWarehouseForm(Form $form):Form{
         return $form->schema([
             Select::make('warehouse')
                 ->multiple()
@@ -82,18 +91,17 @@ class Logistic extends Component implements HasForms
                 ->live()
         ])->statePath('logisticWarehouseData');
     }
-    public function searchLogisticWarehouse()
+    public function logisticWarehouseSearch()
     {
-        $data =  $this->logisticWarehouse->getState();
+        $data =  $this->logisticWarehouseForm->getState();
         $attr = json_encode($data['attr']??[]);
         $warehouses = json_encode($data['warehouse']??[]);
 
         return $this->redirect(WareHouse::getUrl(['attr' => $attr,'warehouses'=>$warehouses]));
     }
 
-    public $logisticItemTransaction = [];
     //    Transactions
-    public function logisticItemTransactions(Form $form):Form{
+    public function logisticItemTransactionsForm(Form $form):Form{
         return $form->schema([
             DatePicker::make('from')
                 ->label(trans('lang.from')),
@@ -109,9 +117,9 @@ class Logistic extends Component implements HasForms
                 ->options(\App\Models\Logistic\Branch::all()->pluck('name','id')),
         ])->statePath('logisticItemTransaction')->columns(2);
     }
-    public function searchLogisticItemTransactions()
+    public function logisticItemTransactionsSearch()
     {
-        $data =  $this->logisticItemTransactions->getState();
+        $data =  $this->logisticItemTransactionsForm->getState();
         $warehouses = json_encode($data['warehouse']??[]);
         $branches = json_encode($data['branches']??[]);
         $from = $data['from']?? 'all';
@@ -120,6 +128,6 @@ class Logistic extends Component implements HasForms
     }
     public function render()
     {
-        return view('livewire.reports.logistic');
+        return view('livewire.reports.reports-content');
     }
 }

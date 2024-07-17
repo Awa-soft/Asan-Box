@@ -10,7 +10,7 @@
                     @if($type == 'purchase')
                         {{trans('POS/lang.reports.purchase')}}
                     @else
-                        {{trans('POS/lang.reports.purchase_return')}}
+                        {{trans('POS/lang.reports.purchaseReturn')}}
                     @endif
                 </div>
                 <div class="text-end">

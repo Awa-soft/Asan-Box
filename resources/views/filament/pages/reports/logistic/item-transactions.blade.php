@@ -7,7 +7,7 @@
                     <b>{{trans('lang.from')}}:</b> {{$from}}
                 </div>
                 <div class="font-bold text-center">
-                    {{trans('Logistic/lang.reports.itemTransactions')}}
+                    {{trans('Logistic/lang.reports.logisticItemTransactions')}}
                 </div>
                 <div class="text-end">
                     <b>{{trans('lang.to')}}:</b> {{$to}}

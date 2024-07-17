@@ -10,7 +10,7 @@
                     @if($type == 'sale')
                         {{trans('POS/lang.reports.sale_codes')}}
                     @else
-                        {{trans('POS/lang.reports.sale_'.$type.'_codes')}}
+                        {{trans('POS/lang.reports.sale'.ucfirst($type).'Codes')}}
                     @endif
                 </div>
                 <div class="text-end">

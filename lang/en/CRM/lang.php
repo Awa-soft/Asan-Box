@@ -28,5 +28,14 @@ return [
     "partnership"=>[
         'plural_label'=>'Partnerships',
         'singular_label'=>'Partnership'
+    ],
+    'reports'=>[
+        'customers'=>'Customers Report',
+        'vendors'=>'Vendors Report',
+        'both'=>'Both Reports',
+        'bourses'=>'Bourses Report',
+        'partnership'=>'Partnership Report',
+        'partnerAccount'=>'Partner Account Report',
+        'partners'=>'Partners Report'
     ]
 ];

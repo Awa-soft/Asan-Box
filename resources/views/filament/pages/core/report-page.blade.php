@@ -46,6 +46,13 @@
             {{ trans('Inventory/lang.group_label') }}
         </x-filament::tabs.item>
         @endPackage
+        @Package('CRM')
+        <x-filament::tabs.item
+            :active="$activeTab === 'CRM'"
+            wire:click="$set('activeTab', 'CRM')">
+            {{ trans('CRM/lang.group_label') }}
+        </x-filament::tabs.item>
+        @endPackage
     </x-filament::tabs>
        @switch($activeTab)
            @case('Inventory')
@@ -68,7 +75,12 @@
             <livewire:reports.p-o-s/>
             @endPackage
             @break
-           @break
+        @case('CRM')
+            @Package('CRM')
+            <livewire:reports.c-r-m/>
+            @endPackage
+            @break
+            @break
        @endswitch
 
     </x-filament-panels::page>

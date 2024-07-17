@@ -189,6 +189,14 @@ return [
     'name_ckb'=>"Kurdish Name",
     'installment_max'=>"Installment Max",
     'installment_min'=>"Installment Min",
-    'codes'=>"Codes"
+    'codes'=>"Codes",
+    'installment'=>'Installment',
+    'inactive'=>'Inactive',
+    'all'=>'All',
+    'only_debt'=>"Only those with debt",
+    'without_debt'=>'Only those without debt ',
+    'reached_maximum_debt'=>'Reached maximum Debt',
+    'not_reached_maximum_debt'=>'Not reached maximum Debt',
+    'profit'=>'Profit'
 
 ];

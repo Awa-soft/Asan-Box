@@ -10,7 +10,7 @@
                     @if($type == 'sale')
                         {{trans('POS/lang.reports.sale')}}
                     @else
-                        {{trans('POS/lang.reports.sale_'.$type)}}
+                        {{trans('POS/lang.reports.sale'.ucfirst($type))}}
                     @endif
 
                 </div>
@@ -45,12 +45,25 @@
                 <th>
                     {{trans('lang.discount')}}
                 </th>
+                @if($type == 'sale' || $type == 'installment')
+                <th>
+                    {{trans('lang.profit')}}
+                </th>
+                @endif
                 <th>
                     {{trans('lang.date')}}
                 </th>
             </tr>
         @endslot
         @slot('tableContent')
+            <style>
+                td{
+                    font-size: 8pt !important;
+                }
+                th{
+                    font-size: 10pt !important;
+                }
+            </style>
             @foreach($data as $dt)
                 <tr>
                     <td>
@@ -77,10 +90,15 @@
                     <td>
                         {{number_format($dt->discount)}} %
                     </td>
+                    @if($type == 'sale' || $type == 'installment')
+                        <td>
+                            {{(number_format($dt->profit,getBaseCurrency()->decimal))}} {{getBaseCurrency()->symbol}}
+                        </td>
+                    @endif
+
                     <td>
                         {{($dt->date)}}
                     </td>
-
                 </tr>
             @endforeach
         @endslot
@@ -90,7 +108,6 @@
                     {{trans('lang.total')}}
                 </th>
                 <th colspan="2">
-
                 </th>
                 <th>
                     {{number_format($data->sum('items_count'))}}
@@ -102,6 +119,9 @@
                 <th>
                     {{number_format($data->avg('discount'),2)}} %
                 </th>
+                @if($type == 'sale' || $type == 'installment')
+                    <th> {{number_format($data->sum('profit'))}} {{getBaseCurrency()->symbol}}</th>
+                @endif
                 <th></th>
             </tr>
             @foreach($currencies as $currency)
@@ -110,24 +130,25 @@
                         {{$currency->name}}
                     </th>
                     <th colspan="4">
-
                     </th>
-
                     <th>
                         {{number_format($data->where('currency_id',$currency->id)->sum('total'),$currency->decimal)}} {{$currency->symbol}}
                     </th>
                     <th>
                         {{number_format($data->where('currency_id',$currency->id)->sum('paid_amount'),$currency->decimal)}} {{$currency->symbol}}
-                    </th>
-                    <th colspan="2">
+                    </th>@if($type == 'sale' || $type == 'installment')
+                        <th colspan="3">
+                        </th>
+                             @else
+                        <th colspan="2">
+                        </th>
+                    @endif
 
-                    </th>
 
                 </tr>
             @endforeach
         @endslot
         @slot('pageFooter')
-
         @endslot
     </x-core.report-content>
 

@@ -7,7 +7,7 @@
                     {!! trans('lang.statement_date', ['from' => $hire_date_from, 'to' => $hire_date_to!='all'?$hire_date_to:now()->format('Y/m/d') ]) !!}
                 </div>
                 <div class="font-bold">
-                    {{trans('HR/lang.reports.employees')}}
+                    {{trans('HR/lang.reports.hrEmployees')}}
                 </div>
                 <div>
                 </div>

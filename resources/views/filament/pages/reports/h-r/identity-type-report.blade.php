@@ -5,7 +5,7 @@
             <div class="grid grid-cols-3 items-center p-2 rounded-md align-middle border ">
 
                 <div class="font-bold col-start-2">
-                    {{trans('HR/lang.reports.identity_types')}}
+                    {{trans('HR/lang.reports.hrIdentityTypes')}}
                 </div>
                 <div>
                 </div>
