@@ -8,9 +8,9 @@
                 </div>
                 <div class="font-bold text-center">
                     @if($type == 'purchase')
-                        {{trans('POS/lang.reports.purchase_codes')}}
+                        {{trans('POS/lang.reports.purchaseCodes')}}
                     @else
-                        {{trans('POS/lang.reports.purchase_return_codes')}}
+                        {{trans('POS/lang.reports.purchaseReturnCodes')}}
                     @endif
                 </div>
                 <div class="text-end">

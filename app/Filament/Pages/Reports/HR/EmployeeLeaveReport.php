@@ -18,6 +18,7 @@ class EmployeeLeaveReport extends Page
     protected static string $view = 'filament.pages.reports.h-r.employee-leave-report';
     protected static ?string $slug = 'reports/hr/employee-leave/{from}/{to}/{employee_id}/{attr}/{status}';
     protected static bool $shouldRegisterNavigation = false;
+    protected static ?string $title = '';
 
     public  $from,$to,$employee_id,$attr = [],$status=[];
     protected function getHeaderActions(): array

@@ -1,5 +1,5 @@
 <div>
-    <div class="grid items-start grid-cols-1 gap-4 xl:grid-cols-4">
+    <div class="grid items-start grid-cols-1 gap-6 xl:grid-cols-2">
 {{--        purchase--}}
 
         <x-filament::section>
@@ -116,8 +116,8 @@
                 </x-filament::button>
             </x-slot>
         </x-filament::section>
-
 {{--        Sale--}}
+        <div class="col-span-full gap-6 grid grid-cols-1 xl:grid-cols-3">
         <x-filament::section>
             <x-slot name="icon">
                 @svg(\App\Filament\Resources\POS\SaleInvoiceResource::getNavigationIcon(),'w-8 text-primary-500' )
@@ -161,17 +161,58 @@
             </x-slot>
         </x-filament::section>
 {{--        Sale Return --}}
-
+            <x-filament::section>
+                <x-slot name="icon">
+                    @svg(\App\Filament\Resources\POS\SaleInvoiceResource::getNavigationIcon(),'w-8 text-primary-500' )
+                </x-slot>
+                <x-slot name="heading">
+                    {{ trans('POS/lang.reports.sale_return') }}
+                </x-slot>
+                {{$this->saleReturnForm}}
+                <x-slot name="footerActions">
+                    <x-filament::button type="submit" wire:click="searchSaleReturn()" class="mt-5">
+                        {{ trans('filament-actions::modal.actions.submit.label') }}
+                    </x-filament::button>
+                </x-slot>
+            </x-filament::section>
+            <x-filament::section>
+                <x-slot name="icon">
+                    @svg(\App\Filament\Resources\Inventory\ItemResource::getNavigationIcon(),'w-8 text-primary-500' )
+                </x-slot>
+                <x-slot name="heading">
+                    {{ trans('POS/lang.reports.sale_return_items') }}
+                </x-slot>
+                {{$this->saleReturnItemsForm}}
+                <x-slot name="footerActions">
+                    <x-filament::button type="submit" wire:click="searchSaleReturnItems()" class="mt-5">
+                        {{ trans('filament-actions::modal.actions.submit.label') }}
+                    </x-filament::button>
+                </x-slot>
+            </x-filament::section>
+            <x-filament::section>
+                <x-slot name="icon">
+                    @svg(\App\Filament\Resources\Logistic\ItemTransactionCodeResource::getNavigationIcon(),'w-8 text-primary-500' )
+                </x-slot>
+                <x-slot name="heading">
+                    {{ trans('POS/lang.reports.sale_return_codes') }}
+                </x-slot>
+                {{$this->saleReturnCodesForm}}
+                <x-slot name="footerActions">
+                    <x-filament::button type="submit" wire:click="searchSaleReturnCodes()" class="mt-5">
+                        {{ trans('filament-actions::modal.actions.submit.label') }}
+                    </x-filament::button>
+                </x-slot>
+            </x-filament::section>
         <x-filament::section>
             <x-slot name="icon">
                 @svg(\App\Filament\Resources\POS\SaleInvoiceResource::getNavigationIcon(),'w-8 text-primary-500' )
             </x-slot>
             <x-slot name="heading">
-                {{ trans('POS/lang.reports.sale_return') }}
+                {{ trans('POS/lang.reports.sale_installment') }}
             </x-slot>
-            {{$this->saleReturnForm}}
+            {{$this->saleInstallmentForm}}
             <x-slot name="footerActions">
-                <x-filament::button type="submit" wire:click="searchSaleReturn()" class="mt-5">
+                <x-filament::button type="submit" wire:click="searchSaleInstallment()" class="mt-5">
                     {{ trans('filament-actions::modal.actions.submit.label') }}
                 </x-filament::button>
             </x-slot>
@@ -181,11 +222,11 @@
                 @svg(\App\Filament\Resources\Inventory\ItemResource::getNavigationIcon(),'w-8 text-primary-500' )
             </x-slot>
             <x-slot name="heading">
-                {{ trans('POS/lang.reports.sale_return_items') }}
+                {{ trans('POS/lang.reports.sale_installment_items') }}
             </x-slot>
-            {{$this->saleReturnItemsForm}}
+            {{$this->saleInstallmentItemsForm}}
             <x-slot name="footerActions">
-                <x-filament::button type="submit" wire:click="searchSaleReturnItems()" class="mt-5">
+                <x-filament::button type="submit" wire:click="searchSaleInstallmentItems()" class="mt-5">
                     {{ trans('filament-actions::modal.actions.submit.label') }}
                 </x-filament::button>
             </x-slot>
@@ -195,14 +236,34 @@
                 @svg(\App\Filament\Resources\Logistic\ItemTransactionCodeResource::getNavigationIcon(),'w-8 text-primary-500' )
             </x-slot>
             <x-slot name="heading">
-                {{ trans('POS/lang.reports.sale_return_codes') }}
+                {{ trans('POS/lang.reports.sale_installment_codes') }}
             </x-slot>
-            {{$this->saleReturnCodesForm}}
+            {{$this->saleInstallmentCodesForm}}
             <x-slot name="footerActions">
-                <x-filament::button type="submit" wire:click="searchSaleReturnCodes()" class="mt-5">
+                <x-filament::button type="submit" wire:click="searchSaleInstallmentCodes()" class="mt-5">
                     {{ trans('filament-actions::modal.actions.submit.label') }}
                 </x-filament::button>
             </x-slot>
         </x-filament::section>
+
+
+    </div>
+        <div class="col-span-full">
+            <x-filament::section>
+                <x-slot name="icon">
+                    @svg(\App\Filament\Resources\POS\ItemRepairResource::getNavigationIcon(),'w-8 text-primary-500' )
+                </x-slot>
+                <x-slot name="heading">
+                    {{ trans('POS/lang.reports.itemRepairs') }}
+                </x-slot>
+                {{$this->itemRepairsForm}}
+                <x-slot name="footerActions">
+                    <x-filament::button type="submit" wire:click="searchItemRepairs()" class="mt-5">
+                        {{ trans('filament-actions::modal.actions.submit.label') }}
+                    </x-filament::button>
+                </x-slot>
+            </x-filament::section>
+        </div>
+
     </div>
     </div>

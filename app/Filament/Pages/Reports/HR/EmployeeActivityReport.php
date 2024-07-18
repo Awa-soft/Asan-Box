@@ -18,6 +18,7 @@ class EmployeeActivityReport extends Page
     protected static string $view = 'filament.pages.reports.h-r.employee-activity-report';
     protected static ?string $slug = 'reports/hr/employee-activity/{from}/{to}/{employee_id}/{attr}/{types}';
     protected static bool $shouldRegisterNavigation = false;
+    protected static ?string $title = '';
 
     public  $from,$to,$employee_id,$attr = [],$types=[], $data;
     protected function getHeaderActions(): array

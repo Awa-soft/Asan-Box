@@ -4,7 +4,7 @@
         @slot('pageHeader')
             <div class="grid items-center grid-cols-1 p-2 align-middle border rounded-md ">
                 <div class="font-bold text-center">
-                    {{trans('Logistic/lang.reports.branch')}}
+                    {{trans('Logistic/lang.reports.logisticBranches')}}
                 </div>
             </div>
         @endslot
@@ -107,7 +107,7 @@
                                      @foreach($dt->items as $item)
                                          <tr>
                                              <td>
-                                                 {{$item->{'name_'.\Illuminate\Support\Facades\App::getLocale()}}}
+                                                 {{$item->{'name_'.\Illuminate\Support\Facades\App::getLocale()} }}
                                              </td>
                                              <td>
                                                  {{$item->brand->name}}

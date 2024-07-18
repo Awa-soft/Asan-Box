@@ -13,6 +13,7 @@ class EmployeeSalary extends Page
 
     protected static string $view = 'filament.pages.reports.h-r.employee-salary';
 
+    protected static ?string $title = '';
 
     protected static ?string $slug = 'reports/hr/employees-summary/{employee_id}/{from}/{to}//{attr}';
     protected static bool $shouldRegisterNavigation = false;

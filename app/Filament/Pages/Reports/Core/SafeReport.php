@@ -15,6 +15,8 @@ class SafeReport extends Page implements HasForms
     protected static ?string $navigationIcon = 'heroicon-o-document-text';
     protected static bool $shouldRegisterNavigation = false;
     protected static ?string $slug = 'reports/core/safe/{from}/{to}';
+    protected static ?string $title = '';
+
     public ?array $SafeData =[];
     public $from, $to;
     public $currencies;

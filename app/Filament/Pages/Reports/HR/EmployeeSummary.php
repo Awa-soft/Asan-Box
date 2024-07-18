@@ -17,6 +17,7 @@ class EmployeeSummary extends Page
     use WithPagination;
     protected static ?string $slug = 'reports/hr/employees-summary/{from}/{to}//{attr}';
     protected static bool $shouldRegisterNavigation = false;
+    protected static ?string $title = '';
 
     public  $attr = [],$to = 'all', $from = 'all';
 

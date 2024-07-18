@@ -6,7 +6,7 @@
                     {!! trans('lang.statement_date', ['from' => $from, 'to' => $to!='all'?$to:now()->format('Y/m/d') ]) !!}
                 </div>
                 <div class="font-bold">
-                    {{trans('HR/lang.reports.employees_salary')}}
+                    {{trans('HR/lang.reports.hrEmployeesSalary')}}
                 </div>
                 <div>
                 </div>

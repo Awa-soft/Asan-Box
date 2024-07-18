@@ -21,6 +21,7 @@ class EmployeeReport extends Page
     use WithPagination;
     protected static ?string $slug = 'reports/hr/employees/{hire_date_from}/{hire_date_to}/{teams}/{positions}/{attr}';
     protected static bool $shouldRegisterNavigation = false;
+    protected static ?string $title = '';
 
     public  $attr = [],$hire_date_to = 'all', $hire_date_from = 'all',$positions = [],$teams = [];
     protected function getHeaderActions(): array

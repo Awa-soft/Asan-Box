@@ -70,7 +70,10 @@ class SaleInvoice extends Model
         }
         return $total;
     }
-
+    public function getDueAmountAttribute():float
+    {
+        return ($this->getTotalAttribute()) - $this->paid_amount;
+    }
 
     public function getProfitAttribute():float
     {

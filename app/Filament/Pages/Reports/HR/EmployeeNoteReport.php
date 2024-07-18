@@ -20,6 +20,7 @@ class EmployeeNoteReport extends Page
     use WithPagination;
     protected static ?string $slug = 'reports/hr/employee-notes/{from}/{to}/{employee_id}/{attr}';
     protected static bool $shouldRegisterNavigation = false;
+    protected static ?string $title = '';
 
     public  $from,$to,$employee_id,$attr = [];
     protected function getHeaderActions(): array

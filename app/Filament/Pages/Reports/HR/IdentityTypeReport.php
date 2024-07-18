@@ -20,6 +20,7 @@ class IdentityTypeReport extends Page
     use WithPagination;
     protected static ?string $slug = 'reports/hr/employee-identity-types/{attr}';
     protected static bool $shouldRegisterNavigation = false;
+    protected static ?string $title = '';
 
     public  $attr = [];
     protected function getHeaderActions(): array
