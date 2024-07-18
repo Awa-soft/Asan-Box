@@ -34,8 +34,6 @@ class CRM extends Component  implements HasForms
         'bourses'=>BourseResource::class,
         'partnership'=>PartnershipResource::class,
         'partnerAccount'=>PartnerAccountResource::class,
-        'partners'=>PartnerResource::class,
-
     ];
 
     public function mount()
@@ -191,28 +189,15 @@ class CRM extends Component  implements HasForms
         ])->columns(1)->statePath('boursesData');
     }
 
-//    partners
-    public function partnersSearch(){
-        $this->partnersForm->getState();
-        $data = $this->partnersData;
-    }
-    public function partnersForm(Form $form): Form{
-        return $form->schema([
-            Select::make('branch_id')
-                ->hidden(userHasBranch())
-                ->multiple()
-                ->live()
-                ->label(trans('lang.branches'))
-                ->options(Branch::all()->pluck('name','id'))
-                ->searchable()
-                ->preload(),
 
-        ])->statePath('partnersData');
-    }
     // partnership
     public function partnershipSearch(){
         $this->partnershipForm->getState();
         $data = $this->partnershipData;
+        $from = $data['from']?? 'all';
+        $to = $data['to']?? 'all';
+        $branch = json_encode($data['branch_id']??[]);
+        return $this->redirect(\App\Filament\Pages\Reports\CRM\PartnerShip::getUrl(['branch'=>$branch,'from'=>$from,'to'=>$to]));
     }
     public function partnershipForm(Form $form): Form{
         return $form->schema([
@@ -235,6 +220,9 @@ class CRM extends Component  implements HasForms
     public function partnerAccountSearch(){
         $this->partnerAccountForm->getState();
         $data = $this->partnerAccountData;
+        $partner = json_encode($data['partner_id']??[]);
+        $partnerShip = json_encode($data['partnership_id']??[]);
+        return $this->redirect(\App\Filament\Pages\Reports\CRM\PartnerAccount::getUrl(['partner'=>$partner,'partnerShip'=>$partnerShip]));
     }
     public function partnerAccountForm(Form $form): Form{
         return $form
@@ -262,7 +250,7 @@ class CRM extends Component  implements HasForms
                     ->preload()
                     ->preload()
                     ->multiple(),
-        ])->statePath('partnerAccountData');
+        ])->columns(userHasBranch()?2:1)->statePath('partnerAccountData');
     }
 
     public function render()
