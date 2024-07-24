@@ -98,6 +98,12 @@ class PurchaseInvoiceResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('vendor_invoice')
                     ->searchable(),
+                     Tables\Columns\TextColumn::make('codes')
+                     ->state(fn($record)=>$record->codes_count)
+                    ->searchable(),
+                       Tables\Columns\TextColumn::make('item')
+                       ->state(fn($record)=>$record->items_count)
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('date')
                     ->date("Y-m-d")
                     ->sortable(),

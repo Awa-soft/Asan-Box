@@ -89,7 +89,7 @@
                                         @endif
                                     </div>
                                 </td>
-                                <td class="py-2 text-center">{{ $data['name_'.\Illuminate\Support\Facades\App::getLocale()] }}</td>
+                                <td class="py-2 text-center"> {{ $data['brand'] }} - {{ $data['name_'.\Illuminate\Support\Facades\App::getLocale()] }}</td>
                                 <td class="py-2 text-center">
                                     <x-filament::input.wrapper>
                                         <x-filament::input.select
@@ -170,8 +170,8 @@
                             <div class="flex items-center justify-between w-full">
                                 <div class="flex flex-col ">
                                     <p class="text-base font-bold">{{ $item->{'name_'.\Illuminate\Support\Facades\App::getLocale()} }} </p>
-                                    <p class="text-xs font-light">{{ $item->brand->name }} -
-                                        {{ $item->category->name }}</p>
+                                   <p class="text-xs font-light">{{ $item->brand?$item->brand->name:null }} -
+                                        {{ $item->category?$item->category->name:null }}</p>
                                 </div>
                                 <div class="flex flex-col gap-2">
                                     <p class="text-xs font-light">{{ number_format($item->min_price, 2) }} $</p>

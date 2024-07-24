@@ -190,6 +190,7 @@ class SalePage extends Page implements HasForms
             $record['quantity'] = 1;
             $record['gift'] = 0;
             $record['codes'] = [];
+                        $record['brand'] = Item::find($record['id'])?->brand?->name;
             $this->tableData[] = $record;
         }
 
@@ -212,7 +213,8 @@ class SalePage extends Page implements HasForms
         $records = $this->items->whereIn('id', $this->selected)->map(function ($record) {
             return [
                 'id' => $record->id,
-                'name' => $record->{'name_'.\Illuminate\Support\Facades\App::getLocale()},
+                'name_'.\Illuminate\Support\Facades\App::getLocale() => $record->{'name_'.\Illuminate\Support\Facades\App::getLocale()},
+                                'brand'=>$record->brand->name,
                 'price' => $record->price,
                 'quantity' => 1,
                 "type" => 'single',

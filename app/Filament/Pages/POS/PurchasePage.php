@@ -165,6 +165,7 @@ class PurchasePage extends Page implements HasForms
             $this->selected[] = $record['id'];
         }
         else{
+            $record['brand'] = Item::find($record['id'])?->brand?->name;
             $record['price'] = $record['max_price'];
             $record['currency_id'] = 1;
             $record['type'] = 'single';
@@ -192,7 +193,8 @@ class PurchasePage extends Page implements HasForms
         $records = $this->items->whereIn('id', $this->selected)->map(function ($record) {
             return [
                 'id' => $record->id,
-                'name' => $record->{'name_'.\Illuminate\Support\Facades\App::getLocale()},
+                'name_'.\Illuminate\Support\Facades\App::getLocale() => $record->{'name_'.\Illuminate\Support\Facades\App::getLocale()},
+                'brand'=>$record->brand->name,
                 'price' => $record->price,
                 'quantity' => 1,
                 "type" => 'single',

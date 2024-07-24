@@ -88,16 +88,16 @@ class SaleInvoiceResource extends Resource
                     }),
                 Tables\Columns\TextColumn::make('invoice_number')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('vendor_invoice')
+                       Tables\Columns\TextColumn::make('codes')
+                     ->state(fn($record)=>$record->codes_count)
+                    ->searchable(),
+                       Tables\Columns\TextColumn::make('item')
+                       ->state(fn($record)=>$record->items_count)
                     ->searchable(),
                 Tables\Columns\TextColumn::make('date')
                     ->date("Y-m-d")
                     ->sortable(),
                 Tables\Columns\TextColumn::make('total')
-                    ->sortable()
-                    ->numeric(fn($record)=>$record->currency->decimal)
-                    ->suffix(fn($record)=>" ".$record->currency->symbol),
-                Tables\Columns\TextColumn::make('total_expenses')
                     ->sortable()
                     ->numeric(fn($record)=>$record->currency->decimal)
                     ->suffix(fn($record)=>" ".$record->currency->symbol),

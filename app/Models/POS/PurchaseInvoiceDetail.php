@@ -15,7 +15,7 @@ class PurchaseInvoiceDetail extends Model
 
 
     public function invoice() :BelongsTo{
-        return $this->belongsTo(PurchaseInvoice::class, 'purchase_invoice_id');
+        return $this->belongsTo(PurchaseInvoice::class, 'purchase_invoice_id')->withTrashed();
     }
     public function item(): BelongsTo
     {

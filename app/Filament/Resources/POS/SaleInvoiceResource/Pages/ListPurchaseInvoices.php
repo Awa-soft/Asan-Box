@@ -2,7 +2,7 @@
 
 namespace App\Filament\Resources\POS\SaleInvoiceResource\Pages;
 
-use App\Filament\Pages\POS\PurchasePage;
+use App\Filament\Pages\POS\SalePage;
 use App\Filament\Resources\POS\SaleInvoiceResource;
 use App\Traits\Core\TranslatableForm;
 use App\Traits\Core\TranslatableTable;
@@ -19,7 +19,7 @@ class ListPurchaseInvoices extends ListRecords
     {
         return [
             Actions\CreateAction::make()
-            ->url(PurchasePage::getUrl()),
+            ->url(SalePage::getUrl()),
         ];
     }
 }

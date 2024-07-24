@@ -127,7 +127,6 @@ class ItemResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('cost')
                     ->label(trans("lang.cost"))
-                    ->searchable()
                     ->numeric(getBaseCurrency()->decimal)
                     ->suffix(
                         " ".getBaseCurrency()->symbol
