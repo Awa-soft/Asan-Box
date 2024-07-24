@@ -28,7 +28,9 @@ class NotesRelationManager extends RelationManager
 
     public function table(Table $table): Table
     {
-        return $table
+       return $table
+            ->recordUrl('')
+            ->defaultSort('id','desc')
             ->recordTitleAttribute('employee.name')
             ->columns([
                 static::Column(),

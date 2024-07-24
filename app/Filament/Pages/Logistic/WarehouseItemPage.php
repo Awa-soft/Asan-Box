@@ -46,7 +46,7 @@ class WarehouseItemPage extends Page implements HasForms
 
     public function mount()
     {
-        $this->warehouses = Warehouse::all();
+        $this->warehouses = Warehouse::where('status',1)->get();
         $this->items = Item::all();
         $this->transfered['data'] = [];
     }
@@ -102,6 +102,12 @@ class WarehouseItemPage extends Page implements HasForms
                 $this->selectedTransfered = [];
             }
         }
+    }
+
+    public function resetSelections()
+    {
+        $this->selected= [];
+        $this->selectedTransfered=[];
     }
 
     public function transfer(){

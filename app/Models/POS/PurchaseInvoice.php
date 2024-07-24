@@ -88,6 +88,14 @@ public function getDueAmountAttribute():float
     return ($this->getTotalAttribute() + $this->getTotalExpensesAttribute()) - $this->paid_amount;
 }
 
+public function vendor():BelongsTo
+{
+    return $this->belongsTo(Contact::class,'contact_id')->withTrashed();
+}
+public function contactPhone():BelongsTo
+{
+    return $this->vendor();
+}
 public function getNetTotalAttribute(){
     return $this->total - $this->total_expenses;
 }

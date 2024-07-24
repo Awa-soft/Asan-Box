@@ -16,6 +16,7 @@ use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Forms\Form;
 use Filament\Pages\Page;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 use Filament\Notifications\Notification;
@@ -79,8 +80,9 @@ class SalePage extends Page implements HasForms
                     ->searchable(),
                 Select::make('contact_id')
                     ->label(trans("CRM/lang.vendor.singular_label"))
-                    ->relationship("contact", "name_".\Illuminate\Support\Facades\App::getLocale())
-                    ->preload()
+                    ->relationship('contact', 'name_'.App::getLocale(),modifyQueryUsing: function ($query){
+                        return $query->where('status',1);
+                    })                    ->preload()
                     ->searchable()
                     ->required(),
                 TextInput::make("paid_amount")

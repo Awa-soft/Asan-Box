@@ -66,7 +66,9 @@ class PartnerAccountResource extends Resource
 
     public static function table(Table $table): Table
     {
-        return $table
+       return $table
+            ->recordUrl('')
+            ->defaultSort('id','desc')
             ->columns([
                 Tables\Columns\TextColumn::make('partnership.name')
                     ->label(trans('CRM/lang.partnership.singular_label'))

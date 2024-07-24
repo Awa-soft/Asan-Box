@@ -11,4 +11,8 @@ class CreateEmployee extends CreateRecord
 {
     protected static string $resource = EmployeeResource::class;
     use \App\Traits\Core\TranslatableForm;
+    protected function getRedirectUrl(): string
+    {
+        return $this->getResource()::getUrl('index');
+    }
 }

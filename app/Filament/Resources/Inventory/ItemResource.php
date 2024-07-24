@@ -56,44 +56,60 @@ class ItemResource extends Resource
                     ->hidden(),
                 Forms\Components\Select::make('category_id')
                     ->label(trans("lang.category"))
-                    ->relationship('category', 'name')
+                    ->relationship('category', 'name',modifyQueryUsing: function($query){
+                        return $query->where('status','0');
+                })
                     ->preload()
                     ->searchable()
                     ->createOptionForm(fn (Form $form) => CategoryResource::form($form))
                     ->required(),
                 Forms\Components\Select::make('unit_id')
                     ->label(trans("lang.unit"))
-                    ->relationship('unit', 'name')
+                    ->relationship('unit', 'name',modifyQueryUsing: function($query){
+                        return $query->where('status','0');
+                    })
                     ->preload()
                     ->searchable()
                     ->createOptionForm(fn (Form $form) => CategoryResource::form($form))
                     ->required(),
                 Forms\Components\Select::make('brand_id')
-                    ->relationship('brand', 'name')
+                    ->relationship('brand', 'name',modifyQueryUsing: function($query){
+                        return $query->where('status','0');
+                    })
                     ->label(trans("lang.brand"))
                     ->required()
                     ->createOptionForm(fn (Form $form) => BrandResource::form($form))
                     ->preload()
                     ->searchable(),
                 Forms\Components\TextInput::make('min_price')
+                    ->suffix(getBaseCurrency()->symbol)
                     ->label(trans("lang.min_price"))
                     ->required()
                     ->numeric()
                     ->default(0.00),
                 Forms\Components\TextInput::make('max_price')
                     ->label(trans("lang.max_price"))
+                    ->suffix(getBaseCurrency()->symbol)
                     ->required()
                     ->numeric()
                     ->default(0.00),
                 Forms\Components\TextInput::make('installment_min')
                     ->required()
+                    ->suffix(getBaseCurrency()->symbol)
                     ->numeric()
                     ->default(0.00),
                 Forms\Components\TextInput::make('installment_max')
                     ->required()
+                    ->suffix(getBaseCurrency()->symbol)
                     ->numeric()
                     ->default(0.00),
                 Forms\Components\TextInput::make('discount')
+                    ->label(trans("lang.benifit_ratio"))
+                    ->required()
+                    ->prefix("%")
+                    ->numeric()
+                    ->default(0),
+                Forms\Components\TextInput::make('benifit_ratio')
                     ->label(trans("lang.benifit_ratio"))
                     ->required()
                     ->prefix("%")
@@ -110,7 +126,11 @@ class ItemResource extends Resource
 
     public static function table(Table $table): Table
     {
-        return $table
+       return $table
+            ->recordUrl('')
+            ->defaultSort('id','desc')
+
+
             ->columns([
                 Tables\Columns\ImageColumn::make('image')
                     ->circular()
@@ -127,7 +147,7 @@ class ItemResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('cost')
                     ->label(trans("lang.cost"))
-                    ->numeric(getBaseCurrency()->decimal)
+                    ->numeric(getBaseCurrency()->decimal,locale: 'en')
                     ->suffix(
                         " ".getBaseCurrency()->symbol
                     ),
@@ -155,7 +175,7 @@ class ItemResource extends Resource
                     })
                     ->label(trans("lang.price")),
                 Tables\Columns\TextColumn::make('benifit_ratio')
-                    ->numeric()
+                    ->numeric(2,locale:'en')
                     ->label(trans("lang.benifit_ratio"))
                     ->suffix("%")
                     ->toggleable(isToggledHiddenByDefault: true)
@@ -198,12 +218,6 @@ class ItemResource extends Resource
             ]);
     }
 
-    public static function getRelations(): array
-    {
-        return [
-            CodesRelationManager::class
-        ];
-    }
 
     public static function getPages(): array
     {

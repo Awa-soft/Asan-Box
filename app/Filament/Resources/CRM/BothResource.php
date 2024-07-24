@@ -82,17 +82,31 @@ class BothResource extends Resource
 
     public static function table(Table $table): Table
     {
-        return $table
+       return $table
+            ->recordUrl('')
+            ->defaultSort('id','desc')
             ->columns([
-                static::Column(),
                 Tables\Columns\ImageColumn::make('image')
                     ->circular()
                     ->label(trans("lang.image"))
                     ->size(100),
-
+                static::Column(),
                 Tables\Columns\TextColumn::make('name_'.App::getLocale())
                     ->label(trans("lang.name"))
                     ->searchable(),
+                Tables\Columns\TextColumn::make('balance')
+                    ->label(trans('lang.balance'))
+                    ->suffix(' '. getBaseCurrency()->symbol)
+                    ->summarize([
+                        Tables\Columns\Summarizers\Summarizer::make('balance')
+                            ->label(trans('lang.total'))
+                            ->using(function ($query){
+                                $ids = $query->pluck('id');
+                                return number_format(Contact::whereIn('id',$ids)
+                                    ->get()->sum('balance'),getBaseCurrency()->decimal) . ' ' . getBaseCurrency()->symbol;
+                            })
+                    ])
+                    ->numeric(getBaseCurrency()->decimal,locale:'en'),
                 Tables\Columns\TextColumn::make('phone')
                     ->label(trans("lang.phone"))
                     ->searchable(),
@@ -106,12 +120,12 @@ class BothResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('payment_duration')
                     ->label(trans("lang.payment_duration"))
-                    ->numeric()
+                    ->numeric(locale:'en')
                     ->suffix(trans('lang.day'))
                     ->sortable(),
                 Tables\Columns\TextColumn::make('max_debt')
                     ->label(trans("lang.max_debt"))
-                    ->numeric()
+                    ->numeric(locale:'en')
                     ->suffix(fn($record) => " ".getBaseCurrency()->symbol)
                     ->sortable(),
                 Tables\Columns\ToggleColumn::make('status')

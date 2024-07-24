@@ -10,7 +10,10 @@ class EditEmployeeNote extends EditRecord
 {
    protected static string $resource = EmployeeNoteResource::class;
    use \App\Traits\Core\TranslatableForm;
-
+    protected function getRedirectUrl(): string
+    {
+        return $this->getResource()::getUrl('index');
+    }
     protected function getHeaderActions(): array
     {
         return [

@@ -15,7 +15,11 @@ use Filament\Forms\Contracts\HasForms;
 use Filament\Forms\Form;
 use Filament\Notifications\Notification;
 use Filament\Pages\Page;
+use Illuminate\Contracts\Support\Htmlable;
+use Illuminate\Contracts\View\View;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
+use Livewire\WithPagination;
 
 class ItemTransaction extends Page implements HasForms
 {
@@ -25,6 +29,11 @@ class ItemTransaction extends Page implements HasForms
     {
         return trans('Logistic/lang.item_transaction.plural_label');
     }
+    public function getTitle(): string|Htmlable
+    {
+        return trans('Logistic/lang.item_transaction.plural_label');
+    }
+
     public  function getHeading(): string
     {
         return "";
@@ -34,7 +43,7 @@ class ItemTransaction extends Page implements HasForms
         return trans('Logistic/lang.group_label');
     }
 
-    public $currencies, $items, $tableData = [], $selected = [], $categories = [], $selectedCategories = [], $codes = [], $key, $multipleSelect = false;
+    public $currencies, $tableData = [], $selected = [], $categories = [], $selectedCategories = [], $codes = [], $key, $multipleSelect = false;
     public ?array $invoiceData = [];
     protected function getForms(): array
     {
@@ -86,7 +95,6 @@ class ItemTransaction extends Page implements HasForms
     public function mount()
     {
         $this->categories = Category::all();
-        $this->items = Item::all();
         $this->invoiceForm->fill();
 
     }
@@ -124,7 +132,7 @@ class ItemTransaction extends Page implements HasForms
 
     public function addToTable()
     {
-        $records = $this->items->whereIn('id', $this->selected)->map(function ($record) {
+        $records = Item::all()->whereIn('id', $this->selected)->map(function ($record) {
             return [
                 'id' => $record->id,
                 'name' => $record->{'name_'.\Illuminate\Support\Facades\App::getLocale()},
@@ -142,7 +150,7 @@ class ItemTransaction extends Page implements HasForms
 
     public function selectAll()
     {
-        $this->selected = $this->items->pluck('id')->toArray();
+        $this->selected = Item::all()->pluck('id')->toArray();
     }
 
     public function deselectAll()
@@ -230,6 +238,25 @@ class ItemTransaction extends Page implements HasForms
             DB::rollBack();
             return;
         }
+    }
+
+    public $name = [];
+    use WithPagination;
+    public function updatedName(){
+        $this->resetPage();
+    }
+    public function render(): View
+    {
+        $items = Item::when($this->name != null,function ($query){
+            return $query->where('name_'.App::getLocale(), 'like', '%'.$this->name.'%');
+        })->orderBy('id','desc')
+            ->paginate(20);
+        return view($this->getView(), compact('items'))
+            ->layout($this->getLayout(), [
+                'livewire' => $this,
+                'maxContentWidth' => $this->getMaxContentWidth(),
+                ...$this->getLayoutData(),
+            ]);
     }
 
     public function removeCode($key){

@@ -11,5 +11,8 @@ use Filament\Resources\Pages\CreateRecord;
 class CreatePartnerAccount extends CreateRecord
 {
     protected static string $resource = PartnerAccountResource::class;
-
+    protected function getRedirectUrl(): string
+    {
+        return $this->getResource()::getUrl('index');
+    }
 }

@@ -101,13 +101,13 @@ class AdminPanelProvider extends PanelProvider
                     'sm' => 2,
                 ]),
 
-                // FilamentDeveloperLoginsPlugin::make()
-                // ->enabled()
-                // ->users([
-                //     'Developer' => 'developer@admin.com',
-                //     'Main Branch' => 'main@branch.com',
-                //     'Main Warehouse' => 'main@warehouse.com',
-                // ])
+                 FilamentDeveloperLoginsPlugin::make()
+                 ->enabled()
+                 ->users([
+                     'Developer' => 'developer@admin.com',
+                     'Main Branch' => 'main@branch.com',
+                     'Main Warehouse' => 'main@warehouse.com',
+                 ])
             ])
 
             ->viteTheme('resources/css/filament/admin/theme.css')

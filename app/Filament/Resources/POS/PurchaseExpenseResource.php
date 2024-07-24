@@ -61,7 +61,9 @@ class PurchaseExpenseResource extends Resource
 
     public static function table(Table $table): Table
     {
-        return $table
+       return $table
+            ->recordUrl('')
+            ->defaultSort('id','desc')
             ->columns([
                 Tables\Columns\TextColumn::make('invoice.invoice_number')
                     ->numeric()
@@ -71,7 +73,7 @@ class PurchaseExpenseResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('amount')
                 ->sortable()
-                ->numeric(fn($record)=>$record->currency->decimal)
+                ->numeric(fn($record)=>$record->currency->decimal,locale:'en')
                 ->suffix(fn($record)=>" ".$record->currency->symbol),
 
 

@@ -20,7 +20,6 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 class CategoryResource extends Resource
 {
     use \App\Traits\Core\HasSoftDeletes;
-    use OwnerableTrait;
     use HasTranslatableResource;
 
     protected static ?string $model = Category::class;
@@ -44,16 +43,18 @@ class CategoryResource extends Resource
                     ->label(trans('lang.status'))
                     ->required()
                     ->visible(fn ($operation) => $operation == "edit"),
-                    static::Field(),
             ])
             ->columns(1);
     }
 
     public static function table(Table $table): Table
     {
-        return $table
+       return $table
+            ->recordUrl('')
+            ->defaultSort('id','desc')
+
+
             ->columns([
-                static::Column(),
                 Tables\Columns\TextColumn::make('name')
                     ->label(trans('lang.name'))
                     ->searchable(),

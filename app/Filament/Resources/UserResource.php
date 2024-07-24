@@ -70,7 +70,9 @@ class UserResource extends Resource
 
     public static function table(Table $table): Table
     {
-        return $table
+       return $table
+            ->recordUrl('')
+            ->defaultSort('id','desc')
                     ->modifyQueryUsing(fn($query)=>$query->where('id','>',1))
             ->columns([
                 static::Column(),

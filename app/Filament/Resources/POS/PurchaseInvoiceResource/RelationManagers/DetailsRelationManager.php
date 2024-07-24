@@ -16,6 +16,7 @@ use Filament\Tables;
 use Filament\Tables\Actions\Action;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Facades\App;
 
@@ -23,21 +24,29 @@ class DetailsRelationManager extends RelationManager
 {
     protected static string $relationship = 'details';
 
+    public static function getTitle(Model $ownerRecord, string $pageClass): string
+    {
+        return trans('lang.details');
+    }
+
     public function form(Form $form): Form
     {
         return $form
             ->schema([
                 Forms\Components\Select::make('item_id')
+                    ->label(trans('Inventory/lang.item.singular_label'))
                     ->relationship('item', 'name_'.App::getLocale())
                     ->preload()
                     ->searchable()
                     ->required(),
                 Forms\Components\Select::make('currency_id')
+                    ->label(trans('lang.currency'))
                     ->relationship('currency', 'symbol')
                     ->preload()
                     ->searchable()
                     ->required(),
                 Forms\Components\TextInput::make('price')
+                    ->label(trans('lang.price'))
                     ->numeric()
                     ->required(),
             ])
@@ -46,11 +55,12 @@ class DetailsRelationManager extends RelationManager
 
     public function table(Table $table): Table
     {
-        return $table
+       return $table
+            ->recordUrl('')
+            ->defaultSort('id','desc')
+            ->modelLabel(trans('lang.details'))
             ->recordTitleAttribute('id')
             ->columns([
-                Tables\Columns\TextColumn::make('invoice.name')
-                    ->label(trans('lang.invoice')),
                 Tables\Columns\TextColumn::make('item.name_'.\Illuminate\Support\Facades\App::getLocale())
                     ->label(trans('Inventory/lang.item.singular_label')),
                 Tables\Columns\TextColumn::make('quantity')
@@ -65,25 +75,21 @@ class DetailsRelationManager extends RelationManager
                     ->label(trans('lang.gift')),
                 Tables\Columns\TextColumn::make('price')
                     ->label(trans('lang.price'))
-                    ->numeric(fn ($record) => $record->currency->decimal)
+                    ->numeric(fn ($record) => $record->currency->decimal,locale: 'en')
                     ->suffix(fn ($record) => " " . $record->currency->symbol),
-            ])
-            ->filters([
-                //
             ])
             ->headerActions([
                 Tables\Actions\CreateAction::make()
                     ->modalWidth('lg'),
             ])
             ->actions([
-                Tables\Actions\EditAction::make()
-                    ->modalWidth('lg'),
-                Tables\Actions\DeleteAction::make(),
                 Action::make("codes")
+                    ->label(trans('lang.codes'))
                     ->form(function ($record) {
                         return [
                             TableRepeater::make('codes')
-                            ->relationship()
+                                ->label(trans('lang.codes'))
+                                ->relationship()
                                 ->columns(3)
                                 ->default($record->codes->toArray())
                                 ->headers([
@@ -92,7 +98,7 @@ class DetailsRelationManager extends RelationManager
                                 ])
                                 ->schema([
                                     Hidden::make('item_id')
-                                    ->default($record->item_id),
+                                        ->default($record->item_id),
                                     TextInput::make("code")
                                         ->required(),
                                     Select::make("gift")
@@ -104,7 +110,11 @@ class DetailsRelationManager extends RelationManager
                                         ->required(),
                                 ])
                         ];
-                    })
+                    }),
+                Tables\Actions\EditAction::make()
+                    ->modalWidth('lg'),
+                Tables\Actions\DeleteAction::make(),
+
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

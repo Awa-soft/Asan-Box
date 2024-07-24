@@ -189,7 +189,9 @@ class Finance extends Component   implements HasForms
                     ->searchable()
                     ->preload(),
                 \Filament\Forms\Components\Select::make('contact_id')
-                    ->relationship('contact', 'name_'.App::getLocale())
+                    ->relationship('contact', 'name_'.App::getLocale(),modifyQueryUsing: function ($query){
+                        return $query->where('status',1);
+                    })
                     ->multiple()
                     ->searchable()
                     ->preload(),

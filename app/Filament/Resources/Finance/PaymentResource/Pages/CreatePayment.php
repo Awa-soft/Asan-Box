@@ -10,5 +10,9 @@ use Filament\Resources\Pages\CreateRecord;
 class CreatePayment extends CreateRecord
 {
     use TranslatableForm;
+    protected function getRedirectUrl(): string
+    {
+        return $this->getResource()::getUrl('index');
+    }
     protected static string $resource = PaymentResource::class;
 }

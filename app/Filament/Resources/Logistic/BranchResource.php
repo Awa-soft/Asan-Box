@@ -91,7 +91,9 @@ class BranchResource extends Resource
 
     public static function table(Table $table): Table
     {
-        return $table
+       return $table
+            ->recordUrl('')
+            ->defaultSort('id','desc')
             ->columns([
                 Tables\Columns\ImageColumn::make('image')
 ->circular()
@@ -154,12 +156,13 @@ class BranchResource extends Resource
             ])
             ->actions([
                     Tables\Actions\Action::make('warehouses')
+                        ->label(trans('lang.warehouses'))
                         ->modalWidth("lg")
                         ->form(
                             function ($record) {
                                 return [
                                     Select::make('warehouses')
-                                        ->options(Warehouse::all()->pluck("name", "id")->toArray())
+                                        ->options(Warehouse::where('status',1)->get()->pluck("name", "id")->toArray())
                                         ->default($record->warehouses->pluck("id")->toArray())
                                         ->label(trans('lang.warehouses'))
                                         ->searchable()

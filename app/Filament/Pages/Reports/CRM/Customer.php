@@ -44,7 +44,7 @@ class Customer extends Page
             if($status == 'yes'){
                 return $q->where('status',1);
             }else{
-                return $q->where('status',0);
+                return $q->where('status',1);
             }
         })->debt($debt)->maxDebt($maximumDebt);
         if($type == 'customer'){

@@ -39,7 +39,9 @@ class PaymentResource extends Resource
                 ->searchable()
                 ->preload(),
             Forms\Components\Select::make('contact_id')
-                ->relationship('contact', 'name_'.App::getLocale())
+                ->relationship('contact', 'name_'.App::getLocale(),modifyQueryUsing: function ($query){
+                    return $query->where('status',1);
+                })
                 ->getOptionLabelFromRecordUsing(fn($record)=> "$record->name_ckb - $record->phone" )
                 ->required()
                 ->searchable()
@@ -81,7 +83,9 @@ class PaymentResource extends Resource
 
     public static function table(Table $table): Table
     {
-        return $table
+       return $table
+            ->recordUrl('')
+            ->defaultSort('id','desc')
             ->columns([
                 Tables\Columns\TextColumn::make('contact.name_'.\Illuminate\Support\Facades\App::getLocale())
                     ->numeric()

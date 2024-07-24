@@ -10,7 +10,11 @@ class EditItem extends EditRecord
 {
 
     protected static string $resource = ItemResource::class;
-
+    use \App\Traits\Core\TranslatableForm;
+    protected function getRedirectUrl(): string
+    {
+        return $this->getResource()::getUrl('index');
+    }
     protected function getHeaderActions(): array
     {
         return [

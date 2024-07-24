@@ -18,7 +18,6 @@ return new class extends Migration
             $table->string("name");
             $table->boolean("status")->default(1);
             $table->string("logo")->nullable();
-            $table->morphs("ownerable");
             $table->softDeletes();
             $table->timestamps();
         });

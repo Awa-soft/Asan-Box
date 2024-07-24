@@ -4,6 +4,7 @@ namespace App\Filament\Pages\POS;
 
 use App\Models\Inventory\Category;
 use App\Models\Inventory\Item;
+use App\Models\POS\PurchaseDetailCode;
 use App\Models\POS\PurchaseInvoice;
 use App\Models\Settings\Currency;
 use App\Traits\Core\OwnerableTrait;
@@ -19,12 +20,16 @@ use Filament\Forms\Contracts\HasForms;
 use Filament\Forms\Form;
 use Filament\Notifications\Notification;
 use Filament\Pages\Page;
+use Illuminate\Contracts\View\View;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
+use Livewire\WithPagination;
 
 class PurchasePage extends Page implements HasForms
 {
     use HasPageShield, InteractsWithForms;
     protected static ?string $navigationIcon = 'iconpark-buy';
+    public $name;
     public static function getNavigationLabel(): string
     {
         return trans('POS/lang.purchase_pos.singular_label');
@@ -38,7 +43,7 @@ class PurchasePage extends Page implements HasForms
         return trans('POS/lang.group_label');
     }
 
-    public $currencies, $items, $tableData = [], $selected = [], $categories = [], $selectedCategories = [], $codes = [], $key, $multipleSelect = false;
+    public $currencies,  $tableData = [], $selected = [], $categories = [], $selectedCategories = [], $codes = [], $key, $multipleSelect = false;
     public ?array $invoiceData = [];
     protected function getForms(): array
     {
@@ -66,7 +71,7 @@ class PurchasePage extends Page implements HasForms
                     ->readOnly()
                     ->default(PurchaseInvoice::InvoiceNumber()),
                 TextInput::make('vendor_invoice')
-                ->label(trans("lang.vendor_invoice")),
+                ->label(trans("lang.vendor_invoice_number")),
                 DateTimePicker::make('date')
                     ->default(now())
                     ->required()
@@ -80,7 +85,9 @@ class PurchasePage extends Page implements HasForms
                 ->searchable(),
                 Select::make('contact_id')
                 ->label(trans("CRM/lang.vendor.singular_label"))
-                    ->relationship("contact", "name_".\Illuminate\Support\Facades\App::getLocale())
+                    ->relationship('contact', 'name_'.App::getLocale(),modifyQueryUsing: function ($query){
+                        return $query->where('status',1);
+                    })
                     ->preload()
                     ->searchable()
                     ->required(),
@@ -137,10 +144,33 @@ class PurchasePage extends Page implements HasForms
     {
         $this->currencies = Currency::all();
         $this->categories = Category::all();
-        $this->items = Item::all();
+
         $this->invoiceForm->fill();
         $this->invoiceForm2->fill();
+    }
+    use WithPagination;
+    public function updatingName()
+    {
+        $this->resetPage();
+    }
 
+
+    public function render(): View
+    {
+        $items = Item::when($this->selectedCategories, function ($q) {
+            return $q->whereHas('category', function ($q) {
+                return $q->whereIn('id', $this->selectedCategories);
+            });
+        })->when($this->name != null,function ($query){
+            return $query->where('name_'.App::getLocale(), 'like', '%'.$this->name.'%');
+        })->orderBy('id','desc')
+            ->paginate(20);
+        return view($this->getView(), compact('items'))
+            ->layout($this->getLayout(), [
+                'livewire' => $this,
+                'maxContentWidth' => $this->getMaxContentWidth(),
+                ...$this->getLayoutData(),
+            ]);
     }
 
     public function addToSelect($record)
@@ -165,8 +195,9 @@ class PurchasePage extends Page implements HasForms
             $this->selected[] = $record['id'];
         }
         else{
+
             $record['brand'] = Item::find($record['id'])?->brand?->name;
-            $record['price'] = $record['max_price'];
+            $record['price'] = Item::find($record['id'])?->purchases()->latest()->first()?->price ?? 0;
             $record['currency_id'] = 1;
             $record['type'] = 'single';
             $record['quantity'] = 1;
@@ -190,12 +221,12 @@ class PurchasePage extends Page implements HasForms
 
     public function addToTable()
     {
-        $records = $this->items->whereIn('id', $this->selected)->map(function ($record) {
+        $records = Item::whereIn('id', $this->selected)->get()->map(function ($record) {
             return [
                 'id' => $record->id,
                 'name_'.\Illuminate\Support\Facades\App::getLocale() => $record->{'name_'.\Illuminate\Support\Facades\App::getLocale()},
                 'brand'=>$record->brand->name,
-                'price' => $record->price,
+                'price' => $record->purchases()->latest()->first()->price ?? 0,
                 'quantity' => 1,
                 "type" => 'single',
                 "image" => $record->image,
@@ -213,7 +244,7 @@ class PurchasePage extends Page implements HasForms
 
     public function selectAll()
     {
-        $this->selected = $this->items->pluck('id')->toArray();
+        $this->selected = Item::all()->pluck('id')->toArray();
     }
 
     public function deselectAll()
@@ -234,11 +265,7 @@ class PurchasePage extends Page implements HasForms
             return;
         }
         $this->selectedCategories[] = $record;
-        $this->items = Item::when($this->selectedCategories, function ($q) {
-            return $q->whereHas('category', function ($q) {
-                return $q->whereIn('id', $this->selectedCategories);
-            });
-        })->get();
+
     }
 
 
@@ -250,16 +277,39 @@ class PurchasePage extends Page implements HasForms
     }
 
     public function addToCode(){
-        if (count($this->codes) > 0) {
-            if (isset($this->codes['gift'])) {
-                $this->codes['gift'] =1 ;
-            }
-            else{
-                $this->codes['gift'] =0 ;
-            }
-            $this->tableData[$this->key]['codes'][] = $this->codes;
-            $this->codes = [];
-        }
+       $purchaseInvoice = PurchaseInvoice::where('type','purchase')->whereHas('details',function ($query){
+           return $query->whereHas('codes',function ($query){
+               return $query->when(count($this->codes) > 0,function ($q){
+                   return  $q->where('code',$this->codes['code']);
+               });
+           });
+       });
+       $purchaseReturn =  PurchaseInvoice::where('type','!=','purchase')->whereHas('details',function ($query){
+           return $query->whereHas('codes',function ($query){
+               return $query->when(count($this->codes) > 0,function ($q){
+                   return  $q->where('code',$this->codes['code']);
+               });
+           });
+       });
+       if(!($purchaseInvoice->count()>0 && $purchaseReturn->count() == 0)){
+           if (count($this->codes) > 0) {
+               if (isset($this->codes['gift'])) {
+                   $this->codes['gift'] =1 ;
+               }
+               else{
+                   $this->codes['gift'] =0 ;
+               }
+               $this->tableData[$this->key]['codes'][] = $this->codes;
+               $this->codes = [];
+           }
+       }else{
+           $this->codes = [];
+           Notification::make('error')
+                ->title(trans('lang.codeIsAvaliable'))
+                ->danger()
+               ->send();
+       }
+
 
         $this->refreshTable();
     }

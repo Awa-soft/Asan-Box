@@ -66,6 +66,7 @@ return [
     "yes" => "Yes",
     "no" => "No",
     "vendor_invoice" => "Vendor Invoice",
+    "vendor_invoice_number" => "Vendor Invoice Number",
     "date" => "Date",
     "balance" => "Balance",
     "total" => "Total",
@@ -197,6 +198,9 @@ return [
     'without_debt'=>'Only those without debt ',
     'reached_maximum_debt'=>'Reached maximum Debt',
     'not_reached_maximum_debt'=>'Not reached maximum Debt',
-    'profit'=>'Profit'
+    'profit'=>'Profit',
+    'codeIsAvaliable'=>"The Code Purchased in Another Invoice",
+    'vendor'=>'Vendor',
+    'contactPhone'=>'Phone Number'
 
 ];

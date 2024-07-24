@@ -43,7 +43,7 @@ class BranchItemPage extends Page implements HasForms
     public $branchs, $items, $transfered=[], $selected = [], $selectedTransfered =[], $selectedBranch;
 
     public function mount(){
-        $this->branchs = Branch::all();
+        $this->branchs = Branch::where('status',1)->get();
         $this->items = Item::all();
         $this->transfered['data'] = [];
     }
@@ -77,6 +77,11 @@ class BranchItemPage extends Page implements HasForms
        }
     }
 
+    public function resetSelections()
+    {
+        $this->selected= [];
+        $this->selectedTransfered=[];
+    }
     public function selectAll($type, $operation){
         if($type == "items"){
             if($operation == "select"){
@@ -121,6 +126,7 @@ class BranchItemPage extends Page implements HasForms
         }
         $this->updated();
     }
+
 
     public function transferBack()
     {

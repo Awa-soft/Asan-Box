@@ -74,7 +74,9 @@ class SaleInvoiceResource extends Resource
 
     public static function table(Table $table): Table
     {
-        return $table
+       return $table
+            ->recordUrl('')
+            ->defaultSort('id','desc')
             ->columns([
              Tables\Columns\TextColumn::make('branch.name')
                     ->numeric()
@@ -99,10 +101,10 @@ class SaleInvoiceResource extends Resource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('total')
                     ->sortable()
-                    ->numeric(fn($record)=>$record->currency->decimal)
+                    ->numeric(fn($record)=>$record->currency->decimal,locale:'en')
                     ->suffix(fn($record)=>" ".$record->currency->symbol),
                 Tables\Columns\TextColumn::make('paid_amount')
-                    ->numeric(fn($record)=>$record->currency->decimal)
+                    ->numeric(fn($record)=>$record->currency->decimal,locale:'en')
                     ->sortable()
                     ->suffix(fn($record)=>" ".$record->currency->symbol),
                 Tables\Columns\TextColumn::make('contact.name_'.\Illuminate\Support\Facades\App::getLocale())

@@ -11,7 +11,10 @@ class EditPurchaseExpense extends EditRecord
 {
     protected static string $resource = PurchaseExpenseResource::class;
     use TranslatableForm;
-
+    protected function getRedirectUrl(): string
+    {
+        return $this->getResource()::getUrl('index');
+    }
     protected function getHeaderActions(): array
     {
         return [

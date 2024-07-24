@@ -9,6 +9,9 @@ use Filament\Resources\Pages\CreateRecord;
 class CreateBoth extends CreateRecord
 {
     use \App\Traits\Core\TranslatableForm;
-
+    protected function getRedirectUrl(): string
+    {
+        return $this->getResource()::getUrl('index');
+    }
     protected static string $resource = BothResource::class;
 }

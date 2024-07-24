@@ -45,8 +45,10 @@ class PartnershipResource extends Resource
 
     public static function table(Table $table): Table
     {
-        return $table
+       return $table
+            ->recordUrl('')
             ->defaultSort('id','desc')
+
             ->columns([
                 Tables\Columns\TextColumn::make('start_date')
                     ->date('Y-m-d')

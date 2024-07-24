@@ -18,7 +18,6 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 class UnitResource extends Resource
 {
     use \App\Traits\Core\HasSoftDeletes;
-    use OwnerableTrait;
     use HasTranslatableResource;
 
     protected static ?string $model = Unit::class;
@@ -31,6 +30,8 @@ class UnitResource extends Resource
     public static function form(Form $form): Form
     {
         return $form
+
+
             ->schema([
                 Forms\Components\TextInput::make('name')
                     ->label(trans('lang.name'))
@@ -42,16 +43,16 @@ class UnitResource extends Resource
                     ->label(trans('lang.status'))
                     ->required()
                     ->visible(fn ($operation) => $operation == "edit"),
-                    static::Field(),
             ])
             ->columns(1);
     }
 
     public static function table(Table $table): Table
     {
-        return $table
+       return $table
+            ->recordUrl('')
+            ->defaultSort('id','desc')
             ->columns([
-                static::Column(),
                 Tables\Columns\TextColumn::make('name')
                     ->label(trans('lang.name'))
                     ->searchable(),

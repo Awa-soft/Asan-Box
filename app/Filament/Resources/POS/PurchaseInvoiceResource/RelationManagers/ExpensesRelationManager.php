@@ -12,12 +12,16 @@ use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class ExpensesRelationManager extends RelationManager
 {
     protected static string $relationship = 'expenses';
-
+    public static function getTitle(Model $ownerRecord, string $pageClass): string
+    {
+        return trans('lang.expense');
+    }
     public function form(Form $form): Form
     {
         return $form
@@ -48,32 +52,38 @@ class ExpensesRelationManager extends RelationManager
 
     public function table(Table $table): Table
     {
-        return $table
+       return $table
+            ->recordUrl('')
+            ->defaultSort('id','desc')
+            ->modelLabel(trans('lang.expense'))
             ->recordTitleAttribute('id')
             ->columns([
             Tables\Columns\TextColumn::make('title')
+                ->label(trans('lang.title'))
                 ->searchable(),
             Tables\Columns\TextColumn::make('amount')
             ->sortable()
+                ->label(trans('lang.amount'))
 
-            ->numeric(fn($record)=>$record->currency->decimal)
+            ->numeric(fn($record)=>$record->currency->decimal,locale:'en')
             ->suffix(fn($record)=>" ".$record->currency->symbol),
 
 
             Tables\Columns\TextColumn::make('note')
+                ->label(trans('lang.note'))
                 ->searchable(),
-            Tables\Columns\TextColumn::make('attachement')
-                ->searchable()
-                ->toggleable(isToggledHiddenByDefault: true),
             Tables\Columns\TextColumn::make('user.name')
+                ->label(trans('lang.user'))
                 ->numeric()
                 ->sortable()
                 ->toggleable(isToggledHiddenByDefault: true),
             Tables\Columns\TextColumn::make('created_at')
+                ->label(trans('lang.created_at'))
                 ->dateTime()
                 ->sortable()
                 ->toggleable(isToggledHiddenByDefault: true),
             Tables\Columns\TextColumn::make('updated_at')
+                ->label(trans('lang.updated_at'))
                 ->dateTime()
                 ->sortable()
                 ->toggleable(isToggledHiddenByDefault: true),

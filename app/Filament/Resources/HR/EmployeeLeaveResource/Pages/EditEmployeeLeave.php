@@ -11,7 +11,10 @@ class EditEmployeeLeave extends EditRecord
 {
     protected static string $resource = EmployeeLeaveResource::class;
     use \App\Traits\Core\TranslatableForm;
-
+    protected function getRedirectUrl(): string
+    {
+        return $this->getResource()::getUrl('index');
+    }
     protected function getHeaderActions(): array
     {
         return [

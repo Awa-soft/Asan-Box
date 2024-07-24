@@ -20,7 +20,6 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 class BrandResource extends Resource
 {
     use \App\Traits\Core\HasSoftDeletes;
-    use OwnerableTrait;
     use HasTranslatableResource;
     protected static ?string $model = Brand::class;
 
@@ -46,16 +45,19 @@ class BrandResource extends Resource
                     ->label(trans("lang.image"))
                     ->image()
                     ->directory("inventory/brands"),
-                    static::Field(),
+
             ])
             ->columns(1);
     }
 
     public static function table(Table $table): Table
     {
-        return $table
+       return $table
+            ->recordUrl('')
+            ->defaultSort('id','desc')
+
+
             ->columns([
-                static::Column(),
                 Tables\Columns\ImageColumn::make('logo')
                     ->circular()
                     ->size(80)

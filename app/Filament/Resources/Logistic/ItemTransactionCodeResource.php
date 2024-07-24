@@ -20,7 +20,9 @@ class ItemTransactionCodeResource extends Resource
 
     public static function table(Table $table): Table
     {
-        return $table
+       return $table
+            ->recordUrl('')
+            ->defaultSort('id','desc')
             ->columns([
                 Tables\Columns\TextColumn::make('itemTransactionDetail.item.name_'.App::getLocale())
                     ->label(trans('Inventory/lang.item.singular_label'))

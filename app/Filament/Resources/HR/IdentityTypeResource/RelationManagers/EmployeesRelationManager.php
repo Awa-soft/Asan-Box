@@ -29,7 +29,9 @@ class EmployeesRelationManager extends RelationManager
 
     public function table(Table $table): Table
     {
-        return $table
+       return $table
+            ->recordUrl('')
+            ->defaultSort('id','desc')
             ->recordTitleAttribute('name')
             ->columns([
                 static::Column(),

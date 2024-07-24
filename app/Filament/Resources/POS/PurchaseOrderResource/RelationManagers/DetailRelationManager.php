@@ -49,7 +49,9 @@ class DetailRelationManager extends RelationManager
 
     public function table(Table $table): Table
     {
-        return $table
+       return $table
+            ->recordUrl('')
+            ->defaultSort('id','desc')
             ->recordTitleAttribute('purchase_order_id')
             ->columns([
                 Tables\Columns\TextColumn::make('item.name_'.\Illuminate\Support\Facades\App::getLocale())

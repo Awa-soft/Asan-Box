@@ -10,7 +10,10 @@ use Filament\Resources\Pages\EditRecord;
 class EditPurchaseInvoice extends EditRecord
 {
     use TranslatableForm;
-
+    protected function getRedirectUrl(): string
+    {
+        return $this->getResource()::getUrl('index');
+    }
     protected static string $resource = SaleInvoiceResource::class;
 
     protected function getHeaderActions(): array

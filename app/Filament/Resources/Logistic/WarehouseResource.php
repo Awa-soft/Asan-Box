@@ -57,8 +57,8 @@ class WarehouseResource extends Resource
                     ->maxLength(255)
                     ->default(null),
                     Forms\Components\Toggle::make('status')
-->visible(fn($operation)=>$operation == "edit")
-->default(1)
+                    ->visible(fn($operation)=>$operation == "edit")
+                    ->default(1)
                     ->label(trans('lang.status'))
                     ->visible(fn($operation)=>$operation == "edit"),
                 // Forms\Components\Select::make('branches')
@@ -76,7 +76,9 @@ class WarehouseResource extends Resource
 
     public static function table(Table $table): Table
     {
-        return $table
+       return $table
+            ->recordUrl('')
+            ->defaultSort('id','desc')
             ->columns([
                 Tables\Columns\ImageColumn::make('image')
 ->circular()

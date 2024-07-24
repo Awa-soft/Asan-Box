@@ -10,7 +10,10 @@ class EditPosition extends EditRecord
 {
    protected static string $resource = PositionResource::class;
    use \App\Traits\Core\TranslatableForm;
-
+    protected function getRedirectUrl(): string
+    {
+        return $this->getResource()::getUrl('index');
+    }
     protected function getHeaderActions(): array
     {
         return [

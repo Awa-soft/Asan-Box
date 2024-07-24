@@ -46,7 +46,9 @@ class DetailsRelationManager extends RelationManager
 
     public function table(Table $table): Table
     {
-        return $table
+       return $table
+            ->recordUrl('')
+            ->defaultSort('id','desc')
             ->recordTitleAttribute('id')
             ->columns([
                 Tables\Columns\TextColumn::make('invoice.name')

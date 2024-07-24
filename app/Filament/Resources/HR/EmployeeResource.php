@@ -137,7 +137,9 @@ class EmployeeResource extends Resource
 
     public static function table(Table $table): Table
     {
-        return $table
+       return $table
+            ->recordUrl('')
+            ->defaultSort('id','desc')
             ->columns([
                 Tables\Columns\TextColumn::make('deleted_at')
                     ->dateTime()
