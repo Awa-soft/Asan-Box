@@ -14,6 +14,10 @@ return [
         'plural_label'=>'Packages',
         'singular_label'=>'Package',
     ],
+     'role'=>[
+        'plural_label'=>'Role',
+        'singular_label'=>'Roles',
+    ],
     "settings"=>[
         'plural_label'=>'settings',
         'singular_label'=>'settings'

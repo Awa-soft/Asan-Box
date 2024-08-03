@@ -30,6 +30,7 @@ class ItemLossResource extends Resource
     protected static ?string $model = ItemLoss::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?int $navigationSort = 12;
 
     public static function form(Form $form): Form
     {
@@ -125,8 +126,7 @@ class ItemLossResource extends Resource
                 Tables\Filters\TrashedFilter::make(),
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+
                 Tables\Actions\ForceDeleteAction::make(),
                 Tables\Actions\RestoreAction::make(),
             ])

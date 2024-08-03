@@ -63,7 +63,7 @@ class ItemRepairPolicy
      */
     public function forceDelete(User $user, ItemRepair $itemRepair): bool
     {
-        return $user->can('force_delete_p::o::s::item::repair');
+        return $user->can('{{ ForceDelete }}');
     }
 
     /**
@@ -71,7 +71,7 @@ class ItemRepairPolicy
      */
     public function forceDeleteAny(User $user): bool
     {
-        return $user->can('force_delete_any_p::o::s::item::repair');
+        return $user->can('{{ ForceDeleteAny }}');
     }
 
     /**

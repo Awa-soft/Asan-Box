@@ -27,6 +27,7 @@ class PurchaseInvoiceResource extends Resource
 {
     use \App\Traits\Core\HasSoftDeletes;
     use HasTranslatableResource;
+    protected static ?int $navigationSort = 3;
 
     protected static ?string $model = PurchaseInvoice::class;
 
@@ -108,7 +109,6 @@ class PurchaseInvoiceResource extends Resource
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('contactPhone.phone')
-                    ->numeric()
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('total')

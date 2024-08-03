@@ -24,7 +24,7 @@ class UnitResource extends Resource
 
     protected static ?string $navigationIcon = 'tabler-ruler-measure';
 
-    protected static ?int $navigationSort = 4;
+    protected static ?int $navigationSort =14;
 
 
     public static function form(Form $form): Form

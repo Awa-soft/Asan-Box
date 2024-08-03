@@ -25,6 +25,7 @@ class IdentityTypeResource extends Resource
     use HasTranslatableResource;
 
     protected static ?string $navigationIcon = 'polaris-identity-card-icon';
+    protected static ?int $navigationSort = 34;
 
 
 

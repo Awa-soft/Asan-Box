@@ -5,8 +5,12 @@
     "src": "resources/css/app.css",
     "isEntry": true
   },
+  "resources/css/filament/admin/rabar.ttf": {
+    "file": "assets/rabar-BtFo_qo2.ttf",
+    "src": "resources/css/filament/admin/rabar.ttf"
+  },
   "resources/css/filament/admin/theme.css": {
-    "file": "assets/theme-BDh3tVtB.css",
+    "file": "assets/theme-CvvBWz9E.css",
     "src": "resources/css/filament/admin/theme.css",
     "isEntry": true
   },

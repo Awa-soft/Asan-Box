@@ -63,7 +63,7 @@ class TeamPolicy
      */
     public function forceDelete(User $user, Team $team): bool
     {
-        return $user->can('force_delete_h::r::team');
+        return $user->can('{{ ForceDelete }}');
     }
 
     /**
@@ -71,7 +71,7 @@ class TeamPolicy
      */
     public function forceDeleteAny(User $user): bool
     {
-        return $user->can('force_delete_any_h::r::team');
+        return $user->can('{{ ForceDeleteAny }}');
     }
 
     /**

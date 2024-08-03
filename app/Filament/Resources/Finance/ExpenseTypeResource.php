@@ -25,6 +25,7 @@ class ExpenseTypeResource extends Resource
     use HasTranslatableResource;
     use OwnerableTrait;
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?int $navigationSort = 39;
 
     public static function form(Form $form): Form
     {

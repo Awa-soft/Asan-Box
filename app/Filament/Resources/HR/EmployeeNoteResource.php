@@ -22,6 +22,7 @@ class EmployeeNoteResource extends Resource
     use HasTranslatableResource;
 
     protected static ?string $model = EmployeeNote::class;
+    protected static ?int $navigationSort = 34;
 
     protected static ?string $navigationIcon = 'tabler-notes';
 

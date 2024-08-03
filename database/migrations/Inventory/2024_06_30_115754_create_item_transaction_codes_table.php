@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignIdFor(\App\Models\Logistic\ItemTransactionDetail::class)->constrained()->cascadeOnDelete();
             $table->string('code');
-            $table->enum('status',['pending', 'rejected', 'accepted']);
+            $table->enum('status',['pending', 'rejected', 'accepted','shipping']);
             $table->foreignIdFor(\App\Models\User::class)->constrained()->restrictOnDelete();
             $table->date('status_date');
             $table->timestamps();

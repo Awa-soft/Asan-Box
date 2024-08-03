@@ -22,7 +22,7 @@
             @foreach($data as $key=>$dt)
                 @if($key > 0)
                     <tr>
-                        <td  colspan="2" style="padding-bottom: 60px; background: white;border: none"></td>
+                        <td  colspan="2" class="bg-transparent" style="padding-bottom: 60px; border: none"></td>
                     </tr>
                     <tr>
                         <th class="bg-primary-500 text-white">

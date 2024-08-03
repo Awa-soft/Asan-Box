@@ -39,7 +39,7 @@ class SaleDetail extends Model
         return $this->codes()->get()->sum('profit');
     }
     public function getTotalAttribute(){
-     return   convertToCurrency($this->invoice->currency_id, getBaseCurrency()->id,
-            ($this->price * $this->codes()->where("gift", 0)->count()), $this->invoice->rate,  getBaseCurrency()->rate);
+        return $this->invoice->currency_id == getBaseCurrency()->id ? $this->price * $this->codes()->where("gift", 0)->count() : ($this->price * $this->codes()->where("gift", 0)->count() / ($this->invoice->rate / 100));
+
     }
 }

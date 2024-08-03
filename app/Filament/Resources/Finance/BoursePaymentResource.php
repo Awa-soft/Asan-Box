@@ -23,6 +23,7 @@ class BoursePaymentResource extends Resource
     protected static ?string $model = BoursePayment::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?int $navigationSort = 36;
 
     public static function form(Form $form): Form
     {
@@ -94,7 +95,7 @@ class BoursePaymentResource extends Resource
                     ->badge()
                     ->color(fn ($record) => $record->type == "debit" ? "danger" : 'success'),
                 Tables\Columns\TextColumn::make('amount')
-                    ->numeric(fn ($record) => $record->currency->decimal ?? 2)
+                    ->numeric(fn ($record) => $record->currency->decimal ?? 2,locale:'en')
                     ->sortable()
                     ->suffix(fn ($record) => $record->currency->symbol ?? '$'),
                 Tables\Columns\TextColumn::make('base_currency')
@@ -103,7 +104,7 @@ class BoursePaymentResource extends Resource
                     )
                     ->state(
                         function ($record) {
-                            return convertToCurrency($record->currency_id, getBaseCurrency()->id, $record->amount, $record->rate, getBaseCurrency()->rate);
+                            return $record->currency_id == getBaseCurrency()->id ? $record->amount : ($record->amount / ($record->rate/100));
                         }
                     )
                     ->suffix(
@@ -112,7 +113,7 @@ class BoursePaymentResource extends Resource
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('balance')
-                    ->numeric()
+                    ->numeric(locale:'en')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
 

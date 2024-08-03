@@ -34,10 +34,8 @@
                 {{ trans('filament-actions::modal.actions.submit.label') }}
             </div>
         </div>
-
     </div>
     <div class="grid xl:grid-cols-12 xl:h-[76vh] h-[85vh] gap-5">
-
         <div class="flex flex-col h-full gap-3 rounded-md xl:col-span-9 2xl:col-span-9">
             <div
                 class="flex w-full gap-5 p-2 border-2 border-dotted rounded-md h-maxdark:border-gray-700 border-black/50">
@@ -49,8 +47,7 @@
                 class="w-full gap-3 overflow-y-scroll border-2 border-dotted rounded-md h-5/6 max-h-[50vh] dark:border-gray-700 border-black/50">
                 <table class="w-full ">
                     <thead>
-                        <tr class="grid w-full grid-cols-9 text-sm font-semibold text-center bg-white dark:bg-gray-900">
-                            <td class="py-3 border-b border-e dark:border-gray-600">{{ trans('lang.type') }}</td>
+                        <tr class="grid w-full grid-cols-8 text-sm font-semibold text-center bg-white dark:bg-gray-900">
                             <td class="py-3 border-b border-e dark:border-gray-600">{{ trans('lang.image') }}</td>
                             <td class="py-3 border-b border-e dark:border-gray-600">
                                 {{ trans('Inventory/lang.item.singular_label') }}</td>
@@ -66,15 +63,7 @@
                     </thead>
                     <tbody>
                         @foreach ($tableData as $key => $data)
-                            <tr  class="grid items-center w-full grid-cols-9 gap-1 even:bg-gray-200">
-                                <td class="py-2 text-center ps-2">
-                                    <x-filament::input.wrapper>
-                                        <x-filament::input.select wire:model.live="tableData.{{ $key }}.type">
-                                            <option value="single">{{ trans('lang.single') }}</option>
-                                            <option value="multiple">{{ trans('lang.multiple') }}</option>
-                                        </x-filament::input.select>
-                                    </x-filament::input.wrapper>
-                                </td>
+                            <tr  class="grid items-center w-full grid-cols-8 gap-1 even:bg-gray-200 dark:even:bg-gray-700">
                                 <td class="flex justify-center item-center">
                                     <div class="py-1 text-center rounded-full w-14 h-14 aspect-square">
                                         @if ($data['image'])
@@ -179,9 +168,7 @@
             <div class="absolute bottom-0 flex flex-col w-full row-span-1 gap-3 p-2 bg-white dark:bg-gray-900">
                 {{$items->links('custom-pagination-links-view')}}
             </div>
-
         </div>
-
     </div>
 
     <x-filament::modal id="code-modal" width="xl">
@@ -198,7 +185,7 @@
                     </div>
                     <div class="flex items-center gap-3 mt-5 w-max">
                         <label for="">{{ trans('lang.gift') }}</label>
-                        <input type="checkbox" wire:model='codes.gift' value="yes" id=""
+                        <input type="checkbox" wire:model='codes.gift' class="dark:bg-transparent" value="yes" id=""
                             name="gift">
                     </div>
                 </div>
@@ -211,7 +198,7 @@
 
             <div class="flex flex-col gap-3 px-2 overflow-y-scroll h-96">
                 @forelse ($this->tableData[$this->key]['codes']??[] as $key=>$code)
-                    <div class="flex items-center justify-between w-full p-3 text-black bg-gray-200 rounded-md">
+                    <div class="flex items-center justify-between w-full p-3 text-black bg-gray-200 dark:bg-gray-700 dark:text-white rounded-md">
                         <p>{{ $code['code'] }}</p>
 
                         <div class="flex gap-3">
@@ -224,7 +211,6 @@
                                     class="p-2 text-xs text-white uppercase bg-yellow-500 rounded-md cursor-pointer">
                                     {{ trans('lang.cost') }}</p>
                             @endif
-
                             <div wire:click="removeCode('{{ $key }}')"
                                 class="w-8 duration-300 cursor-pointer text-danger-600 hover:text-danger-500">
                                 <x-heroicon-o-trash />

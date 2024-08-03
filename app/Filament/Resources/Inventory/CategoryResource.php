@@ -26,7 +26,7 @@ class CategoryResource extends Resource
 
     protected static ?string $navigationIcon = 'tabler-category-2';
 
-    protected static ?int $navigationSort = 3;
+    protected static ?int $navigationSort = 11;
 
 
     public static function form(Form $form): Form

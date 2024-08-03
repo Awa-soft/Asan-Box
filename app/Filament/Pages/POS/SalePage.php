@@ -4,6 +4,7 @@ namespace App\Filament\Pages\POS;
 
 use App\Models\Inventory\Category;
 use App\Models\Inventory\Item;
+use App\Models\Logistic\Branch;
 use App\Models\POS\SaleInvoice;
 use App\Models\Settings\Currency;
 use BezhanSalleh\FilamentShield\Traits\HasPageShield;
@@ -20,12 +21,16 @@ use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 use Filament\Notifications\Notification;
+use Livewire\WithPagination;
 
 class SalePage extends Page implements HasForms
 {
     use HasPageShield, InteractsWithForms;
     public $activeTab = 'sale_tab_1';
     protected static ?string $navigationIcon = 'mdi-point-of-sale';
+    public $name = '';
+    protected static ?int $navigationSort = 1;
+
     public static function getNavigationLabel(): string
     {
         return trans('POS/lang.sale_pos.singular_label');
@@ -39,7 +44,7 @@ class SalePage extends Page implements HasForms
         return trans('POS/lang.group_label');
     }
 
-    public $currencies, $tabs = 1, $items, $tableData = [], $selected = [], $categories = [], $selectedCategories = [], $codes = [], $key, $multipleSelect = false;
+    public $currencies, $tabs = 1, $tableData = [], $selected = [], $categories = [], $selectedCategories = [], $codes = [], $key, $multipleSelect = false;
     public ?array $invoiceData = [];
     protected function getForms(): array
     {
@@ -74,16 +79,21 @@ class SalePage extends Page implements HasForms
                 Select::make('branch_id')
                     ->label(trans("Logistic/lang.branch.singular_label"))
                     ->label(trans("Logistic/lang.branch.singular_label"))
+                    ->live()
                     ->relationship("branch", "name")
                     ->preload()
                     ->required()
                     ->searchable(),
                 Select::make('contact_id')
-                    ->label(trans("CRM/lang.vendor.singular_label"))
+                    ->label(trans("CRM/lang.customer.singular_label"))
                     ->relationship('contact', 'name_'.App::getLocale(),modifyQueryUsing: function ($query){
-                        return $query->where('status',1);
-                    })                    ->preload()
-                    ->searchable()
+                        return $query->where('status',1)->where('type','!=','Vendor');
+                    })
+                        ->getOptionLabelFromRecordUsing(function ($record) {
+                            return $record->id . ' - ' . $record->{'name_'.App::getLocale()} . ' - ' . $record->phone;
+                        })
+                    ->preload()
+                    ->searchable(['name_en','name_ar','name_ckb','phone','id'])
                     ->required(),
                 TextInput::make("paid_amount")
                     ->label(trans("lang.paid_amount"))
@@ -139,11 +149,42 @@ class SalePage extends Page implements HasForms
             ->statePath('invoiceData')
             ->columns(5);
     }
+
+    use WithPagination;
+    public function updatingName()
+    {
+        $this->resetPage();
+    }
+    public function render(): \Illuminate\Contracts\View\View
+    {
+        $variables = [
+            'tableData' => $this->tableData,
+            'selected' => $this->selected,
+            'key' => $this->key,
+            'multipleSelect' => $this->multipleSelect,
+            'invoiceData' => $this->invoiceData
+        ];
+        session()->put($this->activeTab, json_encode($variables));
+        session()->put('sale_selected_tab', $this->activeTab);
+        $items = Item::when($this->selectedCategories, function ($q) {
+            return $q->whereHas('category', function ($q) {
+                return $q->whereIn('id', $this->selectedCategories);
+            });
+        })->when($this->name != null,function ($query){
+            return $query->where('name_'.App::getLocale(), 'like', '%'.$this->name.'%');
+        })->orderBy('id','desc')
+            ->paginate(20);
+        return view($this->getView(), compact('items'))
+            ->layout($this->getLayout(), [
+                'livewire' => $this,
+                'maxContentWidth' => $this->getMaxContentWidth(),
+                ...$this->getLayoutData(),
+            ]);
+    }
     public function mount()
     {
         $this->currencies = Currency::all();
         $this->categories = Category::all();
-        $this->items = Item::all();
         $this->invoiceForm->fill();
         $this->invoiceForm2->fill();
         $this->activeTab = session()->get('sale_selected_tab') ?? 'sale_tab_1';
@@ -212,12 +253,12 @@ class SalePage extends Page implements HasForms
 
     public function addToTable()
     {
-        $records = $this->items->whereIn('id', $this->selected)->map(function ($record) {
+        $records = Item::whereIn('id', $this->selected)->get()->map(function ($record) {
             return [
                 'id' => $record->id,
                 'name_'.\Illuminate\Support\Facades\App::getLocale() => $record->{'name_'.\Illuminate\Support\Facades\App::getLocale()},
-                                'brand'=>$record->brand->name,
-                'price' => $record->price,
+                'brand'=>$record->brand->name,
+                'price' =>  $record['max_price'],
                 'quantity' => 1,
                 "type" => 'single',
                 "image" => $record->image,
@@ -235,7 +276,7 @@ class SalePage extends Page implements HasForms
 
     public function selectAll()
     {
-        $this->selected = $this->items->pluck('id')->toArray();
+        $this->selected = Item::pluck('id')->toArray();
     }
 
     public function deselectAll()
@@ -243,25 +284,7 @@ class SalePage extends Page implements HasForms
         $this->selected = [];
     }
 
-    public function selectCategory($record)
-    {
-        if (in_array($record, $this->selectedCategories)) {
-            $key = array_search($record, $this->selectedCategories);
-            unset($this->selectedCategories[$key]);
-            $this->items = Item::when($this->selectedCategories, function ($q) {
-                return $q->whereHas('category', function ($q) {
-                    return $q->whereIn('id', $this->selectedCategories);
-                });
-            })->get();
-            return;
-        }
-        $this->selectedCategories[] = $record;
-        $this->items = Item::when($this->selectedCategories, function ($q) {
-            return $q->whereHas('category', function ($q) {
-                return $q->whereIn('id', $this->selectedCategories);
-            });
-        })->get();
-    }
+
 
 
     public function openCodeModal($key)
@@ -274,17 +297,45 @@ class SalePage extends Page implements HasForms
 
     public function addToCode()
     {
-        if (count($this->codes) > 0) {
-            if (isset($this->codes['gift'])) {
-                $this->codes['gift'] = 1;
-            } else {
-                $this->codes['gift'] = 0;
+        if(count($this->codes) > 0){
+            foreach (  $this->tableData as $codes){
+                foreach ($codes['codes'] as $codee){
+                    if($codee['code'] == $this->codes['code']){
+                        Notification::make('error')
+                            ->title(trans('lang.code_not_found', ['code' => $this->codes['code']]))
+                            ->danger()
+                            ->send();
+                        $this->codes = [];
+                        return;
+                    }
+                }
             }
-            $this->tableData[$this->key]['codes'][] = $this->codes;
-            $this->codes = [];
-        }
+        if(!($this->invoiceData['branch_id'] == null)){
+            if(Branch::branchHasCode($this->codes['code'],$this->tableData[$this->key]['id'],$this->invoiceData['branch_id']) > 0){
+                    if (isset($this->codes['gift'])) {
+                        $this->codes['gift'] =1 ;
+                    }
+                    else{
+                        $this->codes['gift'] =0 ;
+                    }
+                    $this->tableData[$this->key]['codes'][] = $this->codes;
+                    $this->codes = [];
 
-        $this->refreshTable();
+            }else{
+                Notification::make('error')
+                    ->title(trans('lang.code_not_found', ['code' => $this->codes['code']]))
+                    ->danger()
+                    ->send();
+                $this->codes = [];
+            }}else{
+            $this->codes = [];
+            Notification::make('error')
+                ->title(trans('lang.please_select', ['name' => trans('lang.branch')]))
+                ->danger()
+                ->send();
+        }
+        }
+                $this->refreshTable();
     }
 
 
@@ -406,20 +457,7 @@ class SalePage extends Page implements HasForms
         session()->put($this->activeTab, json_encode($variables));
     }
 
-    public function render(): View
-    {
 
-        $variables = [
-            'tableData' => $this->tableData,
-            'selected' => $this->selected,
-            'key' => $this->key,
-            'multipleSelect' => $this->multipleSelect,
-            'invoiceData' => $this->invoiceData
-        ];
-        session()->put($this->activeTab, json_encode($variables));
-        session()->put('sale_selected_tab', $this->activeTab);
-        return parent::render();
-    }
 
     protected static string $view = 'filament.pages.p-o-s.sale-page';
 }

@@ -63,7 +63,7 @@ class PurchaseExpensePolicy
      */
     public function forceDelete(User $user, PurchaseExpense $purchaseExpense): bool
     {
-        return $user->can('force_delete_p::o::s::purchase::expense');
+        return $user->can('{{ ForceDelete }}');
     }
 
     /**
@@ -71,7 +71,7 @@ class PurchaseExpensePolicy
      */
     public function forceDeleteAny(User $user): bool
     {
-        return $user->can('force_delete_any_p::o::s::purchase::expense');
+        return $user->can('{{ ForceDeleteAny }}');
     }
 
     /**

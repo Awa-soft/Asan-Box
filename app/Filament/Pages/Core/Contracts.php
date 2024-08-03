@@ -23,7 +23,14 @@ class Contracts extends Page implements HasForms
     protected static ?string $navigationIcon = 'heroicon-o-document-text';
     public $activeTab = 'installment_contract';
 
-
+  public function getTitle(): string|Htmlable
+    {
+        return trans('lang.contracts');
+    }
+    public static function getNavigationLabel(): string
+    {
+        return trans('lang.contracts');
+    }
 
     public $data = [];
 

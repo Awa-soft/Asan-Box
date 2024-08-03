@@ -24,6 +24,7 @@ class ExpenseResource extends Resource
     use OwnerableTrait;
     use HasCreateAnother;
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?int $navigationSort = 38;
 
     public static function form(Form $form): Form
     {

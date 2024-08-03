@@ -67,24 +67,23 @@ class PurchaseInvoice extends Model
         foreach ($this->details as $detail) {
             $total += $detail->price * $detail->codes()->where("gift", 0)->count();
         }
-        return $total;
+        if($this->currency_id == getBaseCurrency()->id){
+            return $total;
+        }
+        return $total * ($this->rate / 100);
     }
 
     public function getTotalExpensesAttribute(){
         $sumBaseExpenses = 0;
         foreach ($this->expenses as $expense) {
-            $sumBaseExpenses += convertToCurrency(
-                $expense->currency_id,
-                getBaseCurrency()->id,
-                $expense->amount,
-                from_rate: $expense->currency_rate,
-            );
+            $sumBaseExpenses += $expense->currency_id == getBaseCurrency()->id ? $expense->amount : $expense->amount / ($expense->rate / 100);
     }
 
     return $sumBaseExpenses;
 }
 public function getDueAmountAttribute():float
 {
+
     return ($this->getTotalAttribute() + $this->getTotalExpensesAttribute()) - $this->paid_amount;
 }
 

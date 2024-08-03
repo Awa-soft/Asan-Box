@@ -25,6 +25,8 @@ class ItemTransaction extends Page implements HasForms
 {
     use HasPageShield, InteractsWithForms;
     protected static ?string $navigationIcon = 'iconpark-buy';
+    protected static ?int $navigationSort = 21;
+
     public static function getNavigationLabel(): string
     {
         return trans('Logistic/lang.item_transaction.plural_label');
@@ -188,12 +190,75 @@ class ItemTransaction extends Page implements HasForms
 
     public function addToCode(){
 
-        if (count($this->codes) > 0) {
-            if(Item::hasCode($this->tableData[$this->key]['id'],$this->codes,['fromable'=>$this->invoiceData['fromable_type'],'fromable_id'=>$this->invoiceData['fromable_id']])){
-                $this->tableData[$this->key]['codes'][] = $this->codes;
-                $this->codes = [];
+        $selected = true;
+        $codeIsNotFound = true;
+        $codeIsAvailable = true;
+        if(count($this->codes) > 0) {
+            if ($this->invoiceData['fromable_type'] == null || $this->invoiceData['fromable_id'] == null) {
+                Notification::make('error')
+                    ->title(trans('lang.please_select', ['name' => trans('lang.from') . ' (' . trans('lang.ownerable') . ') ']))
+                    ->danger()
+                    ->send();
+                                    $this->codes = [];
+
+                return;
+            } elseif ($this->invoiceData['toable_type'] == null || $this->invoiceData['toable_id'] == null) {
+                Notification::make('error')
+                    ->title(trans('lang.please_select', ['name' => trans('lang.to') . ' (' . trans('lang.ownerable') . ') ']))
+                    ->danger()
+                    ->send();
+                     $this->codes = [];
+                return;
             }
+            if ($this->invoiceData['fromable_type'] == 'App\Models\Logistic\Warehouse') {
+                if (Warehouse::hasCode($this->codes['code'], $this->tableData[$this->key]['id'], $this->invoiceData['fromable_id']) == 0) {
+                    Notification::make('error')
+                        ->title(trans('lang.code_not_found', ['code' => $this->codes['code']]))
+                        ->danger()
+                        ->send();
+                         $this->codes = [];
+                    return;
+                }
+            }
+            if ($this->invoiceData['fromable_type'] == 'App\Models\Logistic\Branch') {
+                if (Branch::branchHasCode($this->codes['code'], $this->tableData[$this->key]['id'], $this->invoiceData['fromable_id']) == 0) {
+                    Notification::make('error')
+                        ->title(trans('lang.code_not_found', ['code' => $this->codes['code']]))
+                        ->danger()
+                        ->send();
+                        $this->codes = [];
+                    return;
+                }
+            }
+            if ($this->invoiceData['toable_type'] == 'App\Models\Logistic\Warehouse') {
+                if (Warehouse::hasCode($this->codes['code'], $this->tableData[$this->key]['id'], $this->invoiceData['toable_id']) > 0) {
+                    Notification::make('error')
+                        ->title(trans('lang.codeIsAvaliable'))
+                        ->danger()
+                        ->send();
+                         $this->codes = [];
+                    return;
+                }
+            }
+            if ($this->invoiceData['toable_type'] == 'App\Models\Logistic\Branch') {
+                if (Branch::branchHasCode($this->codes['code'], $this->tableData[$this->key]['id'], $this->invoiceData['toable_id']) > 0) {
+                    Notification::make('error')
+                        ->title(trans('lang.codeIsAvaliable'))
+                        ->danger()
+                        ->send();
+                        $this->codes = [];
+                    return;
+                }
+            }
+
+                    $this->tableData[$this->key]['codes'][] = $this->codes;
+                    $this->codes = [];
+
+        }else{
+            $this->codes = [];
         }
+
+
         $this->refreshTable();
     }
 

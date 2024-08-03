@@ -22,6 +22,7 @@ class EmployeeLeaveResource extends Resource
     use HasTranslatableResource;
 
     protected static ?string $model = EmployeeLeave::class;
+    protected static ?int $navigationSort = 34;
 
     protected static ?string $navigationIcon = 'pepicon-leave-circle';
 

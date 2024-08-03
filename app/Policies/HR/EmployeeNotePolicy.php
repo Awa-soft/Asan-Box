@@ -63,7 +63,7 @@ class EmployeeNotePolicy
      */
     public function forceDelete(User $user, EmployeeNote $employeeNote): bool
     {
-        return $user->can('force_delete_h::r::employee::note');
+        return $user->can('{{ ForceDelete }}');
     }
 
     /**
@@ -71,7 +71,7 @@ class EmployeeNotePolicy
      */
     public function forceDeleteAny(User $user): bool
     {
-        return $user->can('force_delete_any_h::r::employee::note');
+        return $user->can('{{ ForceDeleteAny }}');
     }
 
     /**

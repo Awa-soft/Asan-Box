@@ -23,6 +23,7 @@ class SaleInvoiceResource extends Resource
     protected static ?string $model = SaleInvoice::class;
 
     protected static ?string $navigationIcon = 'vaadin-invoice';
+    protected static ?int $navigationSort = 5;
 
     public static function form(Form $form): Form
     {
@@ -110,16 +111,12 @@ class SaleInvoiceResource extends Resource
                 Tables\Columns\TextColumn::make('contact.name_'.\Illuminate\Support\Facades\App::getLocale())
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('rate')
-                    ->numeric()
-                    ->sortable()
-                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('balance')
-                    ->numeric()
+                    ->numeric(locale:'en')
                     ->sortable()
                      ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('discount')
-                    ->numeric()
+                    ->numeric(locale:'en')
                     ->suffix(" %")
                     ->sortable(),
                 Tables\Columns\TextColumn::make('user.name')

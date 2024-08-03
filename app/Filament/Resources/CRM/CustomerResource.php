@@ -34,7 +34,7 @@ class CustomerResource extends Resource
     {
         return trans('CRM/lang.group_label');
     }
-    protected static ?int $navigationSort = 1;
+    protected static ?int $navigationSort = 29;
     public static function form(Form $form): Form
     {
         return $form
@@ -89,6 +89,9 @@ class CustomerResource extends Resource
                    ->circular()
                    ->label(trans("lang.image"))
                    ->size(100),
+                   Tables\Columns\TextColumn::make('id')
+                    ->searchable()
+                    ->label('#'),
                static::Column(),
                Tables\Columns\TextColumn::make('name_'.App::getLocale())
                    ->label(trans("lang.name"))

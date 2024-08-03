@@ -22,6 +22,8 @@ class UserResource extends Resource
 {
     use \App\Traits\Core\HasSoftDeletes;
     use OwnerableTrait;
+    protected static ?int $navigationSort = 42;
+
     protected static ?string $model = User::class;
     protected static ?string $navigationIcon = 'heroicon-o-user';
     public static function getModelLabel(): string
@@ -65,7 +67,7 @@ class UserResource extends Resource
                     ->preload()
                     ->searchable(),
             ])
-            ->columns(2);
+            ->columns(1);
     }
 
     public static function table(Table $table): Table

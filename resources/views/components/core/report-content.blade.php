@@ -4,11 +4,10 @@
        .tableContent * th,.tableContent * td{
             padding:5px 4px;
             border-width:1px;
+           border-color: rgb(var(--gray-500));
             text-align: center;
         }
-       .tableContent * tbody tr:nth-child(odd){
-            background-color: rgb(250,250,250);
-       }
+
        td{
            font-size: 10pt;
        }
@@ -28,7 +27,7 @@
             </x-filament::button>
         </div>
           </div>
-    <div class="mx-auto relative text-black bg-white w-[210mm] @if($size == 'A5') min-h-[148mm] @else  min-h-[297mm] @endif">
+    <div class="mx-auto relative text-black bg-white dark:bg-gray-700 dark:text-white w-[210mm] @if($size == 'A5') min-h-[148mm] @else  min-h-[297mm] @endif">
         <table class="w-full">
             <thead>
                 <th class="pb-4" style="border-width: 0">

@@ -21,6 +21,7 @@ class CurrencyResource extends Resource
     use HasTranslatableResource;
 
     protected static ?string $model = Currency::class;
+    protected static ?int $navigationSort = 41;
 
     protected static ?string $navigationIcon = 'far-money-bill-alt';
 

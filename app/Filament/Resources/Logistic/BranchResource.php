@@ -28,6 +28,7 @@ class BranchResource extends Resource
     use HasTranslatableResource;
     use HasCreateAnother;
     protected static ?string $model = Branch::class;
+    protected static ?int $navigationSort = 17;
 
     protected static ?string $navigationIcon = 'fas-code-branch';
 

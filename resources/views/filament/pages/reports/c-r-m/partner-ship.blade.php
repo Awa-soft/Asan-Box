@@ -82,7 +82,7 @@
                         @endforeach
                 @endif
                <tr>
-                   <td colspan="5" style="padding: 10px;border: none;background: white;border-top: 2px solid rgb(var(--primary-500))"></td>
+                   <td colspan="5" class="bg-transparent" style="padding: 10px;border: none;border-top: 2px solid rgb(var(--primary-500))"></td>
                </tr>
            @endforeach
         @endslot

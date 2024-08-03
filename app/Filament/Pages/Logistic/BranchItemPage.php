@@ -27,6 +27,8 @@ class BranchItemPage extends Page implements HasForms
 {
     use HasPageShield, InteractsWithForms;
     protected static ?string $navigationIcon = 'iconpark-buy';
+    protected static ?int $navigationSort = 20;
+
     public static function getNavigationLabel(): string
     {
         return trans('Logistic/lang.branch_item.plural_label');

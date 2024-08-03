@@ -63,7 +63,7 @@ class BranchPolicy
      */
     public function forceDelete(User $user, Branch $branch): bool
     {
-        return $user->can('force_delete_logistic::branch');
+        return $user->can('{{ ForceDelete }}');
     }
 
     /**
@@ -71,7 +71,7 @@ class BranchPolicy
      */
     public function forceDeleteAny(User $user): bool
     {
-        return $user->can('force_delete_any_logistic::branch');
+        return $user->can('{{ ForceDeleteAny }}');
     }
 
     /**

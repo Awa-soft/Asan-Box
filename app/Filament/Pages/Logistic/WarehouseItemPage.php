@@ -24,15 +24,24 @@ use Filament\Forms\Form;
 use Filament\Notifications\Notification;
 use Filament\Pages\Page;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Contracts\Support\Htmlable;
+
 
 class WarehouseItemPage extends Page implements HasForms
 {
     use HasPageShield, InteractsWithForms;
     protected static ?string $navigationIcon = 'iconpark-buy';
+    protected static ?int $navigationSort = 22;
+
     public static function getNavigationLabel(): string
     {
         return trans('Logistic/lang.warehouse_item.plural_label');
     }
+      public function getTitle(): string|Htmlable
+    {
+        return trans('Logistic/lang.warehouse_item.plural_label');
+    }
+
     public  function getHeading(): string
     {
         return "";

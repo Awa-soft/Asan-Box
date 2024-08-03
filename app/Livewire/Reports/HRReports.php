@@ -66,7 +66,7 @@ class HRReports extends Component implements HasForms
         return $forms;
     }
 //    Employee Activity
-    public function hrEmployeeActivitySearvh(){
+    public function hrEmployeeActivitySearch(){
         if(checkPackage('HR')){
             $data = $this->hrEmployeeActivityForm->getState();
             $from = $data['from']?? 'all';

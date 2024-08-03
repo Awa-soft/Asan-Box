@@ -28,7 +28,7 @@ class ItemResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-s-cube';
 
-    protected static ?int $navigationSort = 1;
+    protected static ?int $navigationSort = 13;
 
 
     public static function form(Form $form): Form
@@ -57,7 +57,7 @@ class ItemResource extends Resource
                 Forms\Components\Select::make('category_id')
                     ->label(trans("lang.category"))
                     ->relationship('category', 'name',modifyQueryUsing: function($query){
-                        return $query->where('status','0');
+                        return $query->where('status','!=','0');
                 })
                     ->preload()
                     ->searchable()
@@ -66,7 +66,7 @@ class ItemResource extends Resource
                 Forms\Components\Select::make('unit_id')
                     ->label(trans("lang.unit"))
                     ->relationship('unit', 'name',modifyQueryUsing: function($query){
-                        return $query->where('status','0');
+                        return $query->where('status','!=','0');
                     })
                     ->preload()
                     ->searchable()
@@ -74,7 +74,7 @@ class ItemResource extends Resource
                     ->required(),
                 Forms\Components\Select::make('brand_id')
                     ->relationship('brand', 'name',modifyQueryUsing: function($query){
-                        return $query->where('status','0');
+                        return $query->where('status','!=','0');
                     })
                     ->label(trans("lang.brand"))
                     ->required()
@@ -180,6 +180,11 @@ class ItemResource extends Resource
                     ->suffix("%")
                     ->toggleable(isToggledHiddenByDefault: true)
                     ->sortable(),
+                Tables\Columns\TextColumn::make('quantity')
+                    ->state(function ($record){
+                        return \App\Models\Logistic\Branch::branchHasItem($record->id,auth()->user()->ownerable_id);
+                    })
+                ->hidden(auth()->user()->ownerable_type != 'App\Models\Logistic\Branch'),
                 Tables\Columns\TextColumn::make('expire_date')
                     ->label(trans("lang.expire_date"))
                     ->date()
@@ -216,6 +221,12 @@ class ItemResource extends Resource
                     // Tables\Actions\RestoreBulkAction::make(),
                 ]),
             ]);
+    }
+    public static function getRelations(): array
+    {
+        return [
+            CodesRelationManager::class
+        ];
     }
 
 

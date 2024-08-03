@@ -97,7 +97,7 @@
                     @endforeach
                 @endif
                 <tr>
-                    <td colspan="4" style="padding: 10px;background: white;border: none"></td>
+                    <td class="bg-transparent" colspan="4" style="padding: 10px;border: none"></td>
                 </tr>
             @endforeach
 

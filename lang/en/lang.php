@@ -1,5 +1,6 @@
 <?php
 return [
+    'id'=>"#",
     "created_at" => "created_at",
     "deleted_at" => "deleted_at",
     "updated_at" => "updated_at",
@@ -201,6 +202,17 @@ return [
     'profit'=>'Profit',
     'codeIsAvaliable'=>"The Code Purchased in Another Invoice",
     'vendor'=>'Vendor',
-    'contactPhone'=>'Phone Number'
+    'contactPhone'=>'Phone Number',
+    'is_sold'=>'Is Sold?',
+    'deposit'=>'Deposit',
+    'withdraw'=>"Withdraw",
+    'partner_account'=>"Partner",
+    'partnerAccountAll'=>"Partner",
+    "partnership"=>"Partnership",
+    'shipping'=>"Shipping",
+    'number_of_codes'=>"Number of Codes",
+    "codeGeneration"=>"Code Generation",
+    'reports'=>"Reports",
+    'financialBranch'=>"Finance - (Branch)"
 
 ];

@@ -22,6 +22,7 @@ class WarehouseResource extends Resource
 
 
     protected static ?string $navigationIcon = 'fas-warehouse';
+    protected static ?int $navigationSort = 18;
 
 
 
@@ -71,6 +72,10 @@ class WarehouseResource extends Resource
                     ->label(trans('lang.image'))
                     ->avatar()
                     ->image(),
+                Forms\Components\Select::make('financial_branch_id')
+                    ->relationship('financialBranch','name')
+                    ->label('('.trans('Finance/lang.group_label') . ') - ' . trans('lang.branch'))
+                    ->required()
             ]);
     }
 
@@ -81,7 +86,7 @@ class WarehouseResource extends Resource
             ->defaultSort('id','desc')
             ->columns([
                 Tables\Columns\ImageColumn::make('image')
-->circular()
+                        ->circular()
                     ->label(trans('lang.image'))
                     ->size(100),
                 Tables\Columns\TextColumn::make('name')
@@ -92,6 +97,9 @@ class WarehouseResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('phone')
                     ->label(trans('lang.phone'))
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('financialBranch.name')
+                    ->label('('.trans('Finance/lang.group_label') . ') - ' . trans('lang.branch'))
                     ->searchable(),
                 Tables\Columns\TextColumn::make('branches.name')
                     ->label(trans('Logistic/lang.branch.plural_label'))

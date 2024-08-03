@@ -38,7 +38,7 @@ return [
     "search" => "گه‌ڕان",
     "select_all"=>"دیاریكردنی هه‌موو",
     "deselect_all"=>"لابردنی هه‌موو",
-    "please_select" => "تكایه‌ دیاریبكه‌",
+    "please_select" => "تكایه‌ :name دیاریبكه‌",
     "payment_duration" => "ماوه‌ی پاره‌دان",
     "payment" => "پاره‌دان",
     "user" => "به‌كارهێنه‌ر",
@@ -154,7 +154,7 @@ return [
     'partners'=>"هاوبه‌شه‌كان",
     "installment_contract"=>"گرێبه‌ستی قست",
     "bill_of_exchange"=>"پسوڵه‌ی ئاڵوگۆڕه‌كان",
-    "pledge"=>"Pledge",
+    "pledge"=>"بەڵێننامە",
     "contracts"=>"گرێبه‌سته‌كان",
     "active"=>"چالاك",
     "deactivate"=>"نا چالاك",
@@ -202,6 +202,19 @@ return [
     'codeIsAvaliable'=>"ئەم کۆدە پێشتر کڕدراوە",
     'vendor'=>'دابینکەر',
     'contactPhone'=>'مۆبایل',
+    'is_sold'=>"فرۆشراو؟",
+    'deposit'=>'پارەدانان',
+    'withdraw'=>"پارەهەڵگرتن",
+    'partner_account'=>"هاوبەش",
+    'partnerAccountAll'=>"هاوبەش",
+    'partnership'=>"هاوبەشییەکان",
+    'shipping'=>"لەڕێگا",
+    'number_of_codes'=>"ژمارەی کۆدەکان",
+    'codeGeneration'=>"دروستکردنی کۆد",
+    "reports"=>"ڕاپۆرتەکان",
+    'financialBranch'=>"دارایی - (لق)",
+
+
 
 
 

@@ -63,7 +63,7 @@ class PositionPolicy
      */
     public function forceDelete(User $user, Position $position): bool
     {
-        return $user->can('force_delete_h::r::position');
+        return $user->can('{{ ForceDelete }}');
     }
 
     /**
@@ -71,7 +71,7 @@ class PositionPolicy
      */
     public function forceDeleteAny(User $user): bool
     {
-        return $user->can('force_delete_any_h::r::position');
+        return $user->can('{{ ForceDeleteAny }}');
     }
 
     /**

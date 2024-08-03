@@ -13,6 +13,7 @@ use Filament\Forms\Get;
 class Settings extends \Outerweb\FilamentSettings\Filament\Pages\Settings
 {
     use HasPageShield;
+    protected static ?int $navigationSort = 44;
 
     public static function getNavigationLabel(): string
     {

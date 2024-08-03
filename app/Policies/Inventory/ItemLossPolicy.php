@@ -63,7 +63,7 @@ class ItemLossPolicy
      */
     public function forceDelete(User $user, ItemLoss $itemLoss): bool
     {
-        return $user->can('force_delete_inventory::item::loss');
+        return $user->can('{{ ForceDelete }}');
     }
 
     /**
@@ -71,7 +71,7 @@ class ItemLossPolicy
      */
     public function forceDeleteAny(User $user): bool
     {
-        return $user->can('force_delete_any_inventory::item::loss');
+        return $user->can('{{ ForceDeleteAny }}');
     }
 
     /**

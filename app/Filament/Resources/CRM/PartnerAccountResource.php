@@ -26,7 +26,7 @@ class PartnerAccountResource extends Resource
     protected static ?string $model = PartnerAccount::class;
 
     protected static ?string $navigationIcon = 'iconoir-percent-rotate-out';
-    protected static ?int $navigationSort = 8;
+    protected static ?int $navigationSort = 32;
 
 
     public static function form(Form $form): Form
@@ -54,6 +54,7 @@ class PartnerAccountResource extends Resource
                     ->label(trans('CRM/lang.partner.singular_label'))
                     ->searchable()
                     ->preload()
+
                     ->required(),
                 Forms\Components\TextInput::make('percent')
                     ->required()
@@ -70,10 +71,10 @@ class PartnerAccountResource extends Resource
             ->recordUrl('')
             ->defaultSort('id','desc')
             ->columns([
-                Tables\Columns\TextColumn::make('partnership.name')
+                Tables\Columns\TextColumn::make('partnershipAll.name')
                     ->label(trans('CRM/lang.partnership.singular_label'))
                     ->numeric(),
-                Tables\Columns\TextColumn::make('partnership.status')
+                Tables\Columns\TextColumn::make('status')
                     ->label(trans('lang.status'))
                     ->badge()
                     ->color(fn($state)=>$state == trans('lang.active') ? 'success':'danger'),
@@ -84,8 +85,17 @@ class PartnerAccountResource extends Resource
                 Tables\Columns\TextColumn::make('percent')
                     ->label(trans('lang.percent'))
                     ->suffix('%')
-                    ->numeric()
+
+                    ->numeric(2,locale:'en')
                     ->sortable(),
+                Tables\Columns\TextColumn::make('balance')
+                    ->label(trans('lang.balance'))
+                    ->suffix(getBaseCurrency()->symbol)
+                    ->numeric(getBaseCurrency()->decimal,locale:'en'),
+                Tables\Columns\TextColumn::make('profit')
+                    ->label(trans('lang.profit'))
+                    ->suffix(getBaseCurrency()->symbol)
+                    ->numeric(getBaseCurrency()->decimal,locale:'en'),
                 Tables\Columns\TextColumn::make('partnership.branch.name')
                     ->label(trans("Logistic/lang.branch.singular_label"))
                     ->numeric()
@@ -115,6 +125,7 @@ class PartnerAccountResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make()
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

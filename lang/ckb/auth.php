@@ -1,7 +1,7 @@
 <?php
 
 return [
-
+    
     /*
     |--------------------------------------------------------------------------
     | Authentication Language Lines
@@ -13,8 +13,8 @@ return [
     |
     */
 
-    'failed' => 'These credentials do not match our records.',
-    'password' => 'The provided password is incorrect.',
-    'throttle' => 'Too many login attempts. Please try again in :seconds seconds.',
-
+    'failed' => 'زانیاریەکانی چوونەژوورەوەت وەک ئەو زانیاریانە نیە کە لای ئێمەیە!',
+    'password' => 'وشە تێپەڕەکە دروست نییە.',
+    'throttle' => 'هەوڵدانێکی زۆرت هەیە بۆ چوونەژوورەوە. تکایە دوبارە هەوڵبدەرەوە دوای :seconds چرکە.',
+    
 ];

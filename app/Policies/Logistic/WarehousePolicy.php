@@ -63,7 +63,7 @@ class WarehousePolicy
      */
     public function forceDelete(User $user, Warehouse $warehouse): bool
     {
-        return $user->can('force_delete_logistic::warehouse');
+        return $user->can('{{ ForceDelete }}');
     }
 
     /**
@@ -71,7 +71,7 @@ class WarehousePolicy
      */
     public function forceDeleteAny(User $user): bool
     {
-        return $user->can('force_delete_any_logistic::warehouse');
+        return $user->can('{{ ForceDeleteAny }}');
     }
 
     /**

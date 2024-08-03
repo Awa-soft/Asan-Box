@@ -4,6 +4,7 @@ namespace App\Models\Logistic;
 
 use App\Models\CRM\Partner;
 use App\Models\Inventory\Item;
+use App\Models\Inventory\ItemLoss;
 use App\Models\POS\ItemRepair;
 use App\Models\POS\PurchaseInvoice;
 use App\Models\POS\SaleInvoice;
@@ -56,7 +57,9 @@ class Branch extends Model
         })
             ->get()
             ->reduce(function ($count, $transaction) use ($branch_id,$itemId) {
-                return $count + ((($transaction->fromable_id ==  $branch_id && $transaction->fromable_type ==  'App\Models\Logistic\Branch') ? -1 : 1) * $transaction->details()->where('item_id', $itemId)->get()->sum('codes_count'));
+                return $count + ((($transaction->fromable_id ==  $branch_id && $transaction->fromable_type ==  'App\Models\Logistic\Branch') ? -1 : 1) *
+                        $transaction->details()->where('item_id', $itemId)
+                            ->get()->sum('codes_count'));
             }, 0);
 
         $repairCounts = ItemRepair::where('ownerable_type', 'App\Models\Logistic\Branch')
@@ -72,13 +75,90 @@ class Branch extends Model
                 return $counts;
             }, ['increase' => 0, 'decrease' => 0]);
 
+        $itemLoss = ItemLoss::where('ownerable_type', 'App\Models\Logistic\Branch')
+            ->where('ownerable_id', $branch_id)
+            ->where('item_id', $itemId)
+            ->get()
+            ->count();
+
         $repairIncreaseCount = $repairCounts['increase'];
         $repairDecreaseCount = $repairCounts['decrease'];
 
-        return $purchaseCount + $saleCount + $transactionCount + $repairIncreaseCount - $repairDecreaseCount;
+        return ($purchaseCount +$transactionCount + $repairIncreaseCount) -   ($saleCount + $repairDecreaseCount + $itemLoss);
     }
 
 
+    public static function branchHasCode($code,$itemId,$branch_id)
+    {
+        $purchaseCount = PurchaseInvoice::where('branch_id', $branch_id)
+            ->whereHas('details',function ($query) use($code){
+                return $query->whereHas('codes',function ($query)use($code){
+                    return $query->where('code',$code);
+                });
+            })
+            ->get()
+            ->reduce(function ($count, $purchase)use($itemId,$code) {
+                return $count + ($purchase->type == 'purchase' ? 1 : -1) *
+                    $purchase->details()->where('item_id', $itemId)
+                        ->whereHas('codes',function ($query)use($code){
+                            return $query->where('code',$code);
+                        })
+                        ->get()->sum('codes_count');
+            }, 0);
+        $saleCount = SaleInvoice::where('branch_id', $branch_id)
+            ->whereHas('details',function ($query) use($code){
+                return $query->whereHas('codes',function ($query)use($code){
+                    return $query->where('code',$code);
+                });
+            })
+            ->get()
+            ->reduce(function ($count, $sale)use ($itemId) {
+                return $count + ($sale->type == 'return' ? 1 : -1) * $sale->details()->where('item_id', $itemId)->get()->sum('codes_count');
+            }, 0);
+
+        $transactionCount = ItemTransactionInvoice::where(function($query) use ($branch_id) {
+            $query->where('fromable_id', $branch_id)->where('fromable_type', 'App\Models\Logistic\Branch');
+        })->orWhere(function($query) use ($branch_id) {
+            $query->where('toable_id', $branch_id)->where('toable_type', 'App\Models\Logistic\Branch');
+        }) ->whereHas('details',function ($query) use($code){
+            return $query->whereHas('codes',function ($query)use($code){
+                return $query->where('code',$code);
+            });
+        })->get()
+            ->reduce(function ($count, $transaction) use ($branch_id,$itemId,$code) {
+                return $count + ((($transaction->fromable_id ==  $branch_id
+                            && $transaction->fromable_type ==  'App\Models\Logistic\Branch') ? -1 : 1)
+                        * $transaction->details()->where('item_id', $itemId)
+                        ->whereHas('codes',function ($query)use($code){
+                            return $query->where('code',$code);
+                        })->get()->sum('codes_count'));
+            }, 0);
+        $repairCounts = ItemRepair::where('ownerable_type', 'App\Models\Logistic\Branch')
+            ->where('ownerable_id', $branch_id)
+            ->where('item_id', $itemId)
+            ->where('code',$code)
+            ->get()
+            ->reduce(function ($counts, $repair) {
+                if ($repair->type == 'increase') {
+                    $counts['increase']++;
+                } else if ($repair->type == 'decrease') {
+                    $counts['decrease']++;
+                }
+                return $counts;
+            }, ['increase' => 0, 'decrease' => 0]);
+
+        $itemLoss = ItemLoss::where('ownerable_type', 'App\Models\Logistic\Branch')
+            ->where('ownerable_id', $branch_id)
+            ->where('code',$code)
+            ->where('item_id', $itemId)
+            ->get()
+            ->count();
+
+        $repairIncreaseCount = $repairCounts['increase'];
+        $repairDecreaseCount = $repairCounts['decrease'];
+
+        return ($purchaseCount +$transactionCount + $repairIncreaseCount) -   ($saleCount + $repairDecreaseCount + $itemLoss);
+    }
 
 
 }

@@ -30,6 +30,7 @@ class EmployeeResource extends Resource
     protected static ?string $model = Employee::class;
 
     protected static ?string $navigationIcon = 'clarity-employee-group-line';
+    protected static ?int $navigationSort = 34;
 
     public static function form(Form $form): Form
     {
@@ -169,7 +170,7 @@ class EmployeeResource extends Resource
 
                 Tables\Columns\TextColumn::make('salary')
                     ->suffix(fn ($record) => " ".getCurrencySymbol($record->currency_id))
-                    ->numeric(fn($record)=>getCurrencyDecimal( $record->currency_id))
+                    ->numeric(fn($record)=>getCurrencyDecimal( $record->currency_id),locale:'en')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('last_salary_date')
                     ->sortable(),

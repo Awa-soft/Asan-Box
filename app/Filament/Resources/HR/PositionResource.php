@@ -22,6 +22,7 @@ class PositionResource extends Resource
     protected static ?string $model = Position::class;
     use OwnerableTrait;
     protected static ?string $navigationIcon = 'eos-job';
+    protected static ?int $navigationSort = 34;
 
     public static function getModelLabel(): string
     {

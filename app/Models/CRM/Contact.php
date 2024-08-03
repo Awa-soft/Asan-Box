@@ -32,23 +32,21 @@ class Contact extends Model
 
     public function getBalanceAttribute(){
         $sends = $this->sends->map(function($send){
-            return convertToCurrency($send->currency_id, getBaseCurrency()->id,
-             $send->amount, $send->rate,  getBaseCurrency()->rate );
+            return $send->currency_id == getBaseCurrency()->id ? $send->amount : $send->amount / ($send->rate / 100);
         })->sum();
 
         $receives = $this->receives->map(function($receive){
-            return convertToCurrency($receive->currency_id, getBaseCurrency()->id,
-             $receive->amount, $receive->rate,  getBaseCurrency()->rate );
+            return $receive->currency_id == getBaseCurrency()->id ? $receive->amount : $receive->amount / ($receive->rate / 100);
+
         })->sum();
 
         $receives += $this->sales->map(function($sale){
-            return convertToCurrency($sale->currency_id, getBaseCurrency()->id,
-             $sale->due_amount, $sale->rate,  getBaseCurrency()->rate );
+            return $sale->currency_id == getBaseCurrency()->id ? $sale->due_amount : $sale->due_amount / ($sale->rate / 100);
         })->sum();
 
         $sends += $this->purchases->map(function($purchase){
-            return convertToCurrency($purchase->currency_id, getBaseCurrency()->id,
-             $purchase->due_amount, $purchase->rate,  getBaseCurrency()->rate );
+            return $purchase->currency_id == getBaseCurrency()->id ? $purchase->due_amount : $purchase->due_amount / ($purchase->rate / 100);
+
         })->sum();
         return $sends - $receives;
     }

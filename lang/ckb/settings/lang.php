@@ -17,5 +17,9 @@ return [
     "settings"=>[
         'plural_label'=>'ڕێكخستنه‌كان',
         'singular_label'=>'ڕێكسختن'
-    ]
+    ],
+     'role'=>[
+        'plural_label'=>'پلە',
+        'singular_label'=>'پلەکان',
+    ],
 ];

@@ -63,7 +63,7 @@ class PaymentPolicy
      */
     public function forceDelete(User $user, Payment $payment): bool
     {
-        return $user->can('force_delete_finance::payment');
+        return $user->can('{{ ForceDelete }}');
     }
 
     /**
@@ -71,7 +71,7 @@ class PaymentPolicy
      */
     public function forceDeleteAny(User $user): bool
     {
-        return $user->can('force_delete_any_finance::payment');
+        return $user->can('{{ ForceDeleteAny }}');
     }
 
     /**

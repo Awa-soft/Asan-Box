@@ -21,6 +21,7 @@ class PurchaseOrderResource extends Resource
     protected static ?string $model = PurchaseOrder::class;
 
     protected static ?string $navigationIcon = 'iconpark-order';
+    protected static ?int $navigationSort = 4;
 
     public static function form(Form $form): Form
     {

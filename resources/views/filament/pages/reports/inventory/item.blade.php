@@ -25,9 +25,7 @@
                 <th>
                     {{trans('lang.brand')}}
                 </th>
-                <th>
-                    {{trans('lang.unit')}}
-                </th>
+          
                 <th>
                     {{trans('lang.price')}}
                 </th>
@@ -36,6 +34,9 @@
                 </th>
                 <th>
                     {{trans('lang.discount')}}
+                </th>
+                <th>
+                    {{trans('lang.quantity')}}
                 </th>
                 <th>
                     {{trans('lang.expire_date')}}
@@ -54,9 +55,7 @@
                     <td>
                         {{$dt->brand->name}}
                     </td>
-                    <td>
-                        {{$dt->unit->name}}
-                    </td>
+                  
                     <td>
                         {{$dt->min_price}} $ <br>
                         {{$dt->max_price}} $
@@ -67,6 +66,9 @@
                     </td>
                     <td>
                         {{$dt->discount}} %
+                    </td>
+                    <td>
+                        {{\App\Models\Logistic\Branch::branchHasItem($dt->id,auth()->user()->ownerable_id)}} {{$dt->unit->name}}
                     </td>
                     <td>
                         {{$dt->expire_date}}

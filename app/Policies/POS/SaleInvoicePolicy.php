@@ -63,7 +63,7 @@ class SaleInvoicePolicy
      */
     public function forceDelete(User $user, SaleInvoice $saleInvoice): bool
     {
-        return $user->can('force_delete_p::o::s::sale::invoice');
+        return $user->can('{{ ForceDelete }}');
     }
 
     /**
@@ -71,7 +71,7 @@ class SaleInvoicePolicy
      */
     public function forceDeleteAny(User $user): bool
     {
-        return $user->can('force_delete_any_p::o::s::sale::invoice');
+        return $user->can('{{ ForceDeleteAny }}');
     }
 
     /**

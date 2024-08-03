@@ -24,6 +24,7 @@ class PaymentResource extends Resource
     protected static ?string $model = Payment::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?int $navigationSort = 40;
 
     public static function form(Form $form): Form
     {
@@ -100,15 +101,13 @@ class PaymentResource extends Resource
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('amount')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('rate')
-                    ->numeric()
+                    ->numeric(locale:'en')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('balance')
-                    ->numeric()
+                    ->numeric(locale:'en')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('type')
+                    ->formatStateUsing(fn($state)=>self::$model::getTypes()[$state])
                     ->searchable(),
                 Tables\Columns\TextColumn::make('date')
                     ->date()

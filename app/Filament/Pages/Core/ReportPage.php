@@ -26,12 +26,20 @@ use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Forms\Form;
 use Filament\Pages\Page;
+use Illuminate\Contracts\Support\Htmlable;
 
 class ReportPage extends Page implements HasForms
 {
     use InteractsWithForms;
     use HasPageShield;
-
+ public function getTitle(): string|Htmlable
+    {
+        return trans('lang.reports');
+    }
+    public static function getNavigationLabel(): string
+    {
+        return trans('lang.reports');
+    }
     protected static ?string $navigationIcon = 'heroicon-o-document-text';
     public $activeTab;
 

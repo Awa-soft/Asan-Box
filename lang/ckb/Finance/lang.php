@@ -21,5 +21,9 @@ return [
         'boursePayment'=>'ڕاپۆرتی پاره‌دانی بۆرسه‌',
         'expense'=>'ڕاپۆرتی خه‌رجی',
         'payment'=>'ڕاپۆرتی پاره‌دان',
+    ],
+    'cash_management'=>[
+        'plural_label'=>'بەڕێوەبردنی کاشەکان',
+        'singular_label'=>'کاش',
     ]
 ];

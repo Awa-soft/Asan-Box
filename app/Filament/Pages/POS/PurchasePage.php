@@ -4,6 +4,7 @@ namespace App\Filament\Pages\POS;
 
 use App\Models\Inventory\Category;
 use App\Models\Inventory\Item;
+use App\Models\Logistic\Branch;
 use App\Models\POS\PurchaseDetailCode;
 use App\Models\POS\PurchaseInvoice;
 use App\Models\Settings\Currency;
@@ -30,6 +31,7 @@ class PurchasePage extends Page implements HasForms
     use HasPageShield, InteractsWithForms;
     protected static ?string $navigationIcon = 'iconpark-buy';
     public $name;
+    protected static ?int $navigationSort = 0;
     public static function getNavigationLabel(): string
     {
         return trans('POS/lang.purchase_pos.singular_label');
@@ -78,6 +80,7 @@ class PurchasePage extends Page implements HasForms
                     ->label(trans("lang.date")),
                 Select::make('branch_id')
                 ->label(trans("Logistic/lang.branch.singular_label"))
+                    ->live()
                 ->label(trans("Logistic/lang.branch.singular_label"))
                 ->relationship("branch", "name")
                 ->preload()
@@ -86,10 +89,13 @@ class PurchasePage extends Page implements HasForms
                 Select::make('contact_id')
                 ->label(trans("CRM/lang.vendor.singular_label"))
                     ->relationship('contact', 'name_'.App::getLocale(),modifyQueryUsing: function ($query){
-                        return $query->where('status',1);
+                        return $query->where('status',1)->where('type','!=','Customer');
                     })
+                       ->getOptionLabelFromRecordUsing(function ($record) {
+                            return $record->id . ' - ' . $record->{'name_'.App::getLocale()} . ' - ' . $record->phone;
+                        })
                     ->preload()
-                    ->searchable()
+                    ->searchable(['name_en','name_ar','name_ckb','phone','id'])
                     ->required(),
 
                 Textarea::make('note')
@@ -197,7 +203,9 @@ class PurchasePage extends Page implements HasForms
         else{
 
             $record['brand'] = Item::find($record['id'])?->brand?->name;
-            $record['price'] = Item::find($record['id'])?->purchases()->latest()->first()?->price ?? 0;
+            $record['price'] = Item::find($record['id'])?->purchases()->whereHas('invoice',function ($query){
+                return $query->where('deleted_at',null);
+            })->latest()->first()?->price ?? 0;
             $record['currency_id'] = 1;
             $record['type'] = 'single';
             $record['quantity'] = 1;
@@ -276,41 +284,48 @@ class PurchasePage extends Page implements HasForms
         $this->dispatch('open-modal',id:"code-modal");
     }
 
-    public function addToCode(){
-       $purchaseInvoice = PurchaseInvoice::where('type','purchase')->whereHas('details',function ($query){
-           return $query->whereHas('codes',function ($query){
-               return $query->when(count($this->codes) > 0,function ($q){
-                   return  $q->where('code',$this->codes['code']);
-               });
-           });
-       });
-       $purchaseReturn =  PurchaseInvoice::where('type','!=','purchase')->whereHas('details',function ($query){
-           return $query->whereHas('codes',function ($query){
-               return $query->when(count($this->codes) > 0,function ($q){
-                   return  $q->where('code',$this->codes['code']);
-               });
-           });
-       });
-       if(!($purchaseInvoice->count()>0 && $purchaseReturn->count() == 0)){
-           if (count($this->codes) > 0) {
-               if (isset($this->codes['gift'])) {
-                   $this->codes['gift'] =1 ;
-               }
-               else{
-                   $this->codes['gift'] =0 ;
-               }
-               $this->tableData[$this->key]['codes'][] = $this->codes;
-               $this->codes = [];
-           }
-       }else{
-           $this->codes = [];
-           Notification::make('error')
-                ->title(trans('lang.codeIsAvaliable'))
-                ->danger()
-               ->send();
-       }
-
-
+    public function addToCode():void{
+      if(count($this->codes) > 0){
+          foreach (  $this->tableData as $codes){
+              foreach ($codes['codes'] as $codee){
+                  if($codee['code'] == $this->codes['code']){
+                      Notification::make('error')
+                          ->title(trans('lang.codeIsAvaliable'))
+                          ->danger()
+                          ->send();
+                      $this->codes = [];
+                      return;
+                  }
+              }
+          }
+          if(!($this->invoiceData['branch_id'] == null)){
+              if(PurchaseDetailCode::whereHas('detail',function ($query){
+                      $query->whereHas('invoice',function ($query){
+                          return $query->where('type','purchase');
+                      });
+                  })->where('code',$this->codes['code'])->count() == 0){
+                      if (isset($this->codes['gift'])) {
+                          $this->codes['gift'] =1 ;
+                      }
+                      else{
+                          $this->codes['gift'] =0 ;
+                      }
+                      $this->tableData[$this->key]['codes'][] = $this->codes;
+                      $this->codes = [];
+              }else{
+                  $this->codes = [];
+                  Notification::make('error')
+                      ->title(trans('lang.codeIsAvaliable'))
+                      ->danger()
+                      ->send();
+              }}else{
+              $this->codes = [];
+              Notification::make('error')
+                  ->title(trans('lang.please_select', ['name' => trans('lang.branch')]))
+                  ->danger()
+                  ->send();
+          }
+      }
         $this->refreshTable();
     }
 
