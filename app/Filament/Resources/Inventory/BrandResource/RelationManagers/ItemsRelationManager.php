@@ -9,7 +9,9 @@ use Filament\Tables;
 use Filament\Tables\Columns\ViewColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Facades\App;
 
 class ItemsRelationManager extends RelationManager
 {
@@ -25,17 +27,25 @@ class ItemsRelationManager extends RelationManager
             ]);
     }
 
+    public static function getTitle(Model $ownerRecord, string $pageClass): string
+    {
+    return trans('Inventory/lang.item.plural_label');
+    }
+
     public function table(Table $table): Table
     {
-        return $table
-            ->recordTitleAttribute('items.name')
+       return $table
+            ->recordUrl('')
+            ->defaultSort('id','desc')
+            ->modelLabel(trans('Inventory/lang.item.plural_label'))
+            ->recordTitleAttribute('items.name_'.App::getLocale())
             ->columns([
                 Tables\Columns\ImageColumn::make('image')
                 ->circular()
                 ->label(trans("lang.image"))
                 ->size(80)
                 ->circular(),
-            Tables\Columns\TextColumn::make('name')
+            Tables\Columns\TextColumn::make('name_'.App::getLocale())
                 ->label(trans("lang.name"))
                 ->description(fn($record)=>$record->description)
                 ->searchable(),

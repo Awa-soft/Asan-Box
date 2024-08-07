@@ -28,6 +28,7 @@ class BranchResource extends Resource
     use HasTranslatableResource;
     use HasCreateAnother;
     protected static ?string $model = Branch::class;
+    protected static ?int $navigationSort = 17;
 
     protected static ?string $navigationIcon = 'fas-code-branch';
 
@@ -91,7 +92,9 @@ class BranchResource extends Resource
 
     public static function table(Table $table): Table
     {
-        return $table
+       return $table
+            ->recordUrl('')
+            ->defaultSort('id','desc')
             ->columns([
                 Tables\Columns\ImageColumn::make('image')
 ->circular()
@@ -154,12 +157,13 @@ class BranchResource extends Resource
             ])
             ->actions([
                     Tables\Actions\Action::make('warehouses')
+                        ->label(trans('lang.warehouses'))
                         ->modalWidth("lg")
                         ->form(
                             function ($record) {
                                 return [
                                     Select::make('warehouses')
-                                        ->options(Warehouse::all()->pluck("name", "id")->toArray())
+                                        ->options(Warehouse::where('status',1)->get()->pluck("name", "id")->toArray())
                                         ->default($record->warehouses->pluck("id")->toArray())
                                         ->label(trans('lang.warehouses'))
                                         ->searchable()

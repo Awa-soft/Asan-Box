@@ -27,8 +27,10 @@ class Bourse extends Model
 
     public function getBalanceAttribute(){
         $total = $this->payments->map(function($payment){
-            return convertToCurrency($payment->currency_id, getBaseCurrency()->id, $payment->amount);
-        })->sum();
+            return $payment->currency_id == getBaseCurrency()->id ? $payment->amount : $payment->amount / ($payment->rate / 100);
+        })->sum() - $this->debits->map(function($payment){
+            return $payment->currency_id == getBaseCurrency()->id? $payment->amount : $payment->amount / ($payment->rate / 100);
+            })->sum();
         return $total;
     }
 }

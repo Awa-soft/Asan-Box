@@ -21,6 +21,7 @@ class PurchaseOrderResource extends Resource
     protected static ?string $model = PurchaseOrder::class;
 
     protected static ?string $navigationIcon = 'iconpark-order';
+    protected static ?int $navigationSort = 4;
 
     public static function form(Form $form): Form
     {
@@ -57,7 +58,10 @@ class PurchaseOrderResource extends Resource
 
     public static function table(Table $table): Table
     {
-        return $table
+       return $table
+            ->recordUrl('')
+            ->defaultSort('id','desc')
+
             ->columns([
                 Tables\Columns\TextColumn::make('invoice_number')
                     ->searchable()

@@ -1,5 +1,6 @@
 <?php
 return [
+    'id'=>"#",
     "created_at" => "created_at",
     "deleted_at" => "deleted_at",
     "updated_at" => "updated_at",
@@ -66,6 +67,7 @@ return [
     "yes" => "Yes",
     "no" => "No",
     "vendor_invoice" => "Vendor Invoice",
+    "vendor_invoice_number" => "Vendor Invoice Number",
     "date" => "Date",
     "balance" => "Balance",
     "total" => "Total",
@@ -189,6 +191,28 @@ return [
     'name_ckb'=>"Kurdish Name",
     'installment_max'=>"Installment Max",
     'installment_min'=>"Installment Min",
-    'codes'=>"Codes"
+    'codes'=>"Codes",
+    'installment'=>'Installment',
+    'inactive'=>'Inactive',
+    'all'=>'All',
+    'only_debt'=>"Only those with debt",
+    'without_debt'=>'Only those without debt ',
+    'reached_maximum_debt'=>'Reached maximum Debt',
+    'not_reached_maximum_debt'=>'Not reached maximum Debt',
+    'profit'=>'Profit',
+    'codeIsAvaliable'=>"The Code Purchased in Another Invoice",
+    'vendor'=>'Vendor',
+    'contactPhone'=>'Phone Number',
+    'is_sold'=>'Is Sold?',
+    'deposit'=>'Deposit',
+    'withdraw'=>"Withdraw",
+    'partner_account'=>"Partner",
+    'partnerAccountAll'=>"Partner",
+    "partnership"=>"Partnership",
+    'shipping'=>"Shipping",
+    'number_of_codes'=>"Number of Codes",
+    "codeGeneration"=>"Code Generation",
+    'reports'=>"Reports",
+    'financialBranch'=>"Finance - (Branch)"
 
 ];

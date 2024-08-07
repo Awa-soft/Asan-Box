@@ -7,7 +7,7 @@
                     <b>{{trans('lang.from')}}:</b> {{$from}}
                 </div>
                 <div class="font-bold text-center">
-                    {{trans('Logistic/lang.reports.itemTransactions')}}
+                    {{trans('Logistic/lang.reports.logisticItemTransactions')}}
                 </div>
                 <div class="text-end">
                     <b>{{trans('lang.to')}}:</b> {{$to}}
@@ -34,7 +34,7 @@
             @foreach($data as $key=>$dt)
                 @if($key > 0)
                     <tr>
-                        <td  colspan="2" style="padding-bottom: 60px; background: white;border: none"></td>
+                        <td  colspan="2" class="bg-transparent" style="padding-bottom: 60px; border: none"></td>
                     </tr>
                     <tr>
                         <th class="bg-primary-500 text-white">

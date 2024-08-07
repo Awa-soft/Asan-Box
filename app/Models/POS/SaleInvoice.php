@@ -62,13 +62,20 @@ class SaleInvoice extends Model
     {
         return $this->details()->get()->sum('codes_count');
     }
-    public function getTotalAttribute()
-    {
+    public function getTotalAttribute(){
         $total = 0;
         foreach ($this->details as $detail) {
             $total += $detail->price * $detail->codes()->where("gift", 0)->count();
         }
-        return $total;
+        if($this->currency_id == getBaseCurrency()->id){
+            return $total;
+        }
+        return $total * ($this->rate / 100);
+    }
+
+    public function getDueAmountAttribute():float
+    {
+        return ($this->getTotalAttribute()) - $this->paid_amount;
     }
 
 

@@ -34,7 +34,7 @@ class VendorResource extends Resource
     {
         return trans('CRM/lang.group_label');
     }
-    protected static ?int $navigationSort = 2;
+    protected static ?int $navigationSort = 28;
     public static function form(Form $form): Form
     {
         return $form
@@ -81,65 +81,83 @@ class VendorResource extends Resource
 
     public static function table(Table $table): Table
     {
-        return $table
-            ->columns([
-                static::Column(),
-                Tables\Columns\TextColumn::make('name_'.App::getLocale())
-                    ->label(trans("lang.name"))
-                    ->searchable(),
-
-                Tables\Columns\TextColumn::make('name')
-                    ->label(trans("lang.name"))
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('phone')
-                    ->label(trans("lang.phone"))
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('email')
-                    ->label(trans("lang.email"))
+       return $table
+            ->recordUrl('')
+            ->defaultSort('id','desc')
+           ->columns([
+               Tables\Columns\ImageColumn::make('image')
+                   ->circular()
+                   ->label(trans("lang.image"))
+                   ->size(100),
+                   Tables\Columns\TextColumn::make('id')
                     ->searchable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('address')
-                    ->label(trans("lang.address"))
-                    ->searchable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('payment_duration')
-                    ->label(trans("lang.payment_duration"))
-                    ->numeric()
-                    ->suffix(trans('lang.day'))
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('max_debt')
-                    ->label(trans("lang.max_debt"))
-                    ->numeric()
-                    ->suffix(fn ($record) => " " . getBaseCurrency()->symbol)
-                    ->sortable(),
-                Tables\Columns\ToggleColumn::make('status')
-                    ->label(trans("lang.status")),
-                Tables\Columns\TextColumn::make('branch.name')
-                    ->label(trans("Logistic/lang.branch.singular_label"))
-                    ->numeric()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('user.name')
-                    ->label(trans("lang.user"))
-                    ->numeric()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('deleted_at')
-                    ->label(trans('lang.deleted_at'))
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('created_at')
-                    ->label(trans('lang.created_at'))
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')
-                    ->label(trans('lang.updated_at'))
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-            ])
+                    ->label('#'),
+               static::Column(),
+               Tables\Columns\TextColumn::make('name_'.App::getLocale())
+                   ->label(trans("lang.name"))
+                   ->searchable(),
+               Tables\Columns\TextColumn::make('balance')
+                   ->label(trans('lang.balance'))
+                   ->suffix(' '. getBaseCurrency()->symbol)
+                   ->summarize([
+                       Tables\Columns\Summarizers\Summarizer::make('balance')
+                           ->label(trans('lang.total'))
+                           ->using(function ($query){
+                               $ids = $query->pluck('id');
+                               return number_format(Contact::whereIn('id',$ids)
+                                       ->get()->sum('balance'),getBaseCurrency()->decimal) . ' ' . getBaseCurrency()->symbol;
+                           })
+                   ])
+                   ->numeric(getBaseCurrency()->decimal,locale:'en'),
+               Tables\Columns\TextColumn::make('phone')
+                   ->label(trans("lang.phone"))
+                   ->searchable(),
+               Tables\Columns\TextColumn::make('email')
+                   ->label(trans("lang.email"))
+                   ->searchable()
+                   ->toggleable(isToggledHiddenByDefault: true),
+               Tables\Columns\TextColumn::make('address')
+                   ->label(trans("lang.address"))
+                   ->searchable()
+                   ->toggleable(isToggledHiddenByDefault: true),
+               Tables\Columns\TextColumn::make('payment_duration')
+                   ->label(trans("lang.payment_duration"))
+                   ->numeric(locale:'en')
+                   ->suffix(trans('lang.day'))
+                   ->sortable(),
+               Tables\Columns\TextColumn::make('max_debt')
+                   ->label(trans("lang.max_debt"))
+                   ->numeric(locale:'en')
+                   ->suffix(fn($record) => " ".getBaseCurrency()->symbol)
+                   ->sortable(),
+               Tables\Columns\ToggleColumn::make('status')
+                   ->label(trans("lang.status")),
+               Tables\Columns\TextColumn::make('branch.name')
+                   ->label(trans("Logistic/lang.branch.singular_label"))
+                   ->numeric()
+                   ->sortable()
+                   ->toggleable(isToggledHiddenByDefault: true),
+               Tables\Columns\TextColumn::make('user.name')
+                   ->label(trans("lang.user"))
+                   ->numeric()
+                   ->sortable()
+                   ->toggleable(isToggledHiddenByDefault: true),
+               Tables\Columns\TextColumn::make('deleted_at')
+                   ->label(trans('lang.deleted_at'))
+                   ->dateTime()
+                   ->sortable()
+                   ->toggleable(isToggledHiddenByDefault: true),
+               Tables\Columns\TextColumn::make('created_at')
+                   ->label(trans('lang.created_at'))
+                   ->dateTime()
+                   ->sortable()
+                   ->toggleable(isToggledHiddenByDefault: true),
+               Tables\Columns\TextColumn::make('updated_at')
+                   ->label(trans('lang.updated_at'))
+                   ->dateTime()
+                   ->sortable()
+                   ->toggleable(isToggledHiddenByDefault: true),
+           ])
             ->filters([
                 Tables\Filters\TrashedFilter::make()
                     ->native(0),

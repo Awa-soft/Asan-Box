@@ -16,6 +16,7 @@ class AuthServiceProvider  extends ProvidersAuthServiceProvider
 
     public function generatePolicyArray(): array
     {
+
         $modelsDirectory = app_path('Models');
         $array = [];
             $files = File::allFiles($modelsDirectory);
@@ -36,6 +37,7 @@ class AuthServiceProvider  extends ProvidersAuthServiceProvider
 
     public function register()
     {
+
         $this->booting(function () {
             $this->policies = $this->generatePolicyArray();
             $this->registerPolicies();

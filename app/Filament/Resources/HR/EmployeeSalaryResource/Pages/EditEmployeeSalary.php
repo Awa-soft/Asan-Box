@@ -10,7 +10,10 @@ class EditEmployeeSalary extends EditRecord
 {
     protected static string $resource = EmployeeSalaryResource::class;
     use \App\Traits\Core\TranslatableForm;
-
+    protected function getRedirectUrl(): string
+    {
+        return $this->getResource()::getUrl('index');
+    }
     protected function getHeaderActions(): array
     {
         return [

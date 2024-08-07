@@ -10,11 +10,16 @@ class SaleItems extends Page
     protected static ?string $navigationIcon = 'heroicon-o-document-text';
     protected static ?string $slug = 'reports/pos/saleItems/{from}/{to}/{contact}/{branch}/{item}/{type}';
     protected static bool $shouldRegisterNavigation = false;
+    protected static ?string $title = '';
     public  $data;
     public $from,$to,$currencies,$type;
     public function mount($from,$to,$branch,$contact,$item,$type):void{
         $this->type = $type;
-        $branches = json_decode($branch,0);
+        if(!userHasBranch()) {
+            $branches = json_decode($branch, 0);
+        }else{
+            $branches = [getBranchId()];
+        }
         $contacts = json_decode($contact,0);
         $item = json_decode($item,0);
         $this->from = $from;
@@ -30,7 +35,9 @@ class SaleItems extends Page
                 return $query->whereDate('date', '>=', Carbon::parse($from));
             })->when($to != 'all', function ($query)use($to) {
                 return $query->whereDate('date', '<=', Carbon::parse($to));
-            });
+            })->when(!auth()->user()->can('view_any_p::o::s::sale::invoice'),function ($query){
+                    return $query->where('user_id',auth()->id);
+                });
         })->when($item != [],function ($q)use($item){
             return $q->whereIn('item_id', $item);
         })->orderBy('item_id','asc')->get();

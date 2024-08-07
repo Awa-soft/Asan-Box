@@ -25,6 +25,7 @@ class IdentityTypeResource extends Resource
     use HasTranslatableResource;
 
     protected static ?string $navigationIcon = 'polaris-identity-card-icon';
+    protected static ?int $navigationSort = 34;
 
 
 
@@ -41,7 +42,9 @@ class IdentityTypeResource extends Resource
 
     public static function table(Table $table): Table
     {
-        return $table
+       return $table
+            ->recordUrl('')
+            ->defaultSort('id','desc')
             ->columns([
                 Tables\Columns\TextColumn::make('name')
                     ->searchable(),

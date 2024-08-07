@@ -24,6 +24,7 @@ class PaymentResource extends Resource
     protected static ?string $model = Payment::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?int $navigationSort = 40;
 
     public static function form(Form $form): Form
     {
@@ -39,7 +40,9 @@ class PaymentResource extends Resource
                 ->searchable()
                 ->preload(),
             Forms\Components\Select::make('contact_id')
-                ->relationship('contact', 'name_'.App::getLocale())
+                ->relationship('contact', 'name_'.App::getLocale(),modifyQueryUsing: function ($query){
+                    return $query->where('status',1);
+                })
                 ->getOptionLabelFromRecordUsing(fn($record)=> "$record->name_ckb - $record->phone" )
                 ->required()
                 ->searchable()
@@ -47,7 +50,7 @@ class PaymentResource extends Resource
                 ->live()
                 ->afterStateUpdated(function (callable $set, callable $get) {
                     if ($get("contact_id")) {
-                        $set("balance", number_format(Contact::find($get("contact_id"))->balance, getBaseCurrency()->decimal));
+                        $set("balance", number_format(Contact::find($get("contact_id"))->balance, getBaseCurrency()->decimal,'.',''));
                     }
                 }),
             Forms\Components\TextInput::make('balance')
@@ -81,7 +84,9 @@ class PaymentResource extends Resource
 
     public static function table(Table $table): Table
     {
-        return $table
+       return $table
+            ->recordUrl('')
+            ->defaultSort('id','desc')
             ->columns([
                 Tables\Columns\TextColumn::make('contact.name_'.\Illuminate\Support\Facades\App::getLocale())
                     ->numeric()
@@ -96,15 +101,13 @@ class PaymentResource extends Resource
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('amount')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('rate')
-                    ->numeric()
+                    ->numeric(locale:'en')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('balance')
-                    ->numeric()
+                    ->numeric(locale:'en')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('type')
+                    ->formatStateUsing(fn($state)=>self::$model::getTypes()[$state])
                     ->searchable(),
                 Tables\Columns\TextColumn::make('date')
                     ->date()

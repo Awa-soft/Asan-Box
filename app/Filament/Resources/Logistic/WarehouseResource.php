@@ -22,6 +22,7 @@ class WarehouseResource extends Resource
 
 
     protected static ?string $navigationIcon = 'fas-warehouse';
+    protected static ?int $navigationSort = 18;
 
 
 
@@ -57,8 +58,8 @@ class WarehouseResource extends Resource
                     ->maxLength(255)
                     ->default(null),
                     Forms\Components\Toggle::make('status')
-->visible(fn($operation)=>$operation == "edit")
-->default(1)
+                    ->visible(fn($operation)=>$operation == "edit")
+                    ->default(1)
                     ->label(trans('lang.status'))
                     ->visible(fn($operation)=>$operation == "edit"),
                 // Forms\Components\Select::make('branches')
@@ -71,15 +72,21 @@ class WarehouseResource extends Resource
                     ->label(trans('lang.image'))
                     ->avatar()
                     ->image(),
+                Forms\Components\Select::make('financial_branch_id')
+                    ->relationship('financialBranch','name')
+                    ->label('('.trans('Finance/lang.group_label') . ') - ' . trans('lang.branch'))
+                    ->required()
             ]);
     }
 
     public static function table(Table $table): Table
     {
-        return $table
+       return $table
+            ->recordUrl('')
+            ->defaultSort('id','desc')
             ->columns([
                 Tables\Columns\ImageColumn::make('image')
-->circular()
+                        ->circular()
                     ->label(trans('lang.image'))
                     ->size(100),
                 Tables\Columns\TextColumn::make('name')
@@ -90,6 +97,9 @@ class WarehouseResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('phone')
                     ->label(trans('lang.phone'))
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('financialBranch.name')
+                    ->label('('.trans('Finance/lang.group_label') . ') - ' . trans('lang.branch'))
                     ->searchable(),
                 Tables\Columns\TextColumn::make('branches.name')
                     ->label(trans('Logistic/lang.branch.plural_label'))

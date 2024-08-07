@@ -5,6 +5,7 @@ namespace App\Filament\Resources\CRM;
 use App\Filament\Resources\CRM\BourseResource\Pages;
 use App\Filament\Resources\CRM\BourseResource\RelationManagers;
 use App\Models\CRM\Bourse;
+use App\Models\CRM\Contact;
 use App\Traits\Core\HasTranslatableResource;
 use App\Traits\Core\OwnerableTrait;
 use Filament\Forms;
@@ -23,7 +24,7 @@ class BourseResource extends Resource
 
     protected static ?string $model = Bourse::class;
     protected static ?string $navigationIcon = 'fluentui-building-retail-money-20';
-    protected static ?int $navigationSort = 4;
+    protected static ?int $navigationSort = 31;
     public static function form(Form $form): Form
     {
         return $form
@@ -53,19 +54,35 @@ class BourseResource extends Resource
 
     public static function table(Table $table): Table
     {
-        return $table
+       return $table
+            ->recordUrl('')
+            ->defaultSort('id','desc')
             ->columns([
-                static::Column(),
                 Tables\Columns\ImageColumn::make('image')
                     ->circular()
                     ->size(80)
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->label(trans("lang.image")),
+                static::Column(),
                 Tables\Columns\TextColumn::make('name')
                     ->label(trans("lang.name"))
                     ->searchable(),
                 Tables\Columns\TextColumn::make('phone')
                     ->label(trans("lang.phone"))
                     ->searchable(),
+                Tables\Columns\TextColumn::make('balance')
+                    ->label(trans('lang.balance'))
+                    ->suffix(' '. getBaseCurrency()->symbol)
+                    ->summarize([
+                        Tables\Columns\Summarizers\Summarizer::make('balance')
+                            ->label(trans('lang.total'))
+                            ->using(function ($query){
+                                $ids = $query->pluck('id');
+                                return number_format(Bourse::whereIn('id',$ids)
+                                        ->get()->sum('balance'),getBaseCurrency()->decimal) . ' ' . getBaseCurrency()->symbol;
+                            })
+                    ])
+                    ->numeric(getBaseCurrency()->decimal,locale:'en'),
                 Tables\Columns\TextColumn::make('email')
                     ->label(trans("lang.email"))
                     ->searchable()

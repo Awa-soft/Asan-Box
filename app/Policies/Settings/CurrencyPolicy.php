@@ -63,7 +63,7 @@ class CurrencyPolicy
      */
     public function forceDelete(User $user, Currency $currency): bool
     {
-        return $user->can('force_delete_settings::currency');
+        return $user->can('{{ ForceDelete }}');
     }
 
     /**
@@ -71,7 +71,7 @@ class CurrencyPolicy
      */
     public function forceDeleteAny(User $user): bool
     {
-        return $user->can('force_delete_any_settings::currency');
+        return $user->can('{{ ForceDeleteAny }}');
     }
 
     /**

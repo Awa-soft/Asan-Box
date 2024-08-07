@@ -1,5 +1,6 @@
 <?php
 
+
 return [
     'shield_resource' => [
         'should_register_navigation' => true,
@@ -41,8 +42,6 @@ return [
             'reorder',
             'delete',
             'delete_any',
-            'force_delete',
-            'force_delete_any',
         ],
 
         'page' => 'page',
@@ -65,21 +64,20 @@ return [
     'exclude' => [
         'enabled' => true,
 
-        'pages' => [
-            'Dashboard',
-        ],
+        'pages' =>[],
 
         'widgets' => [
             'AccountWidget', 'FilamentInfoWidget',
         ],
 
-        'resources' => [],
+        'resources' => [
+        ],
     ],
 
     'discovery' => [
         'discover_all_resources' => true,
         'discover_all_widgets' => true,
-        'discover_all_pages' => true,
+        'discover_all_pages' => false,
     ],
 
     'register_role_policy' => [

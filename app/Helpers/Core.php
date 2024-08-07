@@ -60,12 +60,12 @@ function convertToCurrency($from_id, $to_id, $amount, $from_rate = null, $to_rat
         $to_rate = getRatePerOne($to_id);
     }
     if ($from_id == 1 && $to_id == 2) {
-        return $amount * $to_rate;
+        return ($amount * $to_rate);
     }
     if ($to_id == 1) {
-        return $usd;
+        return ($usd);
     }
-    return $usd * $to_rate;
+    return ($usd * $to_rate);
 }
 
 
@@ -95,6 +95,33 @@ function getSidebar(){
     return auth()->user()->sidebar;;
 }
 
+
+function userHasBranch():float{
+    if(auth()->user()->ownerable_type == 'App\Models\Logistic\Branch'){
+        return true;
+    }
+    return false;
+}
+function getBranchId():int{
+    if(userHasBranch()){
+        return auth()->user()->ownerable_id;
+    }
+    return 0;
+}
+
+
+function userHasWarehouse():float{
+    if(auth()->user()->ownerable_type == 'App\Models\Logistic\Warehouse'){
+        return true;
+    }
+    return false;
+}
+function getWarehouseId():int{
+    if(userHasWarehouse()){
+        return auth()->user()->ownerable_id;
+    }
+    return 0;
+}
 
 
 

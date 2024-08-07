@@ -10,6 +10,7 @@ class ItemTransactions extends Page
     protected static ?string $navigationIcon = 'heroicon-o-document-text';
     protected static ?string $slug = 'reports/logistic/branch/{warehouses}/{branches}/{to}/{from}';
     protected static bool $shouldRegisterNavigation = false;
+    protected static ?string $title = '';
     public $data,$from,$to;
     public function mount($from,$to,$warehouses,$branches){
         $this->from = $from;

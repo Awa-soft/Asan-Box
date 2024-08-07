@@ -25,7 +25,7 @@ class PartnerResource extends Resource
     protected static ?string $model = Partner::class;
 
     protected static ?string $navigationIcon = 'carbon-partnership';
-    protected static ?int $navigationSort = 6;
+    protected static ?int $navigationSort = 33;
 
     public static function form(Form $form): Form
     {
@@ -39,7 +39,6 @@ class PartnerResource extends Resource
                 ->label(trans("lang.phone"))
                 ->tel()
                 ->maxLength(255),
-
             Forms\Components\TextInput::make('address')
                 ->label(trans("lang.address"))
                 ->maxLength(255),
@@ -56,7 +55,9 @@ class PartnerResource extends Resource
 
     public static function table(Table $table): Table
     {
-        return $table
+       return $table
+            ->recordUrl('')
+            ->defaultSort('id','desc')
             ->columns([
                 Tables\Columns\ImageColumn::make('image')
 ->circular()

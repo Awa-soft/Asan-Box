@@ -11,7 +11,10 @@ class EditPayment extends EditRecord
 {
     use TranslatableForm;
     protected static string $resource = PaymentResource::class;
-
+    protected function getRedirectUrl(): string
+    {
+        return $this->getResource()::getUrl('index');
+    }
     protected function getHeaderActions(): array
     {
         return [

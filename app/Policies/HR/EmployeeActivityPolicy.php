@@ -63,7 +63,7 @@ class EmployeeActivityPolicy
      */
     public function forceDelete(User $user, EmployeeActivity $employeeActivity): bool
     {
-        return $user->can('force_delete_h::r::employee::activity');
+        return $user->can('{{ ForceDelete }}');
     }
 
     /**
@@ -71,7 +71,7 @@ class EmployeeActivityPolicy
      */
     public function forceDeleteAny(User $user): bool
     {
-        return $user->can('force_delete_any_h::r::employee::activity');
+        return $user->can('{{ ForceDeleteAny }}');
     }
 
     /**

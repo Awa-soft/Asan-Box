@@ -22,6 +22,7 @@ class PositionResource extends Resource
     protected static ?string $model = Position::class;
     use OwnerableTrait;
     protected static ?string $navigationIcon = 'eos-job';
+    protected static ?int $navigationSort = 34;
 
     public static function getModelLabel(): string
     {
@@ -66,7 +67,9 @@ class PositionResource extends Resource
 
     public static function table(Table $table): Table
     {
-        return $table
+       return $table
+            ->recordUrl('')
+            ->defaultSort('id','desc')
             ->columns([
                 static::Column(),
                 Tables\Columns\TextColumn::make('name')

@@ -27,6 +27,7 @@ class PurchaseInvoiceResource extends Resource
 {
     use \App\Traits\Core\HasSoftDeletes;
     use HasTranslatableResource;
+    protected static ?int $navigationSort = 3;
 
     protected static ?string $model = PurchaseInvoice::class;
 
@@ -82,7 +83,9 @@ class PurchaseInvoiceResource extends Resource
 
     public static function table(Table $table): Table
     {
-        return $table
+       return $table
+            ->recordUrl('')
+            ->defaultSort('id','desc')
             ->columns([
              Tables\Columns\TextColumn::make('branch.name')
                     ->numeric()
@@ -101,38 +104,50 @@ class PurchaseInvoiceResource extends Resource
                 Tables\Columns\TextColumn::make('date')
                     ->date("Y-m-d")
                     ->sortable(),
+                Tables\Columns\TextColumn::make('vendor.name_'.\Illuminate\Support\Facades\App::getLocale())
+                    ->numeric()
+                    ->searchable()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('contactPhone.phone')
+                    ->searchable()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('total')
                     ->sortable()
-                    ->numeric(fn($record)=>$record->currency->decimal)
+                    ->numeric(fn($record)=>$record->currency->decimal,locale:'en')
                     ->suffix(fn($record)=>" ".$record->currency->symbol),
                 Tables\Columns\TextColumn::make('total_expenses')
                     ->sortable()
-                    ->numeric(fn($record)=>$record->currency->decimal)
+                    ->numeric(fn($record)=>$record->currency->decimal,locale:'en')
                     ->suffix(fn($record)=>" ".$record->currency->symbol),
                 Tables\Columns\TextColumn::make('paid_amount')
-                    ->numeric(fn($record)=>$record->currency->decimal)
+                    ->numeric(fn($record)=>$record->currency->decimal,locale:'en')
                     ->sortable()
                     ->suffix(fn($record)=>" ".$record->currency->symbol),
-                Tables\Columns\TextColumn::make('contact.name_'.\Illuminate\Support\Facades\App::getLocale())
-                    ->numeric()
-                    ->sortable(),
+                Tables\Columns\TextColumn::make('codes')
+                     ->state(fn($record)=>$record->codes_count)
+                         ->toggleable(isToggledHiddenByDefault: true)
+                    ->searchable(),
+                       Tables\Columns\TextColumn::make('item')
+                           ->toggleable(isToggledHiddenByDefault: true)
+                       ->state(fn($record)=>$record->items_count)
+                    ->searchable(),
+
+
                 Tables\Columns\TextColumn::make('rate')
-                    ->numeric()
+                    ->numeric(locale:'en')
                     ->sortable()
                      ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('balance')
-                    ->numeric()
+                    ->numeric(locale:'en')
                     ->sortable()
                      ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('discount')
-                    ->numeric()
+                    ->numeric(locale:'en')
                     ->suffix(" %")
                     ->sortable(),
                 Tables\Columns\TextColumn::make('user.name')
-                    ->numeric()
                     ->sortable()
                      ->toggleable(isToggledHiddenByDefault: true),
-
                 Tables\Columns\TextColumn::make('deleted_at')
                     ->dateTime()
                     ->sortable()

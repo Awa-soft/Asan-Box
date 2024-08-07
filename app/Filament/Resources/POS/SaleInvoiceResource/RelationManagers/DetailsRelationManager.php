@@ -30,14 +30,17 @@ class DetailsRelationManager extends RelationManager
                 Forms\Components\Select::make('item_id')
                     ->relationship('item', 'name_'.App::getLocale())
                     ->preload()
+                    ->label(trans('lang.item'))
                     ->searchable()
                     ->required(),
                 Forms\Components\Select::make('currency_id')
                     ->relationship('currency', 'symbol')
+                    ->label(trans('lang.currency'))
                     ->preload()
                     ->searchable()
                     ->required(),
                 Forms\Components\TextInput::make('price')
+                    ->label(trans('lang.price'))
                     ->numeric()
                     ->required(),
             ])
@@ -46,7 +49,9 @@ class DetailsRelationManager extends RelationManager
 
     public function table(Table $table): Table
     {
-        return $table
+       return $table
+            ->recordUrl('')
+            ->defaultSort('id','desc')
             ->recordTitleAttribute('id')
             ->columns([
                 Tables\Columns\TextColumn::make('invoice.name')

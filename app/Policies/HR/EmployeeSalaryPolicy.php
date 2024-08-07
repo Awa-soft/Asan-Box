@@ -63,7 +63,7 @@ class EmployeeSalaryPolicy
      */
     public function forceDelete(User $user, EmployeeSalary $employeeSalary): bool
     {
-        return $user->can('force_delete_h::r::employee::salary');
+        return $user->can('{{ ForceDelete }}');
     }
 
     /**
@@ -71,7 +71,7 @@ class EmployeeSalaryPolicy
      */
     public function forceDeleteAny(User $user): bool
     {
-        return $user->can('force_delete_any_h::r::employee::salary');
+        return $user->can('{{ ForceDeleteAny }}');
     }
 
     /**

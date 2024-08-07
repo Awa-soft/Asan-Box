@@ -23,6 +23,7 @@ class SaleInvoiceResource extends Resource
     protected static ?string $model = SaleInvoice::class;
 
     protected static ?string $navigationIcon = 'vaadin-invoice';
+    protected static ?int $navigationSort = 5;
 
     public static function form(Form $form): Form
     {
@@ -74,7 +75,9 @@ class SaleInvoiceResource extends Resource
 
     public static function table(Table $table): Table
     {
-        return $table
+       return $table
+            ->recordUrl('')
+            ->defaultSort('id','desc')
             ->columns([
              Tables\Columns\TextColumn::make('branch.name')
                     ->numeric()
@@ -88,36 +91,32 @@ class SaleInvoiceResource extends Resource
                     }),
                 Tables\Columns\TextColumn::make('invoice_number')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('vendor_invoice')
+                       Tables\Columns\TextColumn::make('codes')
+                     ->state(fn($record)=>$record->codes_count)
+                    ->searchable(),
+                       Tables\Columns\TextColumn::make('item')
+                       ->state(fn($record)=>$record->items_count)
                     ->searchable(),
                 Tables\Columns\TextColumn::make('date')
                     ->date("Y-m-d")
                     ->sortable(),
                 Tables\Columns\TextColumn::make('total')
                     ->sortable()
-                    ->numeric(fn($record)=>$record->currency->decimal)
-                    ->suffix(fn($record)=>" ".$record->currency->symbol),
-                Tables\Columns\TextColumn::make('total_expenses')
-                    ->sortable()
-                    ->numeric(fn($record)=>$record->currency->decimal)
+                    ->numeric(fn($record)=>$record->currency->decimal,locale:'en')
                     ->suffix(fn($record)=>" ".$record->currency->symbol),
                 Tables\Columns\TextColumn::make('paid_amount')
-                    ->numeric(fn($record)=>$record->currency->decimal)
+                    ->numeric(fn($record)=>$record->currency->decimal,locale:'en')
                     ->sortable()
                     ->suffix(fn($record)=>" ".$record->currency->symbol),
                 Tables\Columns\TextColumn::make('contact.name_'.\Illuminate\Support\Facades\App::getLocale())
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('rate')
-                    ->numeric()
-                    ->sortable()
-                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('balance')
-                    ->numeric()
+                    ->numeric(locale:'en')
                     ->sortable()
                      ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('discount')
-                    ->numeric()
+                    ->numeric(locale:'en')
                     ->suffix(" %")
                     ->sortable(),
                 Tables\Columns\TextColumn::make('user.name')

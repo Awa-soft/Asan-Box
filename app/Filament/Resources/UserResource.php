@@ -22,6 +22,8 @@ class UserResource extends Resource
 {
     use \App\Traits\Core\HasSoftDeletes;
     use OwnerableTrait;
+    protected static ?int $navigationSort = 42;
+
     protected static ?string $model = User::class;
     protected static ?string $navigationIcon = 'heroicon-o-user';
     public static function getModelLabel(): string
@@ -64,15 +66,16 @@ class UserResource extends Resource
                     ->multiple()
                     ->preload()
                     ->searchable(),
-
-
             ])
-            ->columns(2);
+            ->columns(1);
     }
 
     public static function table(Table $table): Table
     {
-        return $table
+       return $table
+            ->recordUrl('')
+            ->defaultSort('id','desc')
+                    ->modifyQueryUsing(fn($query)=>$query->where('id','>',1))
             ->columns([
                 static::Column(),
                 Tables\Columns\TextColumn::make('name')

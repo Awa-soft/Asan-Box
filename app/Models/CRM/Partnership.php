@@ -7,6 +7,7 @@ use App\Traits\Core\HasUser;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Partnership extends Model
@@ -56,6 +57,10 @@ class Partnership extends Model
 
     public function branch():BelongsTo{
         return $this->belongsTo(Branch::class);
+    }
+    public function partnerAccounts():HasMany
+    {
+        return $this->hasMany(PartnerAccount::class);
     }
 
     public function getNameAttribute():string{

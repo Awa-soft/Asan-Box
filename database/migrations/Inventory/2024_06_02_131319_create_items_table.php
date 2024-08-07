@@ -28,6 +28,7 @@ return new class extends Migration
             $table->decimal("min_price",64,2)->default(0);
             $table->decimal("max_price",64,2)->default(0);
             $table->integer("discount")->default(0);
+            $table->integer("benifit_ratio")->default(0);
             $table->date('expire_date')->nullable();
             $table->string("image")->nullable();
             $table->decimal('installment_min');

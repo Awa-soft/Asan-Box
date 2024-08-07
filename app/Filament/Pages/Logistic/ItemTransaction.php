@@ -15,16 +15,27 @@ use Filament\Forms\Contracts\HasForms;
 use Filament\Forms\Form;
 use Filament\Notifications\Notification;
 use Filament\Pages\Page;
+use Illuminate\Contracts\Support\Htmlable;
+use Illuminate\Contracts\View\View;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
+use Livewire\WithPagination;
 
 class ItemTransaction extends Page implements HasForms
 {
     use HasPageShield, InteractsWithForms;
     protected static ?string $navigationIcon = 'iconpark-buy';
+    protected static ?int $navigationSort = 21;
+
     public static function getNavigationLabel(): string
     {
         return trans('Logistic/lang.item_transaction.plural_label');
     }
+    public function getTitle(): string|Htmlable
+    {
+        return trans('Logistic/lang.item_transaction.plural_label');
+    }
+
     public  function getHeading(): string
     {
         return "";
@@ -34,7 +45,7 @@ class ItemTransaction extends Page implements HasForms
         return trans('Logistic/lang.group_label');
     }
 
-    public $currencies, $items, $tableData = [], $selected = [], $categories = [], $selectedCategories = [], $codes = [], $key, $multipleSelect = false;
+    public $currencies, $tableData = [], $selected = [], $categories = [], $selectedCategories = [], $codes = [], $key, $multipleSelect = false;
     public ?array $invoiceData = [];
     protected function getForms(): array
     {
@@ -86,7 +97,6 @@ class ItemTransaction extends Page implements HasForms
     public function mount()
     {
         $this->categories = Category::all();
-        $this->items = Item::all();
         $this->invoiceForm->fill();
 
     }
@@ -124,7 +134,7 @@ class ItemTransaction extends Page implements HasForms
 
     public function addToTable()
     {
-        $records = $this->items->whereIn('id', $this->selected)->map(function ($record) {
+        $records = Item::all()->whereIn('id', $this->selected)->map(function ($record) {
             return [
                 'id' => $record->id,
                 'name' => $record->{'name_'.\Illuminate\Support\Facades\App::getLocale()},
@@ -142,7 +152,7 @@ class ItemTransaction extends Page implements HasForms
 
     public function selectAll()
     {
-        $this->selected = $this->items->pluck('id')->toArray();
+        $this->selected = Item::all()->pluck('id')->toArray();
     }
 
     public function deselectAll()
@@ -180,12 +190,75 @@ class ItemTransaction extends Page implements HasForms
 
     public function addToCode(){
 
-        if (count($this->codes) > 0) {
-            if(Item::hasCode($this->tableData[$this->key]['id'],$this->codes,['fromable'=>$this->invoiceData['fromable_type'],'fromable_id'=>$this->invoiceData['fromable_id']])){
-                $this->tableData[$this->key]['codes'][] = $this->codes;
-                $this->codes = [];
+        $selected = true;
+        $codeIsNotFound = true;
+        $codeIsAvailable = true;
+        if(count($this->codes) > 0) {
+            if ($this->invoiceData['fromable_type'] == null || $this->invoiceData['fromable_id'] == null) {
+                Notification::make('error')
+                    ->title(trans('lang.please_select', ['name' => trans('lang.from') . ' (' . trans('lang.ownerable') . ') ']))
+                    ->danger()
+                    ->send();
+                                    $this->codes = [];
+
+                return;
+            } elseif ($this->invoiceData['toable_type'] == null || $this->invoiceData['toable_id'] == null) {
+                Notification::make('error')
+                    ->title(trans('lang.please_select', ['name' => trans('lang.to') . ' (' . trans('lang.ownerable') . ') ']))
+                    ->danger()
+                    ->send();
+                     $this->codes = [];
+                return;
             }
+            if ($this->invoiceData['fromable_type'] == 'App\Models\Logistic\Warehouse') {
+                if (Warehouse::hasCode($this->codes['code'], $this->tableData[$this->key]['id'], $this->invoiceData['fromable_id']) == 0) {
+                    Notification::make('error')
+                        ->title(trans('lang.code_not_found', ['code' => $this->codes['code']]))
+                        ->danger()
+                        ->send();
+                         $this->codes = [];
+                    return;
+                }
+            }
+            if ($this->invoiceData['fromable_type'] == 'App\Models\Logistic\Branch') {
+                if (Branch::branchHasCode($this->codes['code'], $this->tableData[$this->key]['id'], $this->invoiceData['fromable_id']) == 0) {
+                    Notification::make('error')
+                        ->title(trans('lang.code_not_found', ['code' => $this->codes['code']]))
+                        ->danger()
+                        ->send();
+                        $this->codes = [];
+                    return;
+                }
+            }
+            if ($this->invoiceData['toable_type'] == 'App\Models\Logistic\Warehouse') {
+                if (Warehouse::hasCode($this->codes['code'], $this->tableData[$this->key]['id'], $this->invoiceData['toable_id']) > 0) {
+                    Notification::make('error')
+                        ->title(trans('lang.codeIsAvaliable'))
+                        ->danger()
+                        ->send();
+                         $this->codes = [];
+                    return;
+                }
+            }
+            if ($this->invoiceData['toable_type'] == 'App\Models\Logistic\Branch') {
+                if (Branch::branchHasCode($this->codes['code'], $this->tableData[$this->key]['id'], $this->invoiceData['toable_id']) > 0) {
+                    Notification::make('error')
+                        ->title(trans('lang.codeIsAvaliable'))
+                        ->danger()
+                        ->send();
+                        $this->codes = [];
+                    return;
+                }
+            }
+
+                    $this->tableData[$this->key]['codes'][] = $this->codes;
+                    $this->codes = [];
+
+        }else{
+            $this->codes = [];
         }
+
+
         $this->refreshTable();
     }
 
@@ -230,6 +303,25 @@ class ItemTransaction extends Page implements HasForms
             DB::rollBack();
             return;
         }
+    }
+
+    public $name = [];
+    use WithPagination;
+    public function updatedName(){
+        $this->resetPage();
+    }
+    public function render(): View
+    {
+        $items = Item::when($this->name != null,function ($query){
+            return $query->where('name_'.App::getLocale(), 'like', '%'.$this->name.'%');
+        })->orderBy('id','desc')
+            ->paginate(20);
+        return view($this->getView(), compact('items'))
+            ->layout($this->getLayout(), [
+                'livewire' => $this,
+                'maxContentWidth' => $this->getMaxContentWidth(),
+                ...$this->getLayoutData(),
+            ]);
     }
 
     public function removeCode($key){

@@ -63,7 +63,7 @@ class BoursePaymentPolicy
      */
     public function forceDelete(User $user, BoursePayment $boursePayment): bool
     {
-        return $user->can('force_delete_finance::bourse::payment');
+        return $user->can('{{ ForceDelete }}');
     }
 
     /**
@@ -71,7 +71,7 @@ class BoursePaymentPolicy
      */
     public function forceDeleteAny(User $user): bool
     {
-        return $user->can('force_delete_any_finance::bourse::payment');
+        return $user->can('{{ ForceDeleteAny }}');
     }
 
     /**

@@ -63,7 +63,7 @@ class UnitPolicy
      */
     public function forceDelete(User $user, Unit $unit): bool
     {
-        return $user->can('force_delete_inventory::unit');
+        return $user->can('{{ ForceDelete }}');
     }
 
     /**
@@ -71,7 +71,7 @@ class UnitPolicy
      */
     public function forceDeleteAny(User $user): bool
     {
-        return $user->can('force_delete_any_inventory::unit');
+        return $user->can('{{ ForceDeleteAny }}');
     }
 
     /**

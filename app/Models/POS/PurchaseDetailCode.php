@@ -26,7 +26,7 @@ class PurchaseDetailCode extends Model
         $expenses = 0;
 
         foreach($this->detail->invoice->expenses as $expense){
-            $expenses += convertToCurrency($expense->currency_id, getBaseCurrency()->id,$expense->amount, to_rate:$expense->rate);
+            $expenses += $expense->currency_id == getBaseCurrency()->id ? $expense->amount : ($expense->amount / ($expenses->currency_rate / 100));
         }
 
         return  ($expenses/$this->detail->codes->count("code"));
@@ -35,10 +35,29 @@ class PurchaseDetailCode extends Model
     public function getCostAttribute(){
         $expenses = 0;
         foreach($this->detail->invoice->expenses as $expense){
-            $expenses += convertToCurrency($expense->currency_id, getBaseCurrency()->id,$expense->amount, to_rate:$expense->rate);
+            $expenses += $expense->currency_id == getBaseCurrency()->id ? $expense->amount : ($expense->amount / ($expenses->currency_rate / 100));
         }
 
         return $this->detail->price + ($expenses/$this->detail->codes->count("code"));
 
+    }
+
+    public function getIsSoldAttribute():float
+    {
+        $code = $this->code;
+        $saleInvoice = SaleInvoice::whereHas('details',function ($query)use($code){
+            return $query->whereHas('codes', function ($query) use ($code){
+                return $query->where('code', $code);
+            });
+        })->where('type','sale')->where('deleted_at',null)->count();
+        $returnSale = SaleInvoice::whereHas('details',function ($query)use($code){
+            return $query->whereHas('codes', function ($query) use ($code){
+                return $query->where('code', $code);
+            });
+        })->where('type','!=','sale')->where('deleted_at',null)->count();
+        if($saleInvoice > $returnSale){
+            return true;
+        }
+        return false;
     }
 }

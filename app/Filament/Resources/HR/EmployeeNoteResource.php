@@ -22,6 +22,7 @@ class EmployeeNoteResource extends Resource
     use HasTranslatableResource;
 
     protected static ?string $model = EmployeeNote::class;
+    protected static ?int $navigationSort = 34;
 
     protected static ?string $navigationIcon = 'tabler-notes';
 
@@ -46,7 +47,9 @@ class EmployeeNoteResource extends Resource
 
     public static function table(Table $table): Table
     {
-        return $table
+       return $table
+            ->recordUrl('')
+            ->defaultSort('id','desc')
             ->columns([
                 static::Column(),
                 Tables\Columns\TextColumn::make('employee.name')

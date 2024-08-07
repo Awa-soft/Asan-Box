@@ -11,7 +11,10 @@ class EditTeam extends EditRecord
 
     protected static string $resource = TeamResource::class;
     use \App\Traits\Core\TranslatableForm;
-
+    protected function getRedirectUrl(): string
+    {
+        return $this->getResource()::getUrl('index');
+    }
     protected function getHeaderActions(): array
     {
         return [

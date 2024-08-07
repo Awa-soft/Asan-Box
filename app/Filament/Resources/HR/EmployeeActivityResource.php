@@ -24,6 +24,8 @@ class EmployeeActivityResource extends Resource
     protected static ?string $model = EmployeeActivity::class;
 
     protected static ?string $navigationIcon = 'carbon-user-activity';
+    protected static ?int $navigationSort = 34;
+
 
     public static function form(Form $form): Form
     {
@@ -54,7 +56,9 @@ class EmployeeActivityResource extends Resource
 
     public static function table(Table $table): Table
     {
-        return $table
+       return $table
+            ->recordUrl('')
+            ->defaultSort('id','desc')
             ->columns([
                 static::Column(),
                 Tables\Columns\TextColumn::make('employee.name')

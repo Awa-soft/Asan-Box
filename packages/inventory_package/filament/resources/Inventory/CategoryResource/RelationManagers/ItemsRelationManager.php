@@ -23,7 +23,9 @@ class ItemsRelationManager extends RelationManager
 
     public function table(Table $table): Table
     {
-        return $table
+       return $table
+            ->recordUrl('')
+            ->defaultSort('id','desc')
             ->recordTitleAttribute('items.name')
             ->columns([
                 Tables\Columns\ImageColumn::make('image')

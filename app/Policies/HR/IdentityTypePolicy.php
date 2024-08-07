@@ -63,7 +63,7 @@ class IdentityTypePolicy
      */
     public function forceDelete(User $user, IdentityType $identityType): bool
     {
-        return $user->can('force_delete_h::r::identity::type');
+        return $user->can('{{ ForceDelete }}');
     }
 
     /**
@@ -71,7 +71,7 @@ class IdentityTypePolicy
      */
     public function forceDeleteAny(User $user): bool
     {
-        return $user->can('force_delete_any_h::r::identity::type');
+        return $user->can('{{ ForceDeleteAny }}');
     }
 
     /**

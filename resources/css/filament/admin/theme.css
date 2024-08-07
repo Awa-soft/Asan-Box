@@ -1,3 +1,23 @@
 @import '/vendor/filament/filament/resources/css/theme.css';
 
 @config 'tailwind.config.js';
+
+@font-face {
+    font-family:'rabar';
+    src: url('rabar.ttf');
+}
+*:dir(rtl){
+    font-family: 'rabar', serif;
+}
+
+.fi-sidebar-nav{
+    @apply border-e dark:border-e-gray-500;
+}
+.fi-sidebar-item-active a,.fi-sidebar-item-active:hover a,.fi-sidebar-item:hover a{
+    @apply bg-primary-500 dark:bg-primary-700/50 transition-all duration-200;
+}
+.fi-sidebar-item-active a .fi-sidebar-item-label , .fi-sidebar-item-active a .fi-sidebar-item-icon
+, .fi-sidebar-item:hover a .fi-sidebar-item-label, .fi-sidebar-item:hover a .fi-sidebar-item-icon{
+    @apply text-white transition-all duration-200;
+}
+

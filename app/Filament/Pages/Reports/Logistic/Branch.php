@@ -11,6 +11,7 @@ class Branch extends Page
     use WithPagination;
     protected static ?string $slug = 'reports/logistic/branch/{attr}/{branches}';
     protected static bool $shouldRegisterNavigation = false;
+    protected static ?string $title = '';
     public $attr,$data;
     public function mount($attr,$branches){
         $branches = json_decode($branches,0);

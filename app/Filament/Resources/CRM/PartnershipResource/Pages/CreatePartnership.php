@@ -12,5 +12,8 @@ class CreatePartnership extends CreateRecord
 {
     protected static string $resource = PartnershipResource::class;
     use TranslatableForm;
-
+    protected function getRedirectUrl(): string
+    {
+        return $this->getResource()::getUrl('index');
+    }
 }

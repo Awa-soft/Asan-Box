@@ -30,6 +30,7 @@ class ItemLossResource extends Resource
     protected static ?string $model = ItemLoss::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?int $navigationSort = 12;
 
     public static function form(Form $form): Form
     {
@@ -88,7 +89,9 @@ class ItemLossResource extends Resource
 
     public static function table(Table $table): Table
     {
-        return $table
+       return $table
+            ->recordUrl('')
+            ->defaultSort('id','desc')
             ->columns([
                 static::Column(),
                 Tables\Columns\TextColumn::make('item.name_'.App::getLocale())
@@ -123,8 +126,7 @@ class ItemLossResource extends Resource
                 Tables\Filters\TrashedFilter::make(),
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+
                 Tables\Actions\ForceDeleteAction::make(),
                 Tables\Actions\RestoreAction::make(),
             ])

@@ -62,7 +62,9 @@ class PackagePage extends Page implements HasForms, HasTable
     }
 
     public function table(Table $table) :Table{
-        return $table
+       return $table
+            ->recordUrl('')
+            ->defaultSort('id','desc')
         ->query(Package::query())
         ->columns([
             TextColumn::make('name')

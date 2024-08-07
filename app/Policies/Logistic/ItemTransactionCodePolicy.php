@@ -63,7 +63,7 @@ class ItemTransactionCodePolicy
      */
     public function forceDelete(User $user, ItemTransactionCode $itemTransactionCode): bool
     {
-        return $user->can('force_delete_logistic::item::transaction::code');
+        return $user->can('{{ ForceDelete }}');
     }
 
     /**
@@ -71,7 +71,7 @@ class ItemTransactionCodePolicy
      */
     public function forceDeleteAny(User $user): bool
     {
-        return $user->can('force_delete_any_logistic::item::transaction::code');
+        return $user->can('{{ ForceDeleteAny }}');
     }
 
     /**

@@ -14,13 +14,16 @@ class ItemTransactionCodeResource extends Resource
 {
     use HasTranslatableResource;
     protected static ?string $model = ItemTransactionCode::class;
+    protected static ?int $navigationSort = 19;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
 
     public static function table(Table $table): Table
     {
-        return $table
+       return $table
+            ->recordUrl('')
+            ->defaultSort('id','desc')
             ->columns([
                 Tables\Columns\TextColumn::make('itemTransactionDetail.item.name_'.App::getLocale())
                     ->label(trans('Inventory/lang.item.singular_label'))
@@ -40,7 +43,7 @@ class ItemTransactionCodeResource extends Resource
                     ->badge()
                     ->sortable()
                     ->formatStateUsing(fn($state)=>trans('lang.'.$state))
-                    ->color(fn($state)=>$state == 'pending'?Color::Amber:($state == 'rejected'?'danger':'success')),
+                    ->color(fn($state)=>$state == 'pending' || $state == 'shipping'?Color::Amber:($state == 'rejected'?'danger':'success')),
                 Tables\Columns\TextColumn::make('user.name')
                     ->label(trans('lang.user'))
                     ->numeric()
@@ -60,6 +63,12 @@ class ItemTransactionCodeResource extends Resource
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])->actions([
+               Tables\Actions\Action::make('shipping')
+                   ->label(trans('lang.shipping'))
+                   ->hidden(fn ($record)=>$record->status == 'shipping')
+                   ->action(fn($record)=>$record->update([
+                       'status'=>'shipping',
+                   ]))->color(Color::Amber),
                 Tables\Actions\Action::make('accept')
                     ->label(trans('lang.accept'))
                     ->hidden(fn ($record)=>$record->status == 'accepted')
@@ -72,6 +81,7 @@ class ItemTransactionCodeResource extends Resource
                     ->action(fn($record)=>$record->update([
                         'status'=>'rejected',
                     ]))->color('danger'),
+               Tables\Actions\DeleteAction::make()
                 ]);
     }
 

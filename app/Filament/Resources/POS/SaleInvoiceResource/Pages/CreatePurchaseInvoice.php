@@ -10,6 +10,9 @@ use Filament\Resources\Pages\CreateRecord;
 class CreatePurchaseInvoice extends CreateRecord
 {
     use TranslatableForm;
-
+    protected function getRedirectUrl(): string
+    {
+        return $this->getResource()::getUrl('index');
+    }
     protected static string $resource = SaleInvoiceResource::class;
 }

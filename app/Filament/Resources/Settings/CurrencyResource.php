@@ -21,6 +21,7 @@ class CurrencyResource extends Resource
     use HasTranslatableResource;
 
     protected static ?string $model = Currency::class;
+    protected static ?int $navigationSort = 41;
 
     protected static ?string $navigationIcon = 'far-money-bill-alt';
 
@@ -53,7 +54,9 @@ class CurrencyResource extends Resource
 
     public static function table(Table $table): Table
     {
-        return $table
+       return $table
+            ->recordUrl('')
+            ->defaultSort('id','desc')
             ->columns([
                 Tables\Columns\TextColumn::make('name')
                     ->label(trans("lang.name"))

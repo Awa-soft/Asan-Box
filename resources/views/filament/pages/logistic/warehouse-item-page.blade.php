@@ -55,7 +55,7 @@
         @endforeach
     </ul>
     <ul class="col-span-1 xl:h-[43rem] h-max items-center justify-center flex xl:flex-col gap-5">
-        <li wire:click='transfer' class="w-10 bg-primary-500 hidden xl:block rounded-full text-white shadow shadow-black cursor-pointer hover:bg-primary-400 duration-400">
+        <li wire:click='transfer' class="w-10 rtl:rotate-180 bg-primary-500 hidden xl:block rounded-full text-white shadow shadow-black cursor-pointer hover:bg-primary-400 duration-400">
             <x-heroicon-o-chevron-right />
         </li>
         <li wire:click='transfer' class="w-10 bg-primary-500 block xl:hidden rounded-full text-white shadow shadow-black cursor-pointer hover:bg-primary-400 duration-400">
@@ -65,7 +65,7 @@
             <x-heroicon-o-x-mark />
         </li>
 
-        <li wire:click="transferBack" class="w-10 bg-primary-500 hidden xl:block rounded-full text-white shadow shadow-black cursor-pointer hover:bg-primary-400 duration-300">
+        <li wire:click="transferBack" class="w-10 rtl:rotate-180 bg-primary-500 hidden xl:block rounded-full text-white shadow shadow-black cursor-pointer hover:bg-primary-400 duration-300">
             <x-heroicon-o-chevron-left />
         </li>
         <li wire:click="transferBack" class="w-10 bg-primary-500 block xl:hidden rounded-full text-white shadow shadow-black cursor-pointer hover:bg-primary-400 duration-300">

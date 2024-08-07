@@ -63,7 +63,7 @@ class EmployeeLeavePolicy
      */
     public function forceDelete(User $user, EmployeeLeave $employeeLeave): bool
     {
-        return $user->can('force_delete_h::r::employee::leave');
+        return $user->can('{{ ForceDelete }}');
     }
 
     /**
@@ -71,7 +71,7 @@ class EmployeeLeavePolicy
      */
     public function forceDeleteAny(User $user): bool
     {
-        return $user->can('force_delete_any_h::r::employee::leave');
+        return $user->can('{{ ForceDeleteAny }}');
     }
 
     /**

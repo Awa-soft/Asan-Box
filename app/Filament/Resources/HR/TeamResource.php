@@ -22,6 +22,7 @@ class TeamResource extends Resource
     use \App\Traits\Core\HasSoftDeletes;
     use OwnerableTrait;
     use HasTranslatableResource;
+    protected static ?int $navigationSort = 34;
 
     protected static ?string $model = Team::class;
     protected static ?string $navigationIcon = 'lineawesome-teamspeak';
@@ -49,7 +50,9 @@ class TeamResource extends Resource
 
     public static function table(Table $table): Table
     {
-        return $table
+       return $table
+            ->recordUrl('')
+            ->defaultSort('id','desc')
             ->columns([
                 static::Column(),
                 Tables\Columns\TextColumn::make('name')

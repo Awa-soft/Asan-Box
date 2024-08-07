@@ -11,8 +11,12 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasRoles;
+use Filament\Models\Contracts\FilamentUser;
+use Filament\Panel;
 
-class User extends Authenticatable
+
+
+class User extends Authenticatable implements FilamentUser
 {
     use HasFactory, Notifiable,HasRoles;
 
@@ -28,6 +32,12 @@ class User extends Authenticatable
         "ownerable_type",
         "ownerable_id"
     ];
+    
+    
+       public function canAccessPanel(Panel $panel): bool
+    {
+        return $this->status;
+    }
 
     /**
      * The attributes that should be hidden for serialization.

@@ -26,6 +26,7 @@ class EmployeeSalaryResource extends Resource
     protected static ?string $model = EmployeeSalary::class;
 
     protected static ?string $navigationIcon = 'fas-hand-holding-dollar';
+    protected static ?int $navigationSort = 34;
 
     protected static function calculateSalary(Forms\Get $get, Forms\Set $set): void{
         $date = $get('salary_date')??now();
@@ -182,18 +183,20 @@ class EmployeeSalaryResource extends Resource
 
     public static function table(Table $table): Table
     {
-        return $table
+       return $table
+            ->recordUrl('')
+            ->defaultSort('id','desc')
             ->columns([
                 Tables\Columns\TextColumn::make('employee.name')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('amount')
-                    ->numeric()
+                    ->numeric(locale:'en')
                     ->suffix(fn($record)=>$record->currency?->symbol??'$')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('payment_amount')
                     ->suffix(fn($record)=>$record->currency?->symbol??'$')
-                    ->numeric()
+                    ->numeric(locale:'en')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('salary_date')
                     ->date()

@@ -25,6 +25,7 @@ class ExpenseTypeResource extends Resource
     use HasTranslatableResource;
     use OwnerableTrait;
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?int $navigationSort = 39;
 
     public static function form(Form $form): Form
     {
@@ -39,7 +40,9 @@ class ExpenseTypeResource extends Resource
 
     public static function table(Table $table): Table
     {
-        return $table
+       return $table
+            ->recordUrl('')
+            ->defaultSort('id','desc')
             ->columns([
                 static::Column(),
                 Tables\Columns\TextColumn::make('user.name')

@@ -32,12 +32,15 @@ class DetailRelationManager extends RelationManager
                 Forms\Components\Select::make('item_id')
                     ->relationship('item', 'name_'.App::getLocale())
                 ->searchable()
+                    ->label(trans('lang.item'))
                 ->preload()
                 ->required(),
                 Forms\Components\TextInput::make('quantity')
+                    ->label(trans('lang.quantity'))
                 ->numeric()
                 ->required(),
                 Forms\Components\Select::make('unit_id')
+                    ->label(trans('lang.unit'))
                     ->relationship('unit', 'name')
                     ->preload()
                     ->searchable()
@@ -49,16 +52,21 @@ class DetailRelationManager extends RelationManager
 
     public function table(Table $table): Table
     {
-        return $table
+       return $table
+            ->recordUrl('')
+            ->defaultSort('id','desc')
             ->recordTitleAttribute('purchase_order_id')
             ->columns([
                 Tables\Columns\TextColumn::make('item.name_'.\Illuminate\Support\Facades\App::getLocale())
+                    ->label(trans('lang.item'))
                     ->searchable(),
                 Tables\Columns\TextColumn::make('quantity')
+                    ->label(trans('lang.quantity'))
                     ->suffix(fn($record)=>' '.$record->unit->name)
                     ->numeric()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('note')
+                    ->label(trans('lang.note'))
                     ->searchable(),
 
             ])

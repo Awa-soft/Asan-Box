@@ -2,14 +2,27 @@
 
 namespace App\Livewire\Reports;
 
+use App\Filament\Pages\Logistic\ItemTransaction;
+use App\Filament\Pages\POS\PurchasePage;
+use App\Filament\Pages\POS\SalePage;
 use App\Filament\Pages\Reports\HR\EmployeeSalary;
+use App\Filament\Pages\Reports\POS\ItemRepairs;
 use App\Filament\Pages\Reports\POS\Purchase;
 use App\Filament\Pages\Reports\POS\PurchaseCodes;
 use App\Filament\Pages\Reports\POS\PurchaseExpenses;
 use App\Filament\Pages\Reports\POS\PurchaseItems;
+use App\Filament\Pages\Reports\POS\Sale;
 use App\Filament\Pages\Reports\POS\SaleCodes;
 use App\Filament\Pages\Reports\POS\SaleItems;
+use App\Filament\Resources\Logistic\BranchResource;
+use App\Filament\Resources\Logistic\WarehouseResource;
+use App\Filament\Resources\POS\ItemRepairResource;
+use App\Filament\Resources\POS\PurchaseExpenseResource;
+use App\Filament\Resources\POS\PurchaseInvoiceResource;
+use App\Filament\Resources\POS\SaleInvoiceResource;
 use App\Models\Inventory\Item;
+use App\Models\Logistic\Branch;
+use App\Models\Logistic\Warehouse;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Concerns\InteractsWithForms;
@@ -26,30 +39,118 @@ class POS extends Component  implements HasForms
     public $purchaseReturn=[],$purchaseReturnItems = [],$purchaseReturnCodes=[],$purchaseReturnExpenses;
     public$saleItems = [],$saleCodes=[];
     public $saleReturn  =[],$saleReturnItems = [],$saleReturnCodes=[];
+    public $saleInstallment  =[],$saleInstallmentItems = [],$saleInstallmentCodes=[];
+    public $itemRepairs = [];
+    public $localizationFolder = 'POS';
+    public $formNames = [
+        'purchase'=>PurchasePage::class,
+        'purchaseItems'=>PurchaseInvoiceResource::class,
+        'purchaseCodes'=>PurchaseInvoiceResource::class,
+        'purchaseExpenses'=>PurchaseExpenseResource::class,
+        'purchaseReturn'=>PurchasePage::class,
+        'purchaseReturnItems'=>PurchaseInvoiceResource::class,
+        'purchaseReturnCodes'=>PurchaseInvoiceResource::class,
+        'purchaseReturnExpenses'=>PurchaseExpenseResource::class,
+        'sale'=>SalePage::class,
+        'saleItems'=>SaleInvoiceResource::class,
+        'saleCodes'=>SaleInvoiceResource::class,
+        'saleReturn'=>SaleInvoiceResource::class,
+        'saleReturnItems'=>SaleInvoiceResource::class,
+        'saleReturnCodes'=>SaleInvoiceResource::class,
+        'saleInstallment'=>SaleInvoiceResource::class,
+        'saleInstallmentItems'=>SaleInvoiceResource::class,
+        'saleInstallmentCodes'=>SaleInvoiceResource::class,
+        'itemRepairs'=>ItemRepairResource::class
+    ];
+    public function mount()
+    {
+        $data = [];
+        if(userHasBranch()){
+            $data = ['branch_id'=>[
+                getBranchId()
+            ]];
+        }
+        if(userHasWarehouse()){
+            $data['warehouse_id'] = [
+                getWarehouseId()
+            ];
+        }
+        foreach($this->formNames as $key => $form){
+            $this->{$key.'Form'}->fill($data);
+        }
+
+    }
 
     protected function getForms(): array
     {
-        return [
-            'purchaseForm',
-            'purchaseItemsForm',
-            'purchaseCodesForm',
-            'purchaseExpensesForm',
-            'purchaseReturnForm',
-            'purchaseReturnItemsForm',
-            'purchaseReturnCodesForm',
-            'purchaseReturnExpensesForm',
-            'saleForm',
-            'saleItemsForm',
-            'saleCodesForm',
-            'saleReturnForm',
-            'saleReturnItemsForm',
-            'saleReturnCodesForm',
-        ];
+        $forms = [];
+        foreach($this->formNames as $key => $form){
+            $forms[] = $key.'Form';
+        }
+        return $forms;
     }
 
+
+    //repair items
+    public function itemRepairsSearch(){
+        if(checkPackage('POS')){
+            $this->itemRepairsForm->getState();
+            $data = $this->itemRepairs;
+            $from = $data['from']?? 'all';
+            $to = $data['to']?? 'all';
+            $branch = json_encode($data['branch_id']??[]);
+            $warehouse = json_encode($data['warehouse_id']??[]);
+            $item = json_encode($data['item_id']??[]);
+            return $this->redirect(ItemRepairs::getUrl(['branch'=>$branch,'warehouse'=>$warehouse,'item'=>$item,'from'=>$from,'to'=>$to,'type'=>$data['type']??'all']));
+        }else{
+            return '';
+        }
+    }
+    public function itemRepairsForm(Form $form): Form
+    {
+        if(checkPackage('POS')){
+            return $form->columns(2)->model(\App\Models\POS\ItemRepair::class)
+                ->schema([
+                    DatePicker::make('from')
+                        ->label(trans('lang.from')),
+                    DatePicker::make('to')
+                        ->label(trans('lang.to')),
+                    Select::make('item_id')
+                        ->relationship('item','name_'.App::getLocale())
+                        ->multiple()
+                        ->searchable()
+                        ->preload(),
+                    Select::make('type')
+                        ->options(\App\Models\POS\ItemRepair::getTypes())
+                        ->native(0),
+                    Select::make('branch_id')
+                        ->hidden(userHasBranch())
+                        ->multiple()
+                        ->live()
+                        ->label(trans('lang.branches'))
+                        ->options(Branch::all()->pluck('name','id'))
+                        ->searchable()
+                        ->preload(),
+                    Select::make('warehouse_id')
+                        ->hidden(userHasWarehouse())
+                        ->multiple()
+                        ->label(trans('lang.warehouses'))
+                        ->live()
+                        ->options(userHasBranch()? Warehouse::whereHas('branches',function ($query){
+                            return $query->where('branch_id',getBranchId());
+                        })->get()->pluck('name','id') : Warehouse::all()->pluck('name','id'))
+                        ->searchable()
+                        ->preload(),
+
+
+                ])->statePath('itemRepairs');
+        }else{
+            return $form->statePath('itemRepairs');
+        }
+    }
     //purchase
-    public function searchPurchase(){
-        if(checkPackage('HR')){
+    public function purchaseSearch(){
+        if(checkPackage('POS')){
             $this->purchaseForm->getState();
             $data = $this->purchase;
             $from = $data['from']?? 'all';
@@ -70,7 +171,8 @@ class POS extends Component  implements HasForms
                         ->label(trans('lang.from')),
                     DatePicker::make('to')
                         ->label(trans('lang.to')),
-                    Select::make('branch_id')
+                     Select::make('branch_id')
+                        ->hidden(userHasBranch())
                         ->relationship('branch','name')
                         ->multiple()
                         ->live()
@@ -90,8 +192,8 @@ class POS extends Component  implements HasForms
             return $form->statePath('purchase');
         }
     }
-    public function searchPurchaseItems(){
-        if(checkPackage('HR')){
+    public function purchaseItemsSearch(){
+        if(checkPackage('POS')){
             $this->purchaseItemsForm->getState();
             $data = $this->purchaseItems;
             $from = $data['from']?? 'all';
@@ -113,7 +215,8 @@ class POS extends Component  implements HasForms
                         ->label(trans('lang.from')),
                     DatePicker::make('to')
                         ->label(trans('lang.to')),
-                    Select::make('branch_id')
+                     Select::make('branch_id')
+                        ->hidden(userHasBranch())
                         ->relationship('branch','name')
                         ->multiple()
                         ->live()
@@ -128,7 +231,7 @@ class POS extends Component  implements HasForms
                         ->relationship("contact", "name_".\Illuminate\Support\Facades\App::getLocale()),
                     Select::make('item_id')
                         ->label(trans('Inventory/lang.item.plural_label'))
-                        ->columnSpanFull()
+                        ->columnSpan(userHasBranch() ? 1:'full')
                         ->searchable()
                         ->preload()
                         ->multiple()
@@ -138,8 +241,8 @@ class POS extends Component  implements HasForms
             return $form->statePath('purchaseItems');
         }
     }
-    public function searchPurchaseCodes(){
-        if(checkPackage('HR')){
+    public function purchaseCodesSearch(){
+        if(checkPackage('POS')){
             $this->purchaseCodesForm->getState();
             $data = $this->purchaseCodes;
             $from = $data['from']?? 'all';
@@ -161,7 +264,8 @@ class POS extends Component  implements HasForms
                         ->label(trans('lang.from')),
                     DatePicker::make('to')
                         ->label(trans('lang.to')),
-                    Select::make('branch_id')
+                     Select::make('branch_id')
+                        ->hidden(userHasBranch())
                         ->relationship('branch','name')
                         ->multiple()
                         ->live()
@@ -176,7 +280,7 @@ class POS extends Component  implements HasForms
                         ->relationship("contact", "name_".\Illuminate\Support\Facades\App::getLocale()),
                     Select::make('item_id')
                         ->label(trans('Inventory/lang.item.plural_label'))
-                        ->columnSpanFull()
+                        ->columnSpan(userHasBranch() ? 1:'full')
                         ->searchable()
                         ->preload()
                         ->multiple()
@@ -187,8 +291,8 @@ class POS extends Component  implements HasForms
         }
     }
 
-    public function searchPurchaseExpenses(){
-        if(checkPackage('HR')){
+    public function purchaseExpensesSearch(){
+        if(checkPackage('POS')){
             $this->purchaseExpensesForm->getState();
             $data = $this->purchaseExpenses;
             $from = $data['from']?? 'all';
@@ -209,7 +313,8 @@ class POS extends Component  implements HasForms
                         ->label(trans('lang.from')),
                     DatePicker::make('to')
                         ->label(trans('lang.to')),
-                    Select::make('branch_id')
+                     Select::make('branch_id')
+                        ->hidden(userHasBranch())
                         ->relationship('branch','name')
                         ->multiple()
                         ->live()
@@ -232,8 +337,8 @@ class POS extends Component  implements HasForms
     }
 
 //    purchase Return
-    public function searchPurchaseReturn(){
-        if(checkPackage('HR')){
+    public function purchaseReturnSearch(){
+        if(checkPackage('POS')){
             $this->purchaseReturnForm->getState();
             $data = $this->purchaseReturn;
             $from = $data['from']?? 'all';
@@ -254,7 +359,8 @@ class POS extends Component  implements HasForms
                         ->label(trans('lang.from')),
                     DatePicker::make('to')
                         ->label(trans('lang.to')),
-                    Select::make('branch_id')
+                     Select::make('branch_id')
+                        ->hidden(userHasBranch())
                         ->relationship('branch','name')
                         ->multiple()
                         ->live()
@@ -274,8 +380,8 @@ class POS extends Component  implements HasForms
             return $form->statePath('purchaseReturn');
         }
     }
-    public function searchPurchaseReturnItems(){
-        if(checkPackage('HR')){
+    public function purchaseReturnItemsSearch(){
+        if(checkPackage('POS')){
             $this->purchaseReturnItemsForm->getState();
             $data = $this->purchaseReturnItems;
             $from = $data['from']?? 'all';
@@ -297,7 +403,8 @@ class POS extends Component  implements HasForms
                         ->label(trans('lang.from')),
                     DatePicker::make('to')
                         ->label(trans('lang.to')),
-                    Select::make('branch_id')
+                     Select::make('branch_id')
+                        ->hidden(userHasBranch())
                         ->relationship('branch','name')
                         ->multiple()
                         ->live()
@@ -312,7 +419,7 @@ class POS extends Component  implements HasForms
                         ->relationship("contact", "name_".\Illuminate\Support\Facades\App::getLocale()),
                     Select::make('item_id')
                         ->label(trans('Inventory/lang.item.plural_label'))
-                        ->columnSpanFull()
+                        ->columnSpan(userHasBranch() ? 1:'full')
                         ->searchable()
                         ->preload()
                         ->multiple()
@@ -322,8 +429,8 @@ class POS extends Component  implements HasForms
             return $form->statePath('purchaseReturnItems');
         }
     }
-    public function searchPurchaseReturnCodes(){
-        if(checkPackage('HR')){
+    public function purchaseReturnCodesSearch(){
+        if(checkPackage('POS')){
             $this->purchaseReturnCodesForm->getState();
             $data = $this->purchaseReturnCodes;
             $from = $data['from']?? 'all';
@@ -345,7 +452,8 @@ class POS extends Component  implements HasForms
                         ->label(trans('lang.from')),
                     DatePicker::make('to')
                         ->label(trans('lang.to')),
-                    Select::make('branch_id')
+                     Select::make('branch_id')
+                        ->hidden(userHasBranch())
                         ->relationship('branch','name')
                         ->multiple()
                         ->live()
@@ -360,7 +468,7 @@ class POS extends Component  implements HasForms
                         ->relationship("contact", "name_".\Illuminate\Support\Facades\App::getLocale()),
                     Select::make('item_id')
                         ->label(trans('Inventory/lang.item.plural_label'))
-                        ->columnSpanFull()
+                        ->columnSpan(userHasBranch() ? 1:'full')
                         ->searchable()
                         ->preload()
                         ->multiple()
@@ -371,8 +479,8 @@ class POS extends Component  implements HasForms
         }
     }
 
-    public function searchPurchaseReturnExpenses(){
-        if(checkPackage('HR')){
+    public function purchaseReturnExpensesSearch(){
+        if(checkPackage('POS')){
             $this->purchaseReturnExpensesForm->getState();
             $data = $this->purchaseReturnCodes;
             $from = $data['from']?? 'all';
@@ -393,7 +501,8 @@ class POS extends Component  implements HasForms
                         ->label(trans('lang.from')),
                     DatePicker::make('to')
                         ->label(trans('lang.to')),
-                    Select::make('branch_id')
+                     Select::make('branch_id')
+                        ->hidden(userHasBranch())
                         ->relationship('branch','name')
                         ->multiple()
                         ->live()
@@ -415,15 +524,15 @@ class POS extends Component  implements HasForms
         }
     }
 // sale
-    public function searchSale(){
-        if(checkPackage('HR')){
+    public function saleSearch(){
+        if(checkPackage('POS')){
             $this->saleForm->getState();
             $data = $this->sale;
             $from = $data['from']?? 'all';
             $to = $data['to']?? 'all';
             $contact = json_encode($data['contact_id']??[]);
             $branch = json_encode($data['branch_id']??[]);
-            return $this->redirect(Purchase::getUrl(['branch'=>$branch,'contact'=>$contact,'from'=>$from,'to'=>$to,'type'=>'sale']));
+            return $this->redirect(Sale::getUrl(['branch'=>$branch,'contact'=>$contact,'from'=>$from,'to'=>$to,'type'=>'sale']));
         }else{
             return '';
         }
@@ -437,7 +546,8 @@ class POS extends Component  implements HasForms
                         ->label(trans('lang.from')),
                     DatePicker::make('to')
                         ->label(trans('lang.to')),
-                    Select::make('branch_id')
+                     Select::make('branch_id')
+                        ->hidden(userHasBranch())
                         ->relationship('branch','name')
                         ->multiple()
                         ->searchable()
@@ -457,8 +567,8 @@ class POS extends Component  implements HasForms
             return $form->statePath('sale');
         }
     }
-    public function searchSaleItems(){
-        if(checkPackage('HR')){
+    public function saleItemsSearch(){
+        if(checkPackage('POS')){
             $this->saleItemsForm->getState();
             $data = $this->saleItems;
             $from = $data['from']?? 'all';
@@ -480,7 +590,8 @@ class POS extends Component  implements HasForms
                         ->label(trans('lang.from')),
                     DatePicker::make('to')
                         ->label(trans('lang.to')),
-                    Select::make('branch_id')
+                     Select::make('branch_id')
+                        ->hidden(userHasBranch())
                         ->relationship('branch','name')
                         ->multiple()
                         ->live()
@@ -495,7 +606,7 @@ class POS extends Component  implements HasForms
                         ->relationship("contact", "name_".\Illuminate\Support\Facades\App::getLocale()),
                     Select::make('item_id')
                         ->label(trans('Inventory/lang.item.plural_label'))
-                        ->columnSpanFull()
+                        ->columnSpan(userHasBranch() ? 1:'full')
                         ->searchable()
                         ->preload()
                         ->multiple()
@@ -505,8 +616,8 @@ class POS extends Component  implements HasForms
             return $form->statePath('saleItems');
         }
     }
-    public function searchSaleCodes(){
-        if(checkPackage('HR')){
+    public function saleCodesSearch(){
+        if(checkPackage('POS')){
             $this->saleCodesForm->getState();
             $data = $this->saleCodes;
             $from = $data['from']?? 'all';
@@ -528,7 +639,8 @@ class POS extends Component  implements HasForms
                         ->label(trans('lang.from')),
                     DatePicker::make('to')
                         ->label(trans('lang.to')),
-                    Select::make('branch_id')
+                     Select::make('branch_id')
+                        ->hidden(userHasBranch())
                         ->relationship('branch','name')
                         ->multiple()
                         ->live()
@@ -543,7 +655,7 @@ class POS extends Component  implements HasForms
                         ->relationship("contact", "name_".\Illuminate\Support\Facades\App::getLocale()),
                     Select::make('item_id')
                         ->label(trans('Inventory/lang.item.plural_label'))
-                        ->columnSpanFull()
+                        ->columnSpan(userHasBranch() ? 1:'full')
                         ->searchable()
                         ->preload()
                         ->multiple()
@@ -555,15 +667,15 @@ class POS extends Component  implements HasForms
     }
 
 //    sale return
-    public function searchSaleReturn(){
-        if(checkPackage('HR')){
+    public function saleReturnSearch(){
+        if(checkPackage('POS')){
             $this->saleReturnForm->getState();
             $data = $this->saleReturn;
             $from = $data['from']?? 'all';
             $to = $data['to']?? 'all';
             $contact = json_encode($data['contact_id']??[]);
             $branch = json_encode($data['branch_id']??[]);
-            return $this->redirect(Purchase::getUrl(['branch'=>$branch,'contact'=>$contact,'from'=>$from,'to'=>$to,'type'=>'return']));
+            return $this->redirect(Sale::getUrl(['branch'=>$branch,'contact'=>$contact,'from'=>$from,'to'=>$to,'type'=>'return']));
         }else{
             return '';
         }
@@ -577,7 +689,8 @@ class POS extends Component  implements HasForms
                         ->label(trans('lang.from')),
                     DatePicker::make('to')
                         ->label(trans('lang.to')),
-                    Select::make('branch_id')
+                     Select::make('branch_id')
+                        ->hidden(userHasBranch())
                         ->relationship('branch','name')
                         ->multiple()
                         ->searchable()
@@ -597,8 +710,8 @@ class POS extends Component  implements HasForms
             return $form->statePath('saleReturn');
         }
     }
-    public function searchSaleReturnItems(){
-        if(checkPackage('HR')){
+    public function saleReturnItemsSearch(){
+        if(checkPackage('POS')){
             $this->saleReturnItemsForm->getState();
             $data = $this->saleReturnItems;
             $from = $data['from']?? 'all';
@@ -620,7 +733,8 @@ class POS extends Component  implements HasForms
                         ->label(trans('lang.from')),
                     DatePicker::make('to')
                         ->label(trans('lang.to')),
-                    Select::make('branch_id')
+                     Select::make('branch_id')
+                        ->hidden(userHasBranch())
                         ->relationship('branch','name')
                         ->multiple()
                         ->live()
@@ -635,7 +749,7 @@ class POS extends Component  implements HasForms
                         ->relationship("contact", "name_".\Illuminate\Support\Facades\App::getLocale()),
                     Select::make('item_id')
                         ->label(trans('Inventory/lang.item.plural_label'))
-                        ->columnSpanFull()
+                        ->columnSpan(userHasBranch() ? 1:'full')
                         ->searchable()
                         ->preload()
                         ->multiple()
@@ -645,8 +759,8 @@ class POS extends Component  implements HasForms
             return $form->statePath('saleReturnItems');
         }
     }
-    public function searchSaleReturnCodes(){
-        if(checkPackage('HR')){
+    public function saleReturnCodesSearch(){
+        if(checkPackage('POS')){
             $this->saleReturnCodesForm->getState();
             $data = $this->saleReturnCodes;
             $from = $data['from']?? 'all';
@@ -668,7 +782,8 @@ class POS extends Component  implements HasForms
                         ->label(trans('lang.from')),
                     DatePicker::make('to')
                         ->label(trans('lang.to')),
-                    Select::make('branch_id')
+                     Select::make('branch_id')
+                        ->hidden(userHasBranch())
                         ->relationship('branch','name')
                         ->multiple()
                         ->live()
@@ -683,7 +798,7 @@ class POS extends Component  implements HasForms
                         ->relationship("contact", "name_".\Illuminate\Support\Facades\App::getLocale()),
                     Select::make('item_id')
                         ->label(trans('Inventory/lang.item.plural_label'))
-                        ->columnSpanFull()
+                        ->columnSpan(userHasBranch() ? 1:'full')
                         ->searchable()
                         ->preload()
                         ->multiple()
@@ -695,30 +810,152 @@ class POS extends Component  implements HasForms
     }
 
     // installment
-
-
-    public function mount():void
-    {
-        $this->purchaseForm->fill();
-        $this->purchaseItemsForm->fill();
-        $this->purchaseCodesForm->fill();
-        $this->purchaseExpensesForm->fill();
-
-        $this->purchaseReturnForm->fill();
-        $this->purchaseReturnItemsForm->fill();
-        $this->purchaseReturnCodesForm->fill();
-        $this->purchaseReturnExpensesForm->fill();
-
-        $this->saleForm->fill();
-        $this->saleItemsForm->fill();
-        $this->saleCodesForm->fill();
-
-        $this->saleReturnForm->fill();
-        $this->saleReturnItemsForm->fill();
-        $this->saleReturnCodesForm->fill();
+    public function saleInstallmentSearch(){
+        if(checkPackage('POS')){
+            $this->saleInstallmentForm->getState();
+            $data = $this->saleInstallment;
+            $from = $data['from']?? 'all';
+            $to = $data['to']?? 'all';
+            $contact = json_encode($data['contact_id']??[]);
+            $branch = json_encode($data['branch_id']??[]);
+            return $this->redirect(Sale::getUrl(['branch'=>$branch,'contact'=>$contact,'from'=>$from,'to'=>$to,'type'=>'installment']));
+        }else{
+            return '';
+        }
     }
+    public function saleInstallmentForm(Form $form): Form
+    {
+        if(checkPackage('POS')){
+            return $form->columns(2)->model(\App\Models\POS\SaleInvoice::class)
+                ->schema([
+                    DatePicker::make('from')
+                        ->label(trans('lang.from')),
+                    DatePicker::make('to')
+                        ->label(trans('lang.to')),
+                     Select::make('branch_id')
+                        ->hidden(userHasBranch())
+                        ->relationship('branch','name')
+                        ->multiple()
+                        ->searchable()
+                        ->live()
+                        ->columnSpanFull()
+                        ->preload(),
+                    Select::make('contact_id')
+                        ->columnSpanFull()
+                        ->label(trans('lang.contact'))
+                        ->searchable()
+                        ->live()
+                        ->preload()
+                        ->multiple()
+                        ->relationship("contact", "name_".\Illuminate\Support\Facades\App::getLocale()),
+                ])->statePath('saleInstallment');
+        }else{
+            return $form->statePath('saleInstallment');
+        }
+    }
+    public function saleInstallmentItemsSearch(){
+        if(checkPackage('POS')){
+            $this->saleInstallmentItemsForm->getState();
+            $data = $this->saleInstallmentItems;
+            $from = $data['from']?? 'all';
+            $to = $data['to']?? 'all';
+            $contact = json_encode($data['contact_id']??[]);
+            $branch = json_encode($data['branch_id']??[]);
+            $item = json_encode($data['item_id']??[]);
+            return $this->redirect(SaleItems::getUrl(['branch'=>$branch,'contact'=>$contact,'from'=>$from,'to'=>$to,'item'=>$item,'type'=>'installment']));
+        }else{
+            return '';
+        }
+    }
+    public function saleInstallmentItemsForm(Form $form): Form
+    {
+        if(checkPackage('POS')){
+            return $form->columns(2)->model(\App\Models\POS\SaleInvoice::class)
+                ->schema([
+                    DatePicker::make('from')
+                        ->label(trans('lang.from')),
+                    DatePicker::make('to')
+                        ->label(trans('lang.to')),
+                     Select::make('branch_id')
+                        ->hidden(userHasBranch())
+                        ->relationship('branch','name')
+                        ->multiple()
+                        ->live()
+                        ->searchable()
+                        ->preload(),
+                    Select::make('contact_id')
+                        ->label(trans('lang.contact'))
+                        ->searchable()
+                        ->live()
+                        ->preload()
+                        ->multiple()
+                        ->relationship("contact", "name_".\Illuminate\Support\Facades\App::getLocale()),
+                    Select::make('item_id')
+                        ->label(trans('Inventory/lang.item.plural_label'))
+                        ->columnSpan(userHasBranch() ? 1:'full')
+                        ->searchable()
+                        ->preload()
+                        ->multiple()
+                        ->options(Item::all()->pluck('name_'.App::getLocale(),'id'))
+                ])->statePath('saleInstallmentItems');
+        }else{
+            return $form->statePath('saleInstallmentItems');
+        }
+    }
+    public function saleInstallmentCodesSearch(){
+        if(checkPackage('POS')){
+            $this->saleInstallmentCodesForm->getState();
+            $data = $this->saleInstallmentCodes;
+            $from = $data['from']?? 'all';
+            $to = $data['to']?? 'all';
+            $contact = json_encode($data['contact_id']??[]);
+            $branch = json_encode($data['branch_id']??[]);
+            $item = json_encode($data['item_id']??[]);
+            return $this->redirect(SaleCodes::getUrl(['branch'=>$branch,'contact'=>$contact,'from'=>$from,'to'=>$to,'item'=>$item,'type'=>'installment']));
+        }else{
+            return '';
+        }
+    }
+    public function saleInstallmentCodesForm(Form $form): Form
+    {
+        if(checkPackage('POS')){
+            return $form->columns(2)->model(\App\Models\POS\SaleInvoice::class)
+                ->schema([
+                    DatePicker::make('from')
+                        ->label(trans('lang.from')),
+                    DatePicker::make('to')
+                        ->label(trans('lang.to')),
+                     Select::make('branch_id')
+                        ->hidden(userHasBranch())
+                        ->relationship('branch','name')
+                        ->multiple()
+                        ->live()
+                        ->searchable()
+                        ->preload(),
+                    Select::make('contact_id')
+                        ->label(trans('lang.contact'))
+                        ->searchable()
+                        ->live()
+                        ->preload()
+                        ->multiple()
+                        ->relationship("contact", "name_".\Illuminate\Support\Facades\App::getLocale()),
+                    Select::make('item_id')
+                        ->label(trans('Inventory/lang.item.plural_label'))
+                        ->columnSpan(userHasBranch() ? 1:'full')
+                        ->searchable()
+                        ->preload()
+                        ->multiple()
+                        ->options(Item::all()->pluck('name_'.App::getLocale(),'id'))
+                ])->statePath('saleInstallmentCodes');
+        }else{
+            return $form->statePath('saleInstallmentCodes');
+        }
+    }
+
+
+
     public function render():View
     {
-        return view('livewire.reports.p-o-s');
+        return view('livewire.reports.reports-content');
     }
 }

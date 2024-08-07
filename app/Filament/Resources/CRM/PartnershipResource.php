@@ -24,7 +24,7 @@ class PartnershipResource extends Resource
     protected static ?string $model = Partnership::class;
 
     protected static ?string $navigationIcon = 'carbon-chart-relationship';
-    protected static ?int $navigationSort = 7;
+    protected static ?int $navigationSort = 34;
 
 
     public static function form(Form $form): Form
@@ -45,8 +45,10 @@ class PartnershipResource extends Resource
 
     public static function table(Table $table): Table
     {
-        return $table
+       return $table
+            ->recordUrl('')
             ->defaultSort('id','desc')
+
             ->columns([
                 Tables\Columns\TextColumn::make('start_date')
                     ->date('Y-m-d')

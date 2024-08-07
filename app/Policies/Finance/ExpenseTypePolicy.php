@@ -63,7 +63,7 @@ class ExpenseTypePolicy
      */
     public function forceDelete(User $user, ExpenseType $expenseType): bool
     {
-        return $user->can('force_delete_finance::expense::type');
+        return $user->can('{{ ForceDelete }}');
     }
 
     /**
@@ -71,7 +71,7 @@ class ExpenseTypePolicy
      */
     public function forceDeleteAny(User $user): bool
     {
-        return $user->can('force_delete_any_finance::expense::type');
+        return $user->can('{{ ForceDeleteAny }}');
     }
 
     /**

@@ -16,5 +16,10 @@ return [
     'expense_type'=>[
         'plural_label' => 'Expense Types',
         'singular_label' => 'Expense Type'
+    ],
+    'reports'=>[
+        'boursePayment'=>'Bourse Payment Report',
+        'expense'=>'Expense Report',
+        'payment'=>'Payment Report',
     ]
 ];
